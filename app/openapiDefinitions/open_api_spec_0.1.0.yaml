@@ -1,0 +1,424 @@
+openapi: 3.0.0
+info:
+  title: UAA
+  version: 0.1.0
+
+paths:
+  /status:
+    get:
+      operationId: status
+      tags: 
+        - Healthcheck
+      summary: Indicate the service has started up correctly and is ready to accept requests
+      responses:
+        200:
+          description: The service is ready to receive requests
+  /users:
+    post:
+      operationId: createUser
+      summary: Create a new user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+      responses:
+        201:
+          description: The user has been created
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /users/{userId}:
+    get:
+      operationId: getUser
+      summary: Get user data
+      tags:
+       - Users
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Identifier of the user to get
+      responses:
+        200:
+          description: User data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /users/me:
+    get:
+      security:
+        - BearerAuth: []
+      operationId: getAuthenticatedUser
+      summary: Get authenticated user data
+      tags:
+       - Users
+      responses:
+        200:
+          description: User data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /users/password/reset:
+    post:
+      operationId: requestPasswordReset
+      summary: Request a password reset
+      tags:
+      - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestPasswordResetRequest"
+      responses:
+        201:
+          description: Password reset request successfully created
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /users/password:
+    put:
+      operationId: resetPassword
+      summary: Reset a user password
+      tags:
+      - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPasswordRequest"
+      responses:
+        200:
+          description: Password reset successfull
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /roles:
+    post:
+      operationId: createRole
+      summary: Create a new Role
+      tags:
+       - Roles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRoleRequest"
+      responses:
+        201:
+          description: The role has been created
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /permissions:
+    post:
+      operationId: createPermission
+      summary: Create a new Permission
+      tags:
+        - Permissions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePermissionRequest"
+      responses:
+        201:
+          description: The permission has been created
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /token:
+    post:
+      operationId: authenticateUser
+      summary: Perform the authentication process
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthenticationRequest"
+      responses:
+        200:
+          description: Authentication performed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Authentication"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/UnauthorizedError"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+  /jwks:
+    get:
+      operationId: getJWTKeySet
+      tags: 
+        - Authentication
+      summary: Get the JWT keys used by the server
+      responses:
+        200:
+          description: JWT keys
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KeySet"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - username
+        - email
+        - roles
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Identifier of the user
+        username:
+          type: string
+          description: Username of the user
+        email:
+          type: string
+          description: Email of the user
+        roles:
+          type: array
+          description: Roles assigned to the user
+          items:
+            $ref: "#/components/schemas/Role"
+    Role:
+      type: object
+      required:
+        - id
+        - name
+        - permissions
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Identifier of the role
+        name:
+          type: string
+          description: Name of the role
+        permissions:
+          type: array
+          description: Permissions assigned to the role
+          items:
+            $ref: "#/components/schemas/Permission"
+    Permission:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Identifier of the permission
+        name:
+          type: string
+          description: Name of the permission
+    CreateUserRequest:
+      type: object
+      required:
+        - username
+        - email
+        - password
+        - roles
+      properties:
+        username:
+          type: string
+          description: Username of the user
+        email:
+          type: string
+          description: Email of the user
+        password:
+          type: string
+          description: Password of the user
+        roles:
+          type: array
+          description: Roles to assign to the user
+          items:
+            type: string
+            format: uuid
+            description: Identifier of the role
+    CreateRoleRequest:
+      type: object
+      required:
+        - name
+        - permissions
+      properties:
+        name:
+          type: string
+          description: Name of the role
+        permissions:
+          type: array
+          description: Permissions assigned to this role
+          items:
+            type: string
+            format: uuid
+            description: Identifier of the permission
+    CreatePermissionRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the permission
+    BadRequestSchema:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Message with detailed description about the problem
+    AuthenticationRequest:
+      type: object
+      required:
+        - grant_type
+      properties:
+        username:
+          type: string
+          description: User username to authenticate with password grant type
+        password:
+          type: string
+          description: User password to use with password grant type
+        grant_type:
+          type: string
+          description: Authentication method to use
+        refresh_token:
+          type: string
+          description: Refresh token to use with password refresh_token
+    Authentication:
+      type: object
+      required:
+        - access_token
+        - refresh_token
+        - token_type
+        - expires_in
+      properties:
+        access_token:
+          type: string
+          description: Authentication access token
+        token_type:
+          type: string
+          description: Access token type
+        expires_in:
+          type: string
+          description: Access token expiration seconds left
+        refresh_token:
+          type: string
+          description: Authentication refresh token
+        scope:
+          type: string
+          description: Permissions scope for the authenticated user
+    ErrorSchema:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Message with detailed description about the problem
+    KeySet:
+      type: object
+      required:
+      - keys
+      properties:
+        keys:
+          type: array
+          description: List of public keys
+          items:
+            type: object
+            required:
+            - kty
+            - use
+            - e
+            - n
+            - alg
+            - kid
+            properties:
+              kty:
+                type: string
+                description: Public key type
+              use:
+                type: string
+                description: How the key is being used
+              e:
+                type: string
+                description: Exponent value of the public key
+              n:
+                type: string
+                description: Modulues value of the public key
+              alg:
+                type: string
+                description: Algorithm used to perform the JWT signature
+              kid:
+                type: string
+                description: Public key identifier
+    RequestPasswordResetRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          description: Email of the user which requests the password reset
+    ResetPasswordRequest:
+      type: object
+      required:
+        - user_email
+        - reset_token
+        - new_pasword
+      properties:
+        user_email:
+          type: string
+          description: Email of the user which resets the password
+        reset_token:
+          type: string
+          description: Password reset token
+        new_password:
+          type: string
+          description: New password for the user
+
+  responses:
+    BadRequest:
+      description: There is a failure in the request format, expected headers, or the payload can't be unmarshalled
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BadRequestSchema"
+    InternalServerError:
+      description: There is a failure processing the request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorSchema"
+    UnauthorizedError:
+      description: User authentication has failed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorSchema"

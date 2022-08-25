@@ -1,0 +1,48 @@
+version: "3"
+services:
+  uaa:
+    image: go-uaa:latest
+    container_name: "go-uaa"
+    env_file: .env.docker
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8888:8888
+
+  swagger:
+    image: swaggerapi/swagger-ui:v4.12.0
+    ports:
+      - 8887:8080
+    environment:
+      SWAGGER_JSON_URL: http://localhost:8888/openapi.yaml
+      BASE_URL: /swagger
+
+  postgres:
+    image: postgres:14.1
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: uaa
+    ports:
+      - 5432:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+  
+  rabbitmq:
+    image: rabbitmq:3.8.19-management
+    environment:
+      RABBITMQ_DEFAULT_USER: test_user
+      RABBITMQ_DEFAULT_PASS: test_password
+      RABBITMQ_DEFAULT_VHOST: uaa
+    ports:
+      - 4369:4369
+      - 5671:5671
+      - 5672:5672
+      - 15671:15671
+      - 15672:15672
+      - 15674:15674
+      - 25672:25672
+
+volumes:
+  db:

@@ -1,0 +1,1905 @@
+{
+    "id": 2,
+    "main_plans": [
+        {
+            "id": 26,
+            "name": "It's Happening 0025",
+            "category": "Tours, games & activities",
+            "description": "Building industry just ten tax late culture.",
+            "meta": {},
+            "hashtags": [
+                {
+                    "id": 1,
+                    "name": "adventure",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_sRbwGJB.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 2,
+                    "name": "advertisement",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_tgbyPG9.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 3,
+                    "name": "afterwork",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_0gQlzda.jpg?auto=compress&auto=format&fm=jpg"
+                }
+            ],
+            "is_giveaway": false,
+            "place": {
+                "id": 17,
+                "address": "58691 Robin Lodge Suite 781\nLake Bradley, ID 07003",
+                "city": {
+                    "id": 5,
+                    "code": "MAL",
+                    "name": "Málaga",
+                    "slug": "malaga",
+                    "country": "ES",
+                    "latitude": -4.421266,
+                    "longitude": 36.721261,
+                    "radius": 0,
+                    "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                    "telephone": "629.649.6951",
+                    "currency": "€",
+                    "locale": "es",
+                    "localized_name": {
+                        "en": "Málaga",
+                        "es": "Málaga (ES)",
+                        "fr": "Málaga (FR)",
+                        "pt": "Málaga (PT)",
+                        "de": "Málaga (DE)",
+                        "it": "Málaga (IT)",
+                        "ko": "Málaga (KO)"
+                    }
+                },
+                "currency": "EUR",
+                "signed_map_urls": {
+                    "550x230": "https://feverdev.imgix.net/place/maps/17__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                    "825x345": "https://feverdev.imgix.net/place/maps/17__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                    "1100x460": "https://feverdev.imgix.net/place/maps/17__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                },
+                "locale": "es",
+                "latitude": 0.0,
+                "longitude": 0.0,
+                "hidden": false,
+                "metro_stations": [],
+                "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                "name": "placed4ac9e7e-1911-4cd3-bd58-bdf9d5f87745"
+            },
+            "places": [
+                {
+                    "id": 17,
+                    "address": "58691 Robin Lodge Suite 781\nLake Bradley, ID 07003",
+                    "city": {
+                        "id": 5,
+                        "code": "MAL",
+                        "name": "Málaga",
+                        "slug": "malaga",
+                        "country": "ES",
+                        "latitude": -4.421266,
+                        "longitude": 36.721261,
+                        "radius": 0,
+                        "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                        "telephone": "629.649.6951",
+                        "currency": "€",
+                        "locale": "es",
+                        "localized_name": {
+                            "en": "Málaga",
+                            "es": "Málaga (ES)",
+                            "fr": "Málaga (FR)",
+                            "pt": "Málaga (PT)",
+                            "de": "Málaga (DE)",
+                            "it": "Málaga (IT)",
+                            "ko": "Málaga (KO)"
+                        }
+                    },
+                    "currency": "EUR",
+                    "signed_map_urls": {
+                        "550x230": "https://feverdev.imgix.net/place/maps/17__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                        "825x345": "https://feverdev.imgix.net/place/maps/17__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                        "1100x460": "https://feverdev.imgix.net/place/maps/17__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                    },
+                    "locale": "es",
+                    "latitude": 0.0,
+                    "longitude": 0.0,
+                    "hidden": false,
+                    "metro_stations": [],
+                    "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                    "name": "placed4ac9e7e-1911-4cd3-bd58-bdf9d5f87745"
+                }
+            ],
+            "validation_method": null,
+            "youtube_id": "",
+            "video_url": null,
+            "hide_price": false,
+            "share_url": "https://webclient3-dev.feverup.com/m/26?utm_source=fever_app_share&utm_medium=plan_detail&utm_campaign=26",
+            "max_fever_credit_allowed": 0,
+            "extra": {
+                "timeless": false,
+                "urgency": false,
+                "disallow_indexing": false,
+                "3ds_required": false,
+                "has_html_body": true,
+                "free_cancellation": false
+            },
+            "video_preview_cover": null,
+            "rating": {
+                "hide": true,
+                "num_ratings": 0,
+                "average": 0.0
+            },
+            "override_locale": null,
+            "redirect_to": null,
+            "cover_image": "https://feverdev.imgix.net/media/plan/photo/e46f7456-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720",
+            "gallery": [
+                "https://feverdev.imgix.net/media/plan/photo/e46f7456-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720"
+            ],
+            "attendees": {
+                "people_attending": 0,
+                "friends_attending": 0,
+                "preview": []
+            },
+            "multiple_days": true,
+            "multiple_sessions": true,
+            "last_updated": "2022-06-13T09:53:10.278224+00:00",
+            "enable_image_test_experiment": false,
+            "price": "10,00€",
+            "price_info": {
+                "type": "single",
+                "currency": "EUR",
+                "amount": 10.0
+            },
+            "first_active_session_date": "2022-05-12T16:51:00+02:00",
+            "last_active_session_date": "2022-10-20T21:30:00+02:00",
+            "custom_label": null,
+            "slug": "",
+            "share_message": "What do you think of this event? \"It's Happening 0025\"",
+            "session_selector_type": "date",
+            "partner_id": 30,
+            "partner": {
+                "id": 30,
+                "name": "Christina Moyer"
+            },
+            "logo_url": null,
+            "default_session": {
+                "id": 1886,
+                "plan_id": 26,
+                "currency": "EUR",
+                "share_url": "https://webclient3-dev.feverup.com/m/26",
+                "fever_credit_allowed": true,
+                "places": [
+                    17
+                ],
+                "price": 10.0,
+                "starts_at_iso": "2022-05-19T21:24:00+02:00",
+                "ends_at_iso": "2022-06-18T21:24:00+02:00",
+                "expiration_iso": "2022-06-18T20:24:00+02:00",
+                "timezone": "Europe/Madrid",
+                "is_growth": false,
+                "is_hidden": false,
+                "attend_text": "Join in!",
+                "unattend_text": "Leave plan",
+                "surcharge_per_ticket": 0.0,
+                "surcharge_per_transaction": 0.0,
+                "available_tickets": 1000,
+                "default": true,
+                "has_available_tickets": true,
+                "expired": true,
+                "user_attending": false,
+                "min_num_tickets": 1,
+                "max_num_tickets": 14,
+                "last_tickets": false,
+                "surcharge_per_transaction_text": null,
+                "label": "21:24 It's Happening 10,00€"
+            },
+            "is_favorite": false,
+            "a_b_testing": null,
+            "allow_multi_session_purchase": false,
+            "access_rules": [],
+            "calendar_selector": false,
+            "translation_languages": [],
+            "has_payment_purchase_rule": null,
+            "should_display_featured_review_answers": false
+        },
+        {
+            "id": 15,
+            "name": "Plan with Seating",
+            "category": "wellness",
+            "description": "Fill after grow happen.",
+            "meta": {},
+            "hashtags": [
+                {
+                    "id": 1,
+                    "name": "adventure",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_sRbwGJB.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 2,
+                    "name": "advertisement",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_tgbyPG9.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 3,
+                    "name": "afterwork",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_0gQlzda.jpg?auto=compress&auto=format&fm=jpg"
+                }
+            ],
+            "is_giveaway": false,
+            "place": {
+                "id": 10,
+                "address": "3481 Jonathan Spurs\nSouth Marymouth, DC 39881",
+                "city": {
+                    "id": 3,
+                    "code": "BCN",
+                    "name": "Barcelona",
+                    "slug": "barcelona",
+                    "country": "ES",
+                    "latitude": 2.173403,
+                    "longitude": 41.385064,
+                    "radius": 0,
+                    "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                    "telephone": "+12837399801",
+                    "currency": "€",
+                    "locale": "es",
+                    "localized_name": {
+                        "en": "Barcelona",
+                        "es": "Barcelona (ES)",
+                        "fr": "Barcelona (FR)",
+                        "pt": "Barcelona (PT)",
+                        "de": "Barcelona (DE)",
+                        "it": "Barcelona (IT)",
+                        "ko": "Barcelona (KO)"
+                    }
+                },
+                "currency": "EUR",
+                "signed_map_urls": {
+                    "550x230": "https://feverdev.imgix.net/place/maps/10__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                    "825x345": "https://feverdev.imgix.net/place/maps/10__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                    "1100x460": "https://feverdev.imgix.net/place/maps/10__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                },
+                "locale": "es",
+                "latitude": 0.0,
+                "longitude": 0.0,
+                "hidden": false,
+                "metro_stations": [],
+                "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                "name": "place5e8f2e55-31e8-4dbe-9f7e-13e9e4ea7266"
+            },
+            "places": [
+                {
+                    "id": 10,
+                    "address": "3481 Jonathan Spurs\nSouth Marymouth, DC 39881",
+                    "city": {
+                        "id": 3,
+                        "code": "BCN",
+                        "name": "Barcelona",
+                        "slug": "barcelona",
+                        "country": "ES",
+                        "latitude": 2.173403,
+                        "longitude": 41.385064,
+                        "radius": 0,
+                        "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                        "telephone": "+12837399801",
+                        "currency": "€",
+                        "locale": "es",
+                        "localized_name": {
+                            "en": "Barcelona",
+                            "es": "Barcelona (ES)",
+                            "fr": "Barcelona (FR)",
+                            "pt": "Barcelona (PT)",
+                            "de": "Barcelona (DE)",
+                            "it": "Barcelona (IT)",
+                            "ko": "Barcelona (KO)"
+                        }
+                    },
+                    "currency": "EUR",
+                    "signed_map_urls": {
+                        "550x230": "https://feverdev.imgix.net/place/maps/10__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                        "825x345": "https://feverdev.imgix.net/place/maps/10__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                        "1100x460": "https://feverdev.imgix.net/place/maps/10__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                    },
+                    "locale": "es",
+                    "latitude": 0.0,
+                    "longitude": 0.0,
+                    "hidden": false,
+                    "metro_stations": [],
+                    "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                    "name": "place5e8f2e55-31e8-4dbe-9f7e-13e9e4ea7266"
+                }
+            ],
+            "validation_method": null,
+            "youtube_id": null,
+            "video_url": null,
+            "hide_price": false,
+            "share_url": "https://webclient3-dev.feverup.com/m/15?utm_source=fever_app_share&utm_medium=plan_detail&utm_campaign=15",
+            "max_fever_credit_allowed": 0,
+            "extra": {
+                "timeless": false,
+                "urgency": false,
+                "disallow_indexing": false,
+                "3ds_required": false,
+                "has_html_body": true,
+                "free_cancellation": false
+            },
+            "video_preview_cover": null,
+            "rating": {
+                "hide": true,
+                "num_ratings": 0,
+                "average": 0.0
+            },
+            "override_locale": null,
+            "redirect_to": null,
+            "cover_image": "https://feverdev.imgix.net/media/plan/photo/e02ff0f0-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720",
+            "gallery": [
+                "https://feverdev.imgix.net/media/plan/photo/e02ff0f0-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720"
+            ],
+            "attendees": {
+                "people_attending": 0,
+                "friends_attending": 0,
+                "preview": []
+            },
+            "multiple_days": false,
+            "multiple_sessions": true,
+            "last_updated": "2022-06-08T15:22:31.930963+00:00",
+            "enable_image_test_experiment": false,
+            "price": "From 6,75€",
+            "price_info": {
+                "type": "from",
+                "currency": "EUR",
+                "amount": 6.75
+            },
+            "first_active_session_date": "2022-05-23T11:44:01.440741+02:00",
+            "last_active_session_date": "2022-05-23T11:44:01.454007+02:00",
+            "custom_label": null,
+            "slug": "",
+            "share_message": "What do you think of this event? \"Plan with Seating\"",
+            "session_selector_type": "date",
+            "partner_id": 19,
+            "partner": {
+                "id": 19,
+                "name": "Maria Scott"
+            },
+            "logo_url": null,
+            "default_session": {
+                "id": 1002,
+                "plan_id": 15,
+                "currency": "EUR",
+                "share_url": "https://webclient3-dev.feverup.com/m/15",
+                "fever_credit_allowed": true,
+                "places": [
+                    10
+                ],
+                "price": 63.82,
+                "starts_at_iso": "2022-05-23T11:44:01.440741+02:00",
+                "ends_at_iso": "2023-07-17T11:44:01.440754+02:00",
+                "expiration_iso": "2023-07-10T11:44:01.440769+02:00",
+                "timezone": "Europe/Madrid",
+                "is_growth": false,
+                "is_hidden": false,
+                "attend_text": "Join in!",
+                "unattend_text": "Leave plan",
+                "surcharge_per_ticket": 0.0,
+                "surcharge_per_transaction": 0.0,
+                "available_tickets": 1000,
+                "default": true,
+                "has_available_tickets": true,
+                "expired": false,
+                "user_attending": false,
+                "min_num_tickets": 1,
+                "max_num_tickets": 14,
+                "last_tickets": false,
+                "surcharge_per_transaction_text": null,
+                "label": "11:44 VIP 63,82€"
+            },
+            "is_favorite": false,
+            "a_b_testing": null,
+            "allow_multi_session_purchase": false,
+            "access_rules": [],
+            "calendar_selector": false,
+            "translation_languages": [],
+            "has_payment_purchase_rule": null,
+            "should_display_featured_review_answers": false
+        },
+        {
+            "id": 5,
+            "name": "Plan with Translations",
+            "category": "wellness",
+            "description": "Clearly cause so stuff benefit house whether.",
+            "meta": {},
+            "hashtags": [
+                {
+                    "id": 1,
+                    "name": "adventure",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_sRbwGJB.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 2,
+                    "name": "advertisement",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_tgbyPG9.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 3,
+                    "name": "afterwork",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_0gQlzda.jpg?auto=compress&auto=format&fm=jpg"
+                }
+            ],
+            "is_giveaway": false,
+            "place": {
+                "id": 4,
+                "address": "90936 Cobb Expressway Apt. 331\nWest Christopherburgh, OR 73628",
+                "city": {
+                    "id": 1,
+                    "code": "MAD",
+                    "name": "Madrid",
+                    "slug": "madrid",
+                    "country": "ES",
+                    "latitude": -3.70379,
+                    "longitude": 40.416775,
+                    "radius": 0,
+                    "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                    "telephone": "791-170-0699",
+                    "currency": "€",
+                    "locale": "es",
+                    "localized_name": {
+                        "en": "Madrid",
+                        "es": "Madrid (ES)",
+                        "fr": "Madrid (FR)",
+                        "pt": "Madrid (PT)",
+                        "de": "Madrid (DE)",
+                        "it": "Madrid (IT)",
+                        "ko": "Madrid (KO)"
+                    }
+                },
+                "currency": "EUR",
+                "signed_map_urls": {
+                    "550x230": "https://feverdev.imgix.net/place/maps/4__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                    "825x345": "https://feverdev.imgix.net/place/maps/4__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                    "1100x460": "https://feverdev.imgix.net/place/maps/4__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                },
+                "locale": "es",
+                "latitude": 0.0,
+                "longitude": 0.0,
+                "hidden": false,
+                "metro_stations": [],
+                "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                "name": "placee02ba4e7-abee-46bc-af8a-74493e7d87bd"
+            },
+            "places": [
+                {
+                    "id": 4,
+                    "address": "90936 Cobb Expressway Apt. 331\nWest Christopherburgh, OR 73628",
+                    "city": {
+                        "id": 1,
+                        "code": "MAD",
+                        "name": "Madrid",
+                        "slug": "madrid",
+                        "country": "ES",
+                        "latitude": -3.70379,
+                        "longitude": 40.416775,
+                        "radius": 0,
+                        "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                        "telephone": "791-170-0699",
+                        "currency": "€",
+                        "locale": "es",
+                        "localized_name": {
+                            "en": "Madrid",
+                            "es": "Madrid (ES)",
+                            "fr": "Madrid (FR)",
+                            "pt": "Madrid (PT)",
+                            "de": "Madrid (DE)",
+                            "it": "Madrid (IT)",
+                            "ko": "Madrid (KO)"
+                        }
+                    },
+                    "currency": "EUR",
+                    "signed_map_urls": {
+                        "550x230": "https://feverdev.imgix.net/place/maps/4__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                        "825x345": "https://feverdev.imgix.net/place/maps/4__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                        "1100x460": "https://feverdev.imgix.net/place/maps/4__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                    },
+                    "locale": "es",
+                    "latitude": 0.0,
+                    "longitude": 0.0,
+                    "hidden": false,
+                    "metro_stations": [],
+                    "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                    "name": "placee02ba4e7-abee-46bc-af8a-74493e7d87bd"
+                }
+            ],
+            "validation_method": null,
+            "youtube_id": null,
+            "video_url": null,
+            "hide_price": false,
+            "share_url": "https://webclient3-dev.feverup.com/m/5?utm_source=fever_app_share&utm_medium=plan_detail&utm_campaign=5",
+            "max_fever_credit_allowed": 0,
+            "extra": {
+                "timeless": false,
+                "urgency": false,
+                "disallow_indexing": false,
+                "3ds_required": false,
+                "has_html_body": true,
+                "free_cancellation": false
+            },
+            "video_preview_cover": null,
+            "rating": {
+                "hide": true,
+                "num_ratings": 0,
+                "average": 0.0
+            },
+            "override_locale": null,
+            "redirect_to": null,
+            "cover_image": "https://feverdev.imgix.net/media/plan/photo/dc9741d2-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720",
+            "gallery": [
+                "https://feverdev.imgix.net/media/plan/photo/dc9741d2-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720"
+            ],
+            "attendees": {
+                "people_attending": 0,
+                "friends_attending": 0,
+                "preview": []
+            },
+            "multiple_days": false,
+            "multiple_sessions": false,
+            "last_updated": "2022-06-08T15:22:31.211858+00:00",
+            "enable_image_test_experiment": false,
+            "price": null,
+            "price_info": {
+                "type": "single",
+                "currency": "EUR",
+                "amount": null
+            },
+            "first_active_session_date": null,
+            "last_active_session_date": null,
+            "custom_label": null,
+            "slug": "",
+            "share_message": "What do you think of this event? \"Plan with Translations\"",
+            "session_selector_type": "date",
+            "partner_id": 9,
+            "partner": {
+                "id": 9,
+                "name": "Jason Mcbride"
+            },
+            "logo_url": null,
+            "default_session": null,
+            "is_favorite": false,
+            "a_b_testing": null,
+            "allow_multi_session_purchase": false,
+            "access_rules": [],
+            "calendar_selector": false,
+            "translation_languages": [],
+            "has_payment_purchase_rule": null,
+            "should_display_featured_review_answers": false
+        },
+        {
+            "id": 16,
+            "name": "Calendar plan",
+            "category": "tasting",
+            "description": "Cut couple summer amount new third consumer.",
+            "meta": {},
+            "hashtags": [
+                {
+                    "id": 1,
+                    "name": "adventure",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_sRbwGJB.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 2,
+                    "name": "advertisement",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_tgbyPG9.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 3,
+                    "name": "afterwork",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_0gQlzda.jpg?auto=compress&auto=format&fm=jpg"
+                }
+            ],
+            "is_giveaway": false,
+            "place": {
+                "id": 11,
+                "address": "96751 Brett Square Apt. 771\nSouth Tanya, UT 85259",
+                "city": {
+                    "id": 3,
+                    "code": "BCN",
+                    "name": "Barcelona",
+                    "slug": "barcelona",
+                    "country": "ES",
+                    "latitude": 2.173403,
+                    "longitude": 41.385064,
+                    "radius": 0,
+                    "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                    "telephone": "+12837399801",
+                    "currency": "€",
+                    "locale": "es",
+                    "localized_name": {
+                        "en": "Barcelona",
+                        "es": "Barcelona (ES)",
+                        "fr": "Barcelona (FR)",
+                        "pt": "Barcelona (PT)",
+                        "de": "Barcelona (DE)",
+                        "it": "Barcelona (IT)",
+                        "ko": "Barcelona (KO)"
+                    }
+                },
+                "currency": "EUR",
+                "signed_map_urls": {
+                    "550x230": "https://feverdev.imgix.net/place/maps/11__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                    "825x345": "https://feverdev.imgix.net/place/maps/11__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                    "1100x460": "https://feverdev.imgix.net/place/maps/11__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                },
+                "locale": "es",
+                "latitude": 0.0,
+                "longitude": 0.0,
+                "hidden": false,
+                "metro_stations": [],
+                "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                "name": "place2b74e586-231d-4cca-9176-f5541a7ad089"
+            },
+            "places": [
+                {
+                    "id": 11,
+                    "address": "96751 Brett Square Apt. 771\nSouth Tanya, UT 85259",
+                    "city": {
+                        "id": 3,
+                        "code": "BCN",
+                        "name": "Barcelona",
+                        "slug": "barcelona",
+                        "country": "ES",
+                        "latitude": 2.173403,
+                        "longitude": 41.385064,
+                        "radius": 0,
+                        "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                        "telephone": "+12837399801",
+                        "currency": "€",
+                        "locale": "es",
+                        "localized_name": {
+                            "en": "Barcelona",
+                            "es": "Barcelona (ES)",
+                            "fr": "Barcelona (FR)",
+                            "pt": "Barcelona (PT)",
+                            "de": "Barcelona (DE)",
+                            "it": "Barcelona (IT)",
+                            "ko": "Barcelona (KO)"
+                        }
+                    },
+                    "currency": "EUR",
+                    "signed_map_urls": {
+                        "550x230": "https://feverdev.imgix.net/place/maps/11__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                        "825x345": "https://feverdev.imgix.net/place/maps/11__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                        "1100x460": "https://feverdev.imgix.net/place/maps/11__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                    },
+                    "locale": "es",
+                    "latitude": 0.0,
+                    "longitude": 0.0,
+                    "hidden": false,
+                    "metro_stations": [],
+                    "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                    "name": "place2b74e586-231d-4cca-9176-f5541a7ad089"
+                }
+            ],
+            "validation_method": null,
+            "youtube_id": null,
+            "video_url": null,
+            "hide_price": false,
+            "share_url": "https://webclient3-dev.feverup.com/m/16?utm_source=fever_app_share&utm_medium=plan_detail&utm_campaign=16",
+            "max_fever_credit_allowed": 0,
+            "extra": {
+                "timeless": false,
+                "urgency": false,
+                "disallow_indexing": false,
+                "3ds_required": false,
+                "has_html_body": true,
+                "free_cancellation": false
+            },
+            "video_preview_cover": null,
+            "rating": {
+                "hide": true,
+                "num_ratings": 0,
+                "average": 0.0
+            },
+            "override_locale": null,
+            "redirect_to": null,
+            "cover_image": "https://feverdev.imgix.net/media/plan/photo/e04f34a6-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720",
+            "gallery": [
+                "https://feverdev.imgix.net/media/plan/photo/e04f34a6-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720"
+            ],
+            "attendees": {
+                "people_attending": 0,
+                "friends_attending": 0,
+                "preview": []
+            },
+            "multiple_days": true,
+            "multiple_sessions": true,
+            "last_updated": "2022-06-08T15:22:32.042825+00:00",
+            "enable_image_test_experiment": false,
+            "price": "From 5,00€",
+            "price_info": {
+                "type": "from",
+                "currency": "EUR",
+                "amount": 5.0
+            },
+            "first_active_session_date": "2022-06-08T18:30:00+02:00",
+            "last_active_session_date": "2022-09-03T21:00:00+02:00",
+            "custom_label": null,
+            "slug": "",
+            "share_message": "What do you think of this event? \"Calendar plan\"",
+            "session_selector_type": "date-time",
+            "partner_id": 20,
+            "partner": {
+                "id": 20,
+                "name": "Laura Jefferson"
+            },
+            "logo_url": null,
+            "default_session": {
+                "id": 1006,
+                "plan_id": 16,
+                "currency": "EUR",
+                "share_url": "https://webclient3-dev.feverup.com/m/16",
+                "fever_credit_allowed": true,
+                "places": [
+                    11
+                ],
+                "price": 10.0,
+                "starts_at_iso": "2022-06-08T18:30:00+02:00",
+                "ends_at_iso": "2022-06-08T19:30:00+02:00",
+                "expiration_iso": "2022-06-08T19:00:00+02:00",
+                "timezone": "Europe/Madrid",
+                "is_growth": false,
+                "is_hidden": false,
+                "attend_text": "Join in!",
+                "unattend_text": "Leave plan",
+                "surcharge_per_ticket": 0.0,
+                "surcharge_per_transaction": 0.0,
+                "available_tickets": 1000,
+                "default": true,
+                "has_available_tickets": true,
+                "expired": true,
+                "user_attending": false,
+                "min_num_tickets": 1,
+                "max_num_tickets": 14,
+                "last_tickets": false,
+                "surcharge_per_transaction_text": null,
+                "label": "Adult 10,00€"
+            },
+            "is_favorite": false,
+            "a_b_testing": null,
+            "allow_multi_session_purchase": true,
+            "access_rules": [],
+            "calendar_selector": true,
+            "translation_languages": [],
+            "has_payment_purchase_rule": null,
+            "should_display_featured_review_answers": false
+        },
+        {
+            "id": 17,
+            "name": "Plan with Translations",
+            "category": "concert",
+            "description": "Guy lead first turn community.",
+            "meta": {},
+            "hashtags": [
+                {
+                    "id": 1,
+                    "name": "adventure",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_sRbwGJB.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 2,
+                    "name": "advertisement",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_tgbyPG9.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 3,
+                    "name": "afterwork",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_0gQlzda.jpg?auto=compress&auto=format&fm=jpg"
+                }
+            ],
+            "is_giveaway": false,
+            "place": {
+                "id": 12,
+                "address": "9514 Cordova Parkway\nPort Jeremy, SC 42549",
+                "city": {
+                    "id": 3,
+                    "code": "BCN",
+                    "name": "Barcelona",
+                    "slug": "barcelona",
+                    "country": "ES",
+                    "latitude": 2.173403,
+                    "longitude": 41.385064,
+                    "radius": 0,
+                    "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                    "telephone": "+12837399801",
+                    "currency": "€",
+                    "locale": "es",
+                    "localized_name": {
+                        "en": "Barcelona",
+                        "es": "Barcelona (ES)",
+                        "fr": "Barcelona (FR)",
+                        "pt": "Barcelona (PT)",
+                        "de": "Barcelona (DE)",
+                        "it": "Barcelona (IT)",
+                        "ko": "Barcelona (KO)"
+                    }
+                },
+                "currency": "EUR",
+                "signed_map_urls": {
+                    "550x230": "https://feverdev.imgix.net/place/maps/12__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                    "825x345": "https://feverdev.imgix.net/place/maps/12__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                    "1100x460": "https://feverdev.imgix.net/place/maps/12__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                },
+                "locale": "es",
+                "latitude": 0.0,
+                "longitude": 0.0,
+                "hidden": false,
+                "metro_stations": [],
+                "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                "name": "place09a459ad-42df-425e-afbd-a926480c9b4e"
+            },
+            "places": [
+                {
+                    "id": 12,
+                    "address": "9514 Cordova Parkway\nPort Jeremy, SC 42549",
+                    "city": {
+                        "id": 3,
+                        "code": "BCN",
+                        "name": "Barcelona",
+                        "slug": "barcelona",
+                        "country": "ES",
+                        "latitude": 2.173403,
+                        "longitude": 41.385064,
+                        "radius": 0,
+                        "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                        "telephone": "+12837399801",
+                        "currency": "€",
+                        "locale": "es",
+                        "localized_name": {
+                            "en": "Barcelona",
+                            "es": "Barcelona (ES)",
+                            "fr": "Barcelona (FR)",
+                            "pt": "Barcelona (PT)",
+                            "de": "Barcelona (DE)",
+                            "it": "Barcelona (IT)",
+                            "ko": "Barcelona (KO)"
+                        }
+                    },
+                    "currency": "EUR",
+                    "signed_map_urls": {
+                        "550x230": "https://feverdev.imgix.net/place/maps/12__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                        "825x345": "https://feverdev.imgix.net/place/maps/12__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                        "1100x460": "https://feverdev.imgix.net/place/maps/12__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                    },
+                    "locale": "es",
+                    "latitude": 0.0,
+                    "longitude": 0.0,
+                    "hidden": false,
+                    "metro_stations": [],
+                    "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                    "name": "place09a459ad-42df-425e-afbd-a926480c9b4e"
+                }
+            ],
+            "validation_method": null,
+            "youtube_id": null,
+            "video_url": null,
+            "hide_price": false,
+            "share_url": "https://webclient3-dev.feverup.com/m/17?utm_source=fever_app_share&utm_medium=plan_detail&utm_campaign=17",
+            "max_fever_credit_allowed": 0,
+            "extra": {
+                "timeless": false,
+                "urgency": false,
+                "disallow_indexing": false,
+                "3ds_required": false,
+                "has_html_body": true,
+                "free_cancellation": false
+            },
+            "video_preview_cover": null,
+            "rating": {
+                "hide": true,
+                "num_ratings": 0,
+                "average": 0.0
+            },
+            "override_locale": null,
+            "redirect_to": null,
+            "cover_image": "https://feverdev.imgix.net/media/plan/photo/e183ff0a-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720",
+            "gallery": [
+                "https://feverdev.imgix.net/media/plan/photo/e183ff0a-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720"
+            ],
+            "attendees": {
+                "people_attending": 0,
+                "friends_attending": 0,
+                "preview": []
+            },
+            "multiple_days": false,
+            "multiple_sessions": false,
+            "last_updated": "2022-06-08T15:22:32.218741+00:00",
+            "enable_image_test_experiment": false,
+            "price": null,
+            "price_info": {
+                "type": "single",
+                "currency": "EUR",
+                "amount": null
+            },
+            "first_active_session_date": null,
+            "last_active_session_date": null,
+            "custom_label": null,
+            "slug": "",
+            "share_message": "What do you think of this event? \"Plan with Translations\"",
+            "session_selector_type": "date",
+            "partner_id": 21,
+            "partner": {
+                "id": 21,
+                "name": "Richard Hamilton"
+            },
+            "logo_url": null,
+            "default_session": null,
+            "is_favorite": false,
+            "a_b_testing": null,
+            "allow_multi_session_purchase": false,
+            "access_rules": [],
+            "calendar_selector": false,
+            "translation_languages": [],
+            "has_payment_purchase_rule": null,
+            "should_display_featured_review_answers": false
+        },
+        {
+            "id": 19,
+            "name": "It's Happening 0018",
+            "category": "tasting",
+            "description": "Law believe action full fly simply mother window.",
+            "meta": {},
+            "hashtags": [
+                {
+                    "id": 1,
+                    "name": "adventure",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_sRbwGJB.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 2,
+                    "name": "advertisement",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_tgbyPG9.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 3,
+                    "name": "afterwork",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_0gQlzda.jpg?auto=compress&auto=format&fm=jpg"
+                }
+            ],
+            "is_giveaway": false,
+            "place": {
+                "id": 13,
+                "address": "8717 Briana Causeway Suite 723\nMendezstad, FL 29287",
+                "city": {
+                    "id": 4,
+                    "code": "VLC",
+                    "name": "Valencia",
+                    "slug": "valencia",
+                    "country": "ES",
+                    "latitude": -0.376288,
+                    "longitude": 39.469907,
+                    "radius": 0,
+                    "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                    "telephone": "214-713-2831",
+                    "currency": "€",
+                    "locale": "es",
+                    "localized_name": {
+                        "en": "Valencia",
+                        "es": "Valencia (ES)",
+                        "fr": "Valencia (FR)",
+                        "pt": "Valencia (PT)",
+                        "de": "Valencia (DE)",
+                        "it": "Valencia (IT)",
+                        "ko": "Valencia (KO)"
+                    }
+                },
+                "currency": "EUR",
+                "signed_map_urls": {
+                    "550x230": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                    "825x345": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                    "1100x460": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                },
+                "locale": "es",
+                "latitude": 0.0,
+                "longitude": 0.0,
+                "hidden": false,
+                "metro_stations": [],
+                "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                "name": "placebf93cc2e-155c-4f14-8ec5-196fd58f4a5d"
+            },
+            "places": [
+                {
+                    "id": 13,
+                    "address": "8717 Briana Causeway Suite 723\nMendezstad, FL 29287",
+                    "city": {
+                        "id": 4,
+                        "code": "VLC",
+                        "name": "Valencia",
+                        "slug": "valencia",
+                        "country": "ES",
+                        "latitude": -0.376288,
+                        "longitude": 39.469907,
+                        "radius": 0,
+                        "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                        "telephone": "214-713-2831",
+                        "currency": "€",
+                        "locale": "es",
+                        "localized_name": {
+                            "en": "Valencia",
+                            "es": "Valencia (ES)",
+                            "fr": "Valencia (FR)",
+                            "pt": "Valencia (PT)",
+                            "de": "Valencia (DE)",
+                            "it": "Valencia (IT)",
+                            "ko": "Valencia (KO)"
+                        }
+                    },
+                    "currency": "EUR",
+                    "signed_map_urls": {
+                        "550x230": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                        "825x345": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                        "1100x460": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                    },
+                    "locale": "es",
+                    "latitude": 0.0,
+                    "longitude": 0.0,
+                    "hidden": false,
+                    "metro_stations": [],
+                    "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                    "name": "placebf93cc2e-155c-4f14-8ec5-196fd58f4a5d"
+                }
+            ],
+            "validation_method": null,
+            "youtube_id": null,
+            "video_url": null,
+            "hide_price": false,
+            "share_url": "https://webclient3-dev.feverup.com/m/19?utm_source=fever_app_share&utm_medium=plan_detail&utm_campaign=19",
+            "max_fever_credit_allowed": 0,
+            "extra": {
+                "timeless": false,
+                "urgency": false,
+                "disallow_indexing": false,
+                "3ds_required": false,
+                "has_html_body": true,
+                "free_cancellation": false
+            },
+            "video_preview_cover": null,
+            "rating": {
+                "hide": true,
+                "num_ratings": 0,
+                "average": 0.0
+            },
+            "override_locale": null,
+            "redirect_to": null,
+            "cover_image": "https://feverdev.imgix.net/media/plan/photo/e1e5be5c-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720",
+            "gallery": [
+                "https://feverdev.imgix.net/media/plan/photo/e1e5be5c-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720"
+            ],
+            "attendees": {
+                "people_attending": 0,
+                "friends_attending": 0,
+                "preview": []
+            },
+            "multiple_days": true,
+            "multiple_sessions": true,
+            "last_updated": "2022-06-08T15:22:32.422083+00:00",
+            "enable_image_test_experiment": false,
+            "price": "10,00€",
+            "price_info": {
+                "type": "single",
+                "currency": "EUR",
+                "amount": 10.0
+            },
+            "first_active_session_date": "2022-05-09T18:25:00+02:00",
+            "last_active_session_date": "2022-10-17T18:25:00+02:00",
+            "custom_label": null,
+            "slug": "",
+            "share_message": "What do you think of this event? \"It's Happening 0018\"",
+            "session_selector_type": "date",
+            "partner_id": 23,
+            "partner": {
+                "id": 23,
+                "name": "Kristin Jones"
+            },
+            "logo_url": null,
+            "default_session": {
+                "id": 1290,
+                "plan_id": 19,
+                "currency": "EUR",
+                "share_url": "https://webclient3-dev.feverup.com/m/19",
+                "fever_credit_allowed": true,
+                "places": [
+                    13
+                ],
+                "price": 10.0,
+                "starts_at_iso": "2022-05-09T18:25:00+02:00",
+                "ends_at_iso": "2022-06-08T18:25:00+02:00",
+                "expiration_iso": "2022-06-08T17:25:00+02:00",
+                "timezone": "Europe/Madrid",
+                "is_growth": false,
+                "is_hidden": false,
+                "attend_text": "Join in!",
+                "unattend_text": "Leave plan",
+                "surcharge_per_ticket": 0.0,
+                "surcharge_per_transaction": 0.0,
+                "available_tickets": 1000,
+                "default": true,
+                "has_available_tickets": true,
+                "expired": true,
+                "user_attending": false,
+                "min_num_tickets": 1,
+                "max_num_tickets": 14,
+                "last_tickets": false,
+                "surcharge_per_transaction_text": null,
+                "label": "18:25 It's Happening 10,00€"
+            },
+            "is_favorite": false,
+            "a_b_testing": null,
+            "allow_multi_session_purchase": false,
+            "access_rules": [],
+            "calendar_selector": false,
+            "translation_languages": [],
+            "has_payment_purchase_rule": null,
+            "should_display_featured_review_answers": false
+        },
+        {
+            "id": 20,
+            "name": "It's Happening 0019",
+            "category": "tasting",
+            "description": "Individual health same call.",
+            "meta": {},
+            "hashtags": [
+                {
+                    "id": 1,
+                    "name": "adventure",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_sRbwGJB.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 2,
+                    "name": "advertisement",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_tgbyPG9.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 3,
+                    "name": "afterwork",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_0gQlzda.jpg?auto=compress&auto=format&fm=jpg"
+                }
+            ],
+            "is_giveaway": false,
+            "place": {
+                "id": 13,
+                "address": "8717 Briana Causeway Suite 723\nMendezstad, FL 29287",
+                "city": {
+                    "id": 4,
+                    "code": "VLC",
+                    "name": "Valencia",
+                    "slug": "valencia",
+                    "country": "ES",
+                    "latitude": -0.376288,
+                    "longitude": 39.469907,
+                    "radius": 0,
+                    "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                    "telephone": "214-713-2831",
+                    "currency": "€",
+                    "locale": "es",
+                    "localized_name": {
+                        "en": "Valencia",
+                        "es": "Valencia (ES)",
+                        "fr": "Valencia (FR)",
+                        "pt": "Valencia (PT)",
+                        "de": "Valencia (DE)",
+                        "it": "Valencia (IT)",
+                        "ko": "Valencia (KO)"
+                    }
+                },
+                "currency": "EUR",
+                "signed_map_urls": {
+                    "550x230": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                    "825x345": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                    "1100x460": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                },
+                "locale": "es",
+                "latitude": 0.0,
+                "longitude": 0.0,
+                "hidden": false,
+                "metro_stations": [],
+                "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                "name": "placebf93cc2e-155c-4f14-8ec5-196fd58f4a5d"
+            },
+            "places": [
+                {
+                    "id": 13,
+                    "address": "8717 Briana Causeway Suite 723\nMendezstad, FL 29287",
+                    "city": {
+                        "id": 4,
+                        "code": "VLC",
+                        "name": "Valencia",
+                        "slug": "valencia",
+                        "country": "ES",
+                        "latitude": -0.376288,
+                        "longitude": 39.469907,
+                        "radius": 0,
+                        "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                        "telephone": "214-713-2831",
+                        "currency": "€",
+                        "locale": "es",
+                        "localized_name": {
+                            "en": "Valencia",
+                            "es": "Valencia (ES)",
+                            "fr": "Valencia (FR)",
+                            "pt": "Valencia (PT)",
+                            "de": "Valencia (DE)",
+                            "it": "Valencia (IT)",
+                            "ko": "Valencia (KO)"
+                        }
+                    },
+                    "currency": "EUR",
+                    "signed_map_urls": {
+                        "550x230": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                        "825x345": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                        "1100x460": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                    },
+                    "locale": "es",
+                    "latitude": 0.0,
+                    "longitude": 0.0,
+                    "hidden": false,
+                    "metro_stations": [],
+                    "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                    "name": "placebf93cc2e-155c-4f14-8ec5-196fd58f4a5d"
+                }
+            ],
+            "validation_method": null,
+            "youtube_id": null,
+            "video_url": null,
+            "hide_price": false,
+            "share_url": "https://webclient3-dev.feverup.com/m/20?utm_source=fever_app_share&utm_medium=plan_detail&utm_campaign=20",
+            "max_fever_credit_allowed": 0,
+            "extra": {
+                "timeless": false,
+                "urgency": false,
+                "disallow_indexing": false,
+                "3ds_required": false,
+                "has_html_body": true,
+                "free_cancellation": false
+            },
+            "video_preview_cover": null,
+            "rating": {
+                "hide": true,
+                "num_ratings": 0,
+                "average": 0.0
+            },
+            "override_locale": null,
+            "redirect_to": null,
+            "cover_image": "https://feverdev.imgix.net/media/plan/photo/e20cdf28-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720",
+            "gallery": [
+                "https://feverdev.imgix.net/media/plan/photo/e20cdf28-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720"
+            ],
+            "attendees": {
+                "people_attending": 0,
+                "friends_attending": 0,
+                "preview": []
+            },
+            "multiple_days": true,
+            "multiple_sessions": true,
+            "last_updated": "2022-06-08T15:22:32.422083+00:00",
+            "enable_image_test_experiment": false,
+            "price": "10,00€",
+            "price_info": {
+                "type": "single",
+                "currency": "EUR",
+                "amount": 10.0
+            },
+            "first_active_session_date": "2022-05-08T09:51:00+02:00",
+            "last_active_session_date": "2022-10-20T11:34:00+02:00",
+            "custom_label": null,
+            "slug": "",
+            "share_message": "What do you think of this event? \"It's Happening 0019\"",
+            "session_selector_type": "date",
+            "partner_id": 24,
+            "partner": {
+                "id": 24,
+                "name": "Michael Howard"
+            },
+            "logo_url": null,
+            "default_session": {
+                "id": 1314,
+                "plan_id": 20,
+                "currency": "EUR",
+                "share_url": "https://webclient3-dev.feverup.com/m/20",
+                "fever_credit_allowed": true,
+                "places": [
+                    13
+                ],
+                "price": 10.0,
+                "starts_at_iso": "2022-05-14T15:52:00+02:00",
+                "ends_at_iso": "2022-06-13T15:52:00+02:00",
+                "expiration_iso": "2022-06-13T14:52:00+02:00",
+                "timezone": "Europe/Madrid",
+                "is_growth": false,
+                "is_hidden": false,
+                "attend_text": "Join in!",
+                "unattend_text": "Leave plan",
+                "surcharge_per_ticket": 0.0,
+                "surcharge_per_transaction": 0.0,
+                "available_tickets": 1000,
+                "default": true,
+                "has_available_tickets": true,
+                "expired": true,
+                "user_attending": false,
+                "min_num_tickets": 1,
+                "max_num_tickets": 14,
+                "last_tickets": false,
+                "surcharge_per_transaction_text": null,
+                "label": "15:52 It's Happening 10,00€"
+            },
+            "is_favorite": false,
+            "a_b_testing": null,
+            "allow_multi_session_purchase": false,
+            "access_rules": [],
+            "calendar_selector": false,
+            "translation_languages": [],
+            "has_payment_purchase_rule": null,
+            "should_display_featured_review_answers": false
+        },
+        {
+            "id": 18,
+            "name": "It's Happening 0017",
+            "category": "cinema",
+            "description": "Kind beyond throw bit represent cell should.",
+            "meta": {},
+            "hashtags": [
+                {
+                    "id": 1,
+                    "name": "adventure",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_sRbwGJB.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 2,
+                    "name": "advertisement",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_tgbyPG9.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 3,
+                    "name": "afterwork",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_0gQlzda.jpg?auto=compress&auto=format&fm=jpg"
+                }
+            ],
+            "is_giveaway": false,
+            "place": {
+                "id": 13,
+                "address": "8717 Briana Causeway Suite 723\nMendezstad, FL 29287",
+                "city": {
+                    "id": 4,
+                    "code": "VLC",
+                    "name": "Valencia",
+                    "slug": "valencia",
+                    "country": "ES",
+                    "latitude": -0.376288,
+                    "longitude": 39.469907,
+                    "radius": 0,
+                    "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                    "telephone": "214-713-2831",
+                    "currency": "€",
+                    "locale": "es",
+                    "localized_name": {
+                        "en": "Valencia",
+                        "es": "Valencia (ES)",
+                        "fr": "Valencia (FR)",
+                        "pt": "Valencia (PT)",
+                        "de": "Valencia (DE)",
+                        "it": "Valencia (IT)",
+                        "ko": "Valencia (KO)"
+                    }
+                },
+                "currency": "EUR",
+                "signed_map_urls": {
+                    "550x230": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                    "825x345": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                    "1100x460": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                },
+                "locale": "es",
+                "latitude": 0.0,
+                "longitude": 0.0,
+                "hidden": false,
+                "metro_stations": [],
+                "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                "name": "placebf93cc2e-155c-4f14-8ec5-196fd58f4a5d"
+            },
+            "places": [
+                {
+                    "id": 13,
+                    "address": "8717 Briana Causeway Suite 723\nMendezstad, FL 29287",
+                    "city": {
+                        "id": 4,
+                        "code": "VLC",
+                        "name": "Valencia",
+                        "slug": "valencia",
+                        "country": "ES",
+                        "latitude": -0.376288,
+                        "longitude": 39.469907,
+                        "radius": 0,
+                        "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                        "telephone": "214-713-2831",
+                        "currency": "€",
+                        "locale": "es",
+                        "localized_name": {
+                            "en": "Valencia",
+                            "es": "Valencia (ES)",
+                            "fr": "Valencia (FR)",
+                            "pt": "Valencia (PT)",
+                            "de": "Valencia (DE)",
+                            "it": "Valencia (IT)",
+                            "ko": "Valencia (KO)"
+                        }
+                    },
+                    "currency": "EUR",
+                    "signed_map_urls": {
+                        "550x230": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                        "825x345": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                        "1100x460": "https://feverdev.imgix.net/place/maps/13__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                    },
+                    "locale": "es",
+                    "latitude": 0.0,
+                    "longitude": 0.0,
+                    "hidden": false,
+                    "metro_stations": [],
+                    "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                    "name": "placebf93cc2e-155c-4f14-8ec5-196fd58f4a5d"
+                }
+            ],
+            "validation_method": null,
+            "youtube_id": null,
+            "video_url": null,
+            "hide_price": false,
+            "share_url": "https://webclient3-dev.feverup.com/m/18?utm_source=fever_app_share&utm_medium=plan_detail&utm_campaign=18",
+            "max_fever_credit_allowed": 0,
+            "extra": {
+                "timeless": false,
+                "urgency": false,
+                "disallow_indexing": false,
+                "3ds_required": false,
+                "has_html_body": true,
+                "free_cancellation": false
+            },
+            "video_preview_cover": null,
+            "rating": {
+                "hide": true,
+                "num_ratings": 0,
+                "average": 0.0
+            },
+            "override_locale": null,
+            "redirect_to": null,
+            "cover_image": "https://feverdev.imgix.net/media/plan/photo/e1a62b2a-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720",
+            "gallery": [
+                "https://feverdev.imgix.net/media/plan/photo/e1a62b2a-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720"
+            ],
+            "attendees": {
+                "people_attending": 0,
+                "friends_attending": 0,
+                "preview": []
+            },
+            "multiple_days": true,
+            "multiple_sessions": true,
+            "last_updated": "2022-06-08T15:22:32.422083+00:00",
+            "enable_image_test_experiment": false,
+            "price": "10,00€",
+            "price_info": {
+                "type": "single",
+                "currency": "EUR",
+                "amount": 10.0
+            },
+            "first_active_session_date": "2022-05-11T02:43:00+02:00",
+            "last_active_session_date": "2022-10-19T02:49:00+02:00",
+            "custom_label": null,
+            "slug": "",
+            "share_message": "What do you think of this event? \"It's Happening 0017\"",
+            "session_selector_type": "date",
+            "partner_id": 22,
+            "partner": {
+                "id": 22,
+                "name": "Nicole Edwards"
+            },
+            "logo_url": null,
+            "default_session": {
+                "id": 1242,
+                "plan_id": 18,
+                "currency": "EUR",
+                "share_url": "https://webclient3-dev.feverup.com/m/18",
+                "fever_credit_allowed": true,
+                "places": [
+                    13
+                ],
+                "price": 10.0,
+                "starts_at_iso": "2022-05-11T02:43:00+02:00",
+                "ends_at_iso": "2022-06-10T02:43:00+02:00",
+                "expiration_iso": "2022-06-10T01:43:00+02:00",
+                "timezone": "Europe/Madrid",
+                "is_growth": false,
+                "is_hidden": false,
+                "attend_text": "Join in!",
+                "unattend_text": "Leave plan",
+                "surcharge_per_ticket": 0.0,
+                "surcharge_per_transaction": 0.0,
+                "available_tickets": 1000,
+                "default": true,
+                "has_available_tickets": true,
+                "expired": true,
+                "user_attending": false,
+                "min_num_tickets": 1,
+                "max_num_tickets": 14,
+                "last_tickets": false,
+                "surcharge_per_transaction_text": null,
+                "label": "2:43 It's Happening 10,00€"
+            },
+            "is_favorite": false,
+            "a_b_testing": null,
+            "allow_multi_session_purchase": false,
+            "access_rules": [],
+            "calendar_selector": false,
+            "translation_languages": [],
+            "has_payment_purchase_rule": null,
+            "should_display_featured_review_answers": false
+        },
+        {
+            "id": 9,
+            "name": "Calendar plan",
+            "category": "cinema",
+            "description": "Seat actually though full any admit.",
+            "meta": {},
+            "hashtags": [
+                {
+                    "id": 1,
+                    "name": "adventure",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_sRbwGJB.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 2,
+                    "name": "advertisement",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_tgbyPG9.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 3,
+                    "name": "afterwork",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_0gQlzda.jpg?auto=compress&auto=format&fm=jpg"
+                }
+            ],
+            "is_giveaway": false,
+            "place": {
+                "id": 7,
+                "address": "PSC 0003, Box 4736\nAPO AA 72739",
+                "city": {
+                    "id": 2,
+                    "code": "NYC",
+                    "name": "New York City",
+                    "slug": "new-york",
+                    "country": "US",
+                    "latitude": -73.989208,
+                    "longitude": 40.741535,
+                    "radius": 0,
+                    "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                    "telephone": "+1-113-535-5518",
+                    "currency": "$",
+                    "locale": "en",
+                    "localized_name": {
+                        "en": "New York City",
+                        "es": "New York City (ES)",
+                        "fr": "New York City (FR)",
+                        "pt": "New York City (PT)",
+                        "de": "New York City (DE)",
+                        "it": "New York City (IT)",
+                        "ko": "New York City (KO)"
+                    }
+                },
+                "currency": "USD",
+                "signed_map_urls": {
+                    "550x230": "https://feverdev.imgix.net/place/maps/7__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                    "825x345": "https://feverdev.imgix.net/place/maps/7__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                    "1100x460": "https://feverdev.imgix.net/place/maps/7__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                },
+                "locale": "en",
+                "latitude": 0.0,
+                "longitude": 0.0,
+                "hidden": false,
+                "metro_stations": [],
+                "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                "name": "placecc44a8e1-4918-464c-b99b-de9d6fb03901"
+            },
+            "places": [
+                {
+                    "id": 7,
+                    "address": "PSC 0003, Box 4736\nAPO AA 72739",
+                    "city": {
+                        "id": 2,
+                        "code": "NYC",
+                        "name": "New York City",
+                        "slug": "new-york",
+                        "country": "US",
+                        "latitude": -73.989208,
+                        "longitude": 40.741535,
+                        "radius": 0,
+                        "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                        "telephone": "+1-113-535-5518",
+                        "currency": "$",
+                        "locale": "en",
+                        "localized_name": {
+                            "en": "New York City",
+                            "es": "New York City (ES)",
+                            "fr": "New York City (FR)",
+                            "pt": "New York City (PT)",
+                            "de": "New York City (DE)",
+                            "it": "New York City (IT)",
+                            "ko": "New York City (KO)"
+                        }
+                    },
+                    "currency": "USD",
+                    "signed_map_urls": {
+                        "550x230": "https://feverdev.imgix.net/place/maps/7__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                        "825x345": "https://feverdev.imgix.net/place/maps/7__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                        "1100x460": "https://feverdev.imgix.net/place/maps/7__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                    },
+                    "locale": "en",
+                    "latitude": 0.0,
+                    "longitude": 0.0,
+                    "hidden": false,
+                    "metro_stations": [],
+                    "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                    "name": "placecc44a8e1-4918-464c-b99b-de9d6fb03901"
+                }
+            ],
+            "validation_method": null,
+            "youtube_id": null,
+            "video_url": null,
+            "hide_price": false,
+            "share_url": "https://webclient3-dev.feverup.com/m/9?utm_source=fever_app_share&utm_medium=plan_detail&utm_campaign=9",
+            "max_fever_credit_allowed": 0,
+            "extra": {
+                "timeless": false,
+                "urgency": false,
+                "disallow_indexing": false,
+                "3ds_required": false,
+                "has_html_body": true,
+                "free_cancellation": false
+            },
+            "video_preview_cover": null,
+            "rating": {
+                "hide": true,
+                "num_ratings": 0,
+                "average": 0.0
+            },
+            "override_locale": null,
+            "redirect_to": null,
+            "cover_image": "https://feverdev.imgix.net/media/plan/photo/dd8aefd0-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720",
+            "gallery": [
+                "https://feverdev.imgix.net/media/plan/photo/dd8aefd0-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720"
+            ],
+            "attendees": {
+                "people_attending": 0,
+                "friends_attending": 0,
+                "preview": []
+            },
+            "multiple_days": true,
+            "multiple_sessions": true,
+            "last_updated": "2022-06-08T15:22:31.762746+00:00",
+            "enable_image_test_experiment": false,
+            "price": "From $5.00",
+            "price_info": {
+                "type": "from",
+                "currency": "USD",
+                "amount": 5.0
+            },
+            "first_active_session_date": "2022-06-08T18:30:00-04:00",
+            "last_active_session_date": "2022-09-03T21:00:00-04:00",
+            "custom_label": null,
+            "slug": "",
+            "share_message": "What do you think of this event? \"Calendar plan\"",
+            "session_selector_type": "date-time",
+            "partner_id": 13,
+            "partner": {
+                "id": 13,
+                "name": "Richard Atkins"
+            },
+            "logo_url": null,
+            "default_session": {
+                "id": 553,
+                "plan_id": 9,
+                "currency": "USD",
+                "share_url": "https://webclient3-dev.feverup.com/m/9",
+                "fever_credit_allowed": true,
+                "places": [
+                    7
+                ],
+                "price": 10.0,
+                "starts_at_iso": "2022-06-08T18:30:00-04:00",
+                "ends_at_iso": "2022-06-08T19:30:00-04:00",
+                "expiration_iso": "2022-06-08T19:00:00-04:00",
+                "timezone": "America/New_York",
+                "is_growth": false,
+                "is_hidden": false,
+                "attend_text": "Join in!",
+                "unattend_text": "Leave plan",
+                "surcharge_per_ticket": 0.0,
+                "surcharge_per_transaction": 0.0,
+                "available_tickets": 1000,
+                "default": true,
+                "has_available_tickets": true,
+                "expired": true,
+                "user_attending": false,
+                "min_num_tickets": 1,
+                "max_num_tickets": 14,
+                "last_tickets": false,
+                "surcharge_per_transaction_text": null,
+                "label": "Adult $10.00"
+            },
+            "is_favorite": false,
+            "a_b_testing": null,
+            "allow_multi_session_purchase": true,
+            "access_rules": [],
+            "calendar_selector": true,
+            "translation_languages": [],
+            "has_payment_purchase_rule": null,
+            "should_display_featured_review_answers": false
+        },
+        {
+            "id": 10,
+            "name": "Plan with Translations",
+            "category": "wellness",
+            "description": "Less mind father ago.",
+            "meta": {},
+            "hashtags": [
+                {
+                    "id": 1,
+                    "name": "adventure",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_sRbwGJB.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 2,
+                    "name": "advertisement",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_tgbyPG9.jpg?auto=compress&auto=format&fm=jpg"
+                },
+                {
+                    "id": 3,
+                    "name": "afterwork",
+                    "image": "https://feverdev.imgix.net/media/hashtags/example_0gQlzda.jpg?auto=compress&auto=format&fm=jpg"
+                }
+            ],
+            "is_giveaway": false,
+            "place": {
+                "id": 8,
+                "address": "662 Rosales Mill\nNorth Clayton, WI 56568",
+                "city": {
+                    "id": 2,
+                    "code": "NYC",
+                    "name": "New York City",
+                    "slug": "new-york",
+                    "country": "US",
+                    "latitude": -73.989208,
+                    "longitude": 40.741535,
+                    "radius": 0,
+                    "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                    "telephone": "+1-113-535-5518",
+                    "currency": "$",
+                    "locale": "en",
+                    "localized_name": {
+                        "en": "New York City",
+                        "es": "New York City (ES)",
+                        "fr": "New York City (FR)",
+                        "pt": "New York City (PT)",
+                        "de": "New York City (DE)",
+                        "it": "New York City (IT)",
+                        "ko": "New York City (KO)"
+                    }
+                },
+                "currency": "USD",
+                "signed_map_urls": {
+                    "550x230": "https://feverdev.imgix.net/place/maps/8__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                    "825x345": "https://feverdev.imgix.net/place/maps/8__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                    "1100x460": "https://feverdev.imgix.net/place/maps/8__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                },
+                "locale": "en",
+                "latitude": 0.0,
+                "longitude": 0.0,
+                "hidden": false,
+                "metro_stations": [],
+                "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                "name": "place6331d470-5f31-432d-bc82-7ea64fd449ae"
+            },
+            "places": [
+                {
+                    "id": 8,
+                    "address": "662 Rosales Mill\nNorth Clayton, WI 56568",
+                    "city": {
+                        "id": 2,
+                        "code": "NYC",
+                        "name": "New York City",
+                        "slug": "new-york",
+                        "country": "US",
+                        "latitude": -73.989208,
+                        "longitude": 40.741535,
+                        "radius": 0,
+                        "photo": "https://feverdev.imgix.net/media/city/photos/AppImage560x560-06.jpg?auto=compress&auto=format&fm=jpg&fit=crop&w=720&h=720&crop=entropy",
+                        "telephone": "+1-113-535-5518",
+                        "currency": "$",
+                        "locale": "en",
+                        "localized_name": {
+                            "en": "New York City",
+                            "es": "New York City (ES)",
+                            "fr": "New York City (FR)",
+                            "pt": "New York City (PT)",
+                            "de": "New York City (DE)",
+                            "it": "New York City (IT)",
+                            "ko": "New York City (KO)"
+                        }
+                    },
+                    "currency": "USD",
+                    "signed_map_urls": {
+                        "550x230": "https://feverdev.imgix.net/place/maps/8__0.0_0.0.png?auto=compress&fm=jpg&w=550.0&h=230.0&fit=crop",
+                        "825x345": "https://feverdev.imgix.net/place/maps/8__0.0_0.0.png?auto=compress&fm=jpg&w=825.0&h=345.0&fit=crop",
+                        "1100x460": "https://feverdev.imgix.net/place/maps/8__0.0_0.0.png?auto=compress&fm=jpg&w=1100.0&h=460.0&fit=crop"
+                    },
+                    "locale": "en",
+                    "latitude": 0.0,
+                    "longitude": 0.0,
+                    "hidden": false,
+                    "metro_stations": [],
+                    "map_url": "http://maps.google.com/maps/api/staticmap?center=0.0,0.0&zoom=17&markers=scale:2%7Cicon:http://stagingfever2.s3.amazonaws.com/maps/marker.png%7C0.0,0.0&size=320x232&sensor=false&scale=2",
+                    "name": "place6331d470-5f31-432d-bc82-7ea64fd449ae"
+                }
+            ],
+            "validation_method": null,
+            "youtube_id": null,
+            "video_url": null,
+            "hide_price": false,
+            "share_url": "https://webclient3-dev.feverup.com/m/10?utm_source=fever_app_share&utm_medium=plan_detail&utm_campaign=10",
+            "max_fever_credit_allowed": 0,
+            "extra": {
+                "timeless": false,
+                "urgency": false,
+                "disallow_indexing": false,
+                "3ds_required": false,
+                "has_html_body": true,
+                "free_cancellation": false
+            },
+            "video_preview_cover": null,
+            "rating": {
+                "hide": true,
+                "num_ratings": 0,
+                "average": 0.0
+            },
+            "override_locale": null,
+            "redirect_to": null,
+            "cover_image": "https://feverdev.imgix.net/media/plan/photo/df088aca-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720",
+            "gallery": [
+                "https://feverdev.imgix.net/media/plan/photo/df088aca-da7c-11ec-8fe8-0242ac1f0005.jpg?auto=compress&auto=format&fm=jpg&w=720&h=720"
+            ],
+            "attendees": {
+                "people_attending": 0,
+                "friends_attending": 0,
+                "preview": []
+            },
+            "multiple_days": false,
+            "multiple_sessions": false,
+            "last_updated": "2022-06-08T15:22:31.842685+00:00",
+            "enable_image_test_experiment": false,
+            "price": null,
+            "price_info": {
+                "type": "single",
+                "currency": "USD",
+                "amount": null
+            },
+            "first_active_session_date": null,
+            "last_active_session_date": null,
+            "custom_label": null,
+            "slug": "",
+            "share_message": "What do you think of this event? \"Plan with Translations\"",
+            "session_selector_type": "date",
+            "partner_id": 14,
+            "partner": {
+                "id": 14,
+                "name": "Heather Barrera"
+            },
+            "logo_url": null,
+            "default_session": null,
+            "is_favorite": false,
+            "a_b_testing": null,
+            "allow_multi_session_purchase": false,
+            "access_rules": [],
+            "calendar_selector": false,
+            "translation_languages": [],
+            "has_payment_purchase_rule": null,
+            "should_display_featured_review_answers": false
+        }
+    ]
+}
