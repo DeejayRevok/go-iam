@@ -1,0 +1,36 @@
+name: ci
+on:
+  push:
+permissions:
+  contents: read
+jobs:
+  lint:
+    strategy:
+      matrix:
+        go: [1.18]
+        os: [macos-latest, windows-latest]
+    name: Lint
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go }}
+      - uses: actions/checkout@v3
+      - name: Run linters
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v3.2
+  test:
+    strategy:
+      matrix:
+        go: [1.18]
+        os: [macos-latest, windows-latest]
+    name: Test
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go }}
+      - uses: actions/checkout@v3
+      - name: Run tests
+        run: go test ./...
