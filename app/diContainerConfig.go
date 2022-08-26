@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"go-uaa/app/cli/commands"
 	"go-uaa/src/application/authenticate"
 	"go-uaa/src/application/createPermission"
@@ -44,9 +45,9 @@ func BuildDIContainer() dig.Container {
 	container := dig.New()
 
 	if err := container.Provide(NewLogger); err != nil {
-		panic("Error provinding logger to the dependency injection container")
+		panic(fmt.Sprintf("Error providing logger to the dependency injection container: %s", err.Error()))
 	}
-	container.Invoke(func(logger *zap.Logger) {
+	if err := container.Invoke(func(logger *zap.Logger) {
 		handleError(container.Provide(ConnectDatabase), logger)
 		handleError(container.Provide(ConnectToAMQPServer), logger)
 		handleError(container.Provide(LoadJWTSettings), logger)
@@ -132,35 +133,37 @@ func BuildDIContainer() dig.Container {
 
 		handleError(container.Provide(commands.NewBoostrapPermissionsCLI), logger)
 		handleError(container.Provide(commands.NewCreateSuperuserCLI), logger)
-	})
+	}); err != nil {
+		panic(fmt.Sprintf("Error adding dependencies to the container: %s", err.Error()))
+	}
 
 	return *container
 }
 
-func addHealthCheckDependencies(diContainer *dig.Container) {
+func addHealthCheckDependencies(diContainer *dig.Container, logger *zap.Logger) {
 	type healthCheckersAggregator struct {
 		dig.Out
 		HealthChecker healthcheck.SingleHealthChecker `group:"healthcheckers"`
 	}
-	diContainer.Provide(func(db *gorm.DB) healthCheckersAggregator {
+	handleError(diContainer.Provide(func(db *gorm.DB) healthCheckersAggregator {
 		return healthCheckersAggregator{
 			HealthChecker: database.NewDatabaseHealthChecker(db),
 		}
-	})
-	diContainer.Provide(func(amqpConnection *amqp.Connection) healthCheckersAggregator {
+	}), logger)
+	handleError(diContainer.Provide(func(amqpConnection *amqp.Connection) healthCheckersAggregator {
 		return healthCheckersAggregator{
 			HealthChecker: messaging.NewAMQPHealthChecker(amqpConnection),
 		}
-	})
+	}), logger)
 
 	type healthCheckersGroup struct {
 		dig.In
 		HealthCheckers []healthcheck.SingleHealthChecker `group:"healthcheckers"`
 	}
-	diContainer.Provide(func(checkersGroup healthCheckersGroup) *healthcheck.HealthChecker {
+	handleError(diContainer.Provide(func(checkersGroup healthCheckersGroup) *healthcheck.HealthChecker {
 		return healthcheck.NewHealthChecker(checkersGroup.HealthCheckers)
-	})
+	}), logger)
 
-	diContainer.Provide(getApplicationHealth.NewGetApplicationHealthUseCase)
-	diContainer.Provide(controllers.NewGetStatusController)
+	handleError(diContainer.Provide(getApplicationHealth.NewGetApplicationHealthUseCase), logger)
+	handleError(diContainer.Provide(controllers.NewGetStatusController), logger)
 }

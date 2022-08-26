@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"go-uaa/src/infrastructure/api/controllers"
 	"go-uaa/src/infrastructure/api/middlewares"
 	"go-uaa/src/infrastructure/dto"
@@ -15,7 +16,7 @@ func BuildHTTPServer(container *dig.Container) *echo.Echo {
 	server := echo.New()
 	server.Use(middlewares.NewEchoCorsMiddleware())
 
-	container.Invoke(func(logger *zap.Logger) {
+	if err := container.Invoke(func(logger *zap.Logger) {
 		handleError(container.Invoke(func(validator *dto.DTOValidator) {
 			server.Validator = validator
 		}), logger)
@@ -56,7 +57,9 @@ func BuildHTTPServer(container *dig.Container) *echo.Echo {
 		handleError(container.Invoke(func(controller *controllers.ResetPasswordController) {
 			server.PUT("/users/password", controller.Handle)
 		}), logger)
-	})
+	}); err != nil {
+		panic(fmt.Sprintf("Error adding HTTP API components to the dependency injection container"))
+	}
 
 	return server
 }
