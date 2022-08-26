@@ -33,12 +33,12 @@ func (executor *AuthorizedUseCaseExecutor) checkPermissions(useCase UseCase, tok
 		return err
 	}
 
-	if user.Superuser == true {
+	if user.Superuser {
 		return nil
 	}
 
 	for _, permissionName := range permissions {
-		if user.HasPermission(permissionName) == false {
+		if !user.HasPermission(permissionName) {
 			return UseCaseAuthorizationError{
 				Username:   user.Username,
 				Permission: permissionName,
