@@ -46,91 +46,93 @@ func BuildDIContainer() dig.Container {
 	if err := container.Provide(NewLogger); err != nil {
 		panic("Error provinding logger to the dependency injection container")
 	}
-	container.Provide(ConnectDatabase)
-	container.Provide(ConnectToAMQPServer)
-	container.Provide(LoadJWTSettings)
-	container.Provide(BuildSMTPClient)
+	container.Invoke(func(logger *zap.Logger) {
+		handleError(container.Provide(ConnectDatabase), logger)
+		handleError(container.Provide(ConnectToAMQPServer), logger)
+		handleError(container.Provide(LoadJWTSettings), logger)
+		handleError(container.Provide(BuildSMTPClient), logger)
 
-	container.Provide(database.NewPermissionDbRepository, dig.As(new(permission.PermissionRepository)))
-	container.Provide(database.NewRoleDbRepository, dig.As(new(role.RoleRepository)))
-	container.Provide(database.NewUserDbRepository, dig.As(new(user.UserRepository)))
-	container.Provide(database.NewUserPasswordResetDbRepository, dig.As(new(user.UserPasswordResetRepository)))
+		handleError(container.Provide(database.NewPermissionDbRepository, dig.As(new(permission.PermissionRepository))), logger)
+		handleError(container.Provide(database.NewRoleDbRepository, dig.As(new(role.RoleRepository))), logger)
+		handleError(container.Provide(database.NewUserDbRepository, dig.As(new(user.UserRepository))), logger)
+		handleError(container.Provide(database.NewUserPasswordResetDbRepository, dig.As(new(user.UserPasswordResetRepository))), logger)
 
-	container.Provide(security.NewBcryptHasher, dig.As(new(hash.Hasher)))
-	container.Provide(security.NewBcryptHashComparator, dig.As(new(hash.HashComparator)))
-	container.Provide(security.NewMailCheckerEmailValidator, dig.As(new(user.EmailValidator)))
-	container.Provide(jwt.NewJWTTokenGenerator)
-	container.Provide(jwt.NewJWTClaimsToAccessTokenTransformer)
-	container.Provide(jwt.NewJWTClaimsToRefreshTokenTransformer)
-	container.Provide(jwt.NewJWTAccessTokenDeserializer, dig.As(new(accessToken.AccessTokenDeserializer)))
-	container.Provide(jwt.NewJWTRefreshTokenDeserializer, dig.As(new(refreshToken.RefreshTokenDeserializer)))
-	container.Provide(jwt.NewJWTRSAKeyToJWTKeyResponseTransformer)
-	container.Provide(jwt.NewJWTKeySetBuilder)
+		handleError(container.Provide(security.NewBcryptHasher, dig.As(new(hash.Hasher))), logger)
+		handleError(container.Provide(security.NewBcryptHashComparator, dig.As(new(hash.HashComparator))), logger)
+		handleError(container.Provide(security.NewMailCheckerEmailValidator, dig.As(new(user.EmailValidator))), logger)
+		handleError(container.Provide(jwt.NewJWTTokenGenerator), logger)
+		handleError(container.Provide(jwt.NewJWTClaimsToAccessTokenTransformer), logger)
+		handleError(container.Provide(jwt.NewJWTClaimsToRefreshTokenTransformer), logger)
+		handleError(container.Provide(jwt.NewJWTAccessTokenDeserializer, dig.As(new(accessToken.AccessTokenDeserializer))), logger)
+		handleError(container.Provide(jwt.NewJWTRefreshTokenDeserializer, dig.As(new(refreshToken.RefreshTokenDeserializer))), logger)
+		handleError(container.Provide(jwt.NewJWTRSAKeyToJWTKeyResponseTransformer), logger)
+		handleError(container.Provide(jwt.NewJWTKeySetBuilder), logger)
 
-	container.Provide(transformers.NewRoleToResponseTransformer)
-	container.Provide(transformers.NewUserToResponseTransformer)
-	container.Provide(transformers.NewPermissionToResponseTransformer)
-	container.Provide(transformers.NewEventToAMQPMessageTransformer)
-	container.Provide(transformers.NewAccessTokenToJWTClaimsTransformer)
-	container.Provide(transformers.NewRefreshTokenToJWTClaimsTransformer)
-	container.Provide(transformers.NewAuthenticationToResponseTransformer)
-	container.Provide(transformers.NewAMQPDeliveryToMapTransformer)
-	container.Provide(transformers.NewErrorToEchoErrorTransformer)
+		handleError(container.Provide(transformers.NewRoleToResponseTransformer), logger)
+		handleError(container.Provide(transformers.NewUserToResponseTransformer), logger)
+		handleError(container.Provide(transformers.NewPermissionToResponseTransformer), logger)
+		handleError(container.Provide(transformers.NewEventToAMQPMessageTransformer), logger)
+		handleError(container.Provide(transformers.NewAccessTokenToJWTClaimsTransformer), logger)
+		handleError(container.Provide(transformers.NewRefreshTokenToJWTClaimsTransformer), logger)
+		handleError(container.Provide(transformers.NewAuthenticationToResponseTransformer), logger)
+		handleError(container.Provide(transformers.NewAMQPDeliveryToMapTransformer), logger)
+		handleError(container.Provide(transformers.NewErrorToEchoErrorTransformer), logger)
 
-	container.Provide(accessToken.NewAccessTokenGenerator)
-	container.Provide(refreshToken.NewRefreshTokenGenerator)
-	container.Provide(authenticationStrategy.NewPasswordAuthenticationStrategy)
-	container.Provide(authenticationStrategy.NewRefreshTokenAuthenticationStrategy)
-	container.Provide(auth.NewAuthenticator)
+		handleError(container.Provide(accessToken.NewAccessTokenGenerator), logger)
+		handleError(container.Provide(refreshToken.NewRefreshTokenGenerator), logger)
+		handleError(container.Provide(authenticationStrategy.NewPasswordAuthenticationStrategy), logger)
+		handleError(container.Provide(authenticationStrategy.NewRefreshTokenAuthenticationStrategy), logger)
+		handleError(container.Provide(auth.NewAuthenticator), logger)
 
-	container.Provide(func(amqpConnection *amqp.Connection, logger *zap.Logger) *amqp.Channel {
-		amqpChannel, err := amqpConnection.Channel()
-		if err != nil {
-			logger.Fatal("Error creating the AMQP channel")
-			return nil
-		}
-		return amqpChannel
+		handleError(container.Provide(func(amqpConnection *amqp.Connection, logger *zap.Logger) *amqp.Channel {
+			amqpChannel, err := amqpConnection.Channel()
+			if err != nil {
+				logger.Fatal("Error creating the AMQP channel")
+				return nil
+			}
+			return amqpChannel
+		}), logger)
+		handleError(container.Provide(messaging.NewAMQPExchangeManager), logger)
+		handleError(container.Provide(messaging.NewAMQPExchangeEventPublisher, dig.As(new(events.EventPublisher))), logger)
+		handleError(container.Provide(messaging.NewAMQPQueueEventListenerFactory, dig.As(new(events.EventListenerFactory))), logger)
+
+		handleError(container.Provide(email.NewEmailPasswordResetTokenSender, dig.As(new(user.PasswordResetTokenSender))), logger)
+
+		handleError(container.Provide(internals.NewAuthorizedUseCaseExecutor), logger)
+		handleError(container.Provide(createUser.NewCreateUserUseCase), logger)
+		handleError(container.Provide(getUser.NewGetUserUseCase), logger)
+		handleError(container.Provide(createPermission.NewCreatePermissionUseCase), logger)
+		handleError(container.Provide(createRole.NewCreateRoleUseCase), logger)
+		handleError(container.Provide(authenticate.NewAuthenticationUseCase), logger)
+		handleError(container.Provide(getAuthenticatedUser.NewGetAuthenticatedUserUseCase), logger)
+		handleError(container.Provide(requestPasswordReset.NewRequestPasswordResetUseCase), logger)
+		handleError(container.Provide(sendPasswordResetToken.NewSendPasswordResetTokenUseCase), logger)
+		handleError(container.Provide(sendPasswordResetToken.NewUserPasswordResetRequestedConsumer), logger)
+		handleError(container.Provide(resetPassword.NewResetPasswordUseCase), logger)
+
+		handleError(container.Provide(dto.NewEchoDTOSerializer), logger)
+		handleError(container.Provide(dto.NewEchoDTODeserializer), logger)
+
+		handleError(container.Provide(dto.NewDTOValidator), logger)
+		handleError(container.Provide(middlewares.NewEchoLogMiddleware), logger)
+		handleError(container.Provide(NewRedocConfiguration), logger)
+
+		addHealthCheckDependencies(container)
+
+		handleError(container.Provide(api.NewHTTPAccessTokenFinder), logger)
+		handleError(container.Provide(controllers.NewCreateUserController), logger)
+		handleError(container.Provide(controllers.NewGetUserController), logger)
+		handleError(container.Provide(controllers.NewCreatePermissionController), logger)
+		handleError(container.Provide(controllers.NewCreateRoleController), logger)
+		handleError(container.Provide(controllers.NewAuthenticateController), logger)
+		handleError(container.Provide(controllers.NewGetAuthenticatedUserController), logger)
+		handleError(container.Provide(controllers.NewGetJWTKeySetController), logger)
+		handleError(container.Provide(controllers.NewRequestResetPasswordController), logger)
+		handleError(container.Provide(controllers.NewResetPasswordController), logger)
+
+		handleError(container.Provide(commands.NewBoostrapPermissionsCLI), logger)
+		handleError(container.Provide(commands.NewCreateSuperuserCLI), logger)
 	})
-	container.Provide(messaging.NewAMQPExchangeManager)
-	container.Provide(messaging.NewAMQPExchangeEventPublisher, dig.As(new(events.EventPublisher)))
-	container.Provide(messaging.NewAMQPQueueEventListenerFactory, dig.As(new(events.EventListenerFactory)))
-
-	container.Provide(email.NewEmailPasswordResetTokenSender, dig.As(new(user.PasswordResetTokenSender)))
-
-	container.Provide(internals.NewAuthorizedUseCaseExecutor)
-	container.Provide(createUser.NewCreateUserUseCase)
-	container.Provide(getUser.NewGetUserUseCase)
-	container.Provide(createPermission.NewCreatePermissionUseCase)
-	container.Provide(createRole.NewCreateRoleUseCase)
-	container.Provide(authenticate.NewAuthenticationUseCase)
-	container.Provide(getAuthenticatedUser.NewGetAuthenticatedUserUseCase)
-	container.Provide(requestPasswordReset.NewRequestPasswordResetUseCase)
-	container.Provide(sendPasswordResetToken.NewSendPasswordResetTokenUseCase)
-	container.Provide(sendPasswordResetToken.NewUserPasswordResetRequestedConsumer)
-	container.Provide(resetPassword.NewResetPasswordUseCase)
-
-	container.Provide(dto.NewEchoDTOSerializer)
-	container.Provide(dto.NewEchoDTODeserializer)
-
-	container.Provide(dto.NewDTOValidator)
-	container.Provide(middlewares.NewEchoLogMiddleware)
-	container.Provide(NewRedocConfiguration)
-
-	addHealthCheckDependencies(container)
-
-	container.Provide(api.NewHTTPAccessTokenFinder)
-	container.Provide(controllers.NewCreateUserController)
-	container.Provide(controllers.NewGetUserController)
-	container.Provide(controllers.NewCreatePermissionController)
-	container.Provide(controllers.NewCreateRoleController)
-	container.Provide(controllers.NewAuthenticateController)
-	container.Provide(controllers.NewGetAuthenticatedUserController)
-	container.Provide(controllers.NewGetJWTKeySetController)
-	container.Provide(controllers.NewRequestResetPasswordController)
-	container.Provide(controllers.NewResetPasswordController)
-
-	container.Provide(commands.NewBoostrapPermissionsCLI)
-	container.Provide(commands.NewCreateSuperuserCLI)
 
 	return *container
 }
