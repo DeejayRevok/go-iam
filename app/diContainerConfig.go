@@ -118,7 +118,7 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(middlewares.NewEchoLogMiddleware), logger)
 		handleError(container.Provide(NewRedocConfiguration), logger)
 
-		addHealthCheckDependencies(container)
+		addHealthCheckDependencies(container, logger)
 
 		handleError(container.Provide(api.NewHTTPAccessTokenFinder), logger)
 		handleError(container.Provide(controllers.NewCreateUserController), logger)
