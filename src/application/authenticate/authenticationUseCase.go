@@ -44,7 +44,9 @@ func (useCase *AuthenticationUseCase) Execute(request any) internals.UseCaseResp
 		User: user,
 	}
 	refreshToken := useCase.refreshTokenGenerator.Generate(&refreshTokenRequest)
-	useCase.updateUserRefreshToken(user, &refreshToken)
+	if err = useCase.updateUserRefreshToken(user, &refreshToken); err != nil {
+		return internals.ErrorUseCaseResponse(err)
+	}
 
 	authentication := useCase.createAuthentication(&accessToken, &refreshToken)
 	return internals.UseCaseResponse{
@@ -71,9 +73,9 @@ func (useCase *AuthenticationUseCase) createAuthentication(accessTokenInstance *
 	}
 }
 
-func (useCase *AuthenticationUseCase) updateUserRefreshToken(user *user.User, refreshToken *refreshToken.RefreshToken) {
+func (useCase *AuthenticationUseCase) updateUserRefreshToken(user *user.User, refreshToken *refreshToken.RefreshToken) error {
 	user.RefreshToken = refreshToken.Id
-	useCase.userRepository.Save(*user)
+	return useCase.userRepository.Save(*user)
 }
 
 func (*AuthenticationUseCase) RequiredPermissions() []string {

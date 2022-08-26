@@ -56,7 +56,9 @@ func (useCase *CreateUserUseCase) Execute(request any) internals.UseCaseResponse
 	if err = useCase.userRepository.Save(user); err != nil {
 		return internals.ErrorUseCaseResponse(err)
 	}
-	useCase.publishEvent(&user)
+	if err = useCase.publishEvent(&user); err != nil {
+		return internals.ErrorUseCaseResponse(err)
+	}
 	return internals.EmptyUseCaseResponse()
 }
 

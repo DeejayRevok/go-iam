@@ -43,7 +43,9 @@ import (
 func BuildDIContainer() dig.Container {
 	container := dig.New()
 
-	container.Provide(NewLogger)
+	if err := container.Provide(NewLogger); err != nil {
+		panic("Error provinding logger to the dependency injection container")
+	}
 	container.Provide(ConnectDatabase)
 	container.Provide(ConnectToAMQPServer)
 	container.Provide(LoadJWTSettings)

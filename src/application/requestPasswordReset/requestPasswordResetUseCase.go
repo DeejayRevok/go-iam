@@ -47,7 +47,9 @@ func (useCase *RequestPasswordResetUseCase) Execute(request any) internals.UseCa
 	if err = useCase.userPasswordResetRepository.Save(userPasswordReset); err != nil {
 		return internals.ErrorUseCaseResponse(err)
 	}
-	useCase.publishEvent(resetToken, requestUser)
+	if err = useCase.publishEvent(resetToken, requestUser); err != nil {
+		return internals.ErrorUseCaseResponse(err)
+	}
 	return internals.EmptyUseCaseResponse()
 }
 

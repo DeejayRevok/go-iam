@@ -42,6 +42,8 @@ func (listener *AMQPQueueEventListener) handleDelivery(deliveries <-chan amqp.De
 			listener.logger.Warn(fmt.Sprintf("Error transforming message %s to map: %s", string(delivery.Body), err.Error()))
 		}
 		eventChannel <- eventMap
-		delivery.Ack(false)
+		if err = delivery.Ack(false); err != nil {
+			listener.logger.Warn(fmt.Sprintf("Error acknowledging message %s due to %s", string(delivery.Body), err.Error()))
+		}
 	}
 }
