@@ -43,14 +43,6 @@ func (transformer *JWTClaimsToAccessTokenTransformer) Transform(jwtClaims *jwt.M
 	return &token, nil
 }
 
-func (transformer *JWTClaimsToAccessTokenTransformer) transformScope(scopes []interface{}) []string {
-	stringScopes := make([]string, 0)
-	for _, scope := range scopes {
-		stringScopes = append(stringScopes, scope.(string))
-	}
-	return stringScopes
-}
-
 func NewJWTClaimsToAccessTokenTransformer() *JWTClaimsToAccessTokenTransformer {
 	transformer := JWTClaimsToAccessTokenTransformer{}
 	return &transformer
