@@ -1,7 +1,6 @@
 package resetPassword
 
 import (
-	"errors"
 	"fmt"
 	"go-uaa/src/domain/hash"
 	"go-uaa/src/domain/internals"
@@ -54,7 +53,7 @@ func (useCase *ResetPasswordUseCase) Execute(request any) internals.UseCaseRespo
 
 func (useCase *ResetPasswordUseCase) validateResetToken(resetToken string, passwordReset *user.UserPasswordReset) error {
 	if passwordReset.Expiration.Before(time.Now()) {
-		return errors.New(fmt.Sprintf("Reset token %s is expired", resetToken))
+		return fmt.Errorf("Reset token %s is expired", resetToken)
 	}
 	err := useCase.hashComparator.Compare(resetToken, passwordReset.Token)
 	if err != nil {

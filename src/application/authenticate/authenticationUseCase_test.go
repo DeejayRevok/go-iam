@@ -153,7 +153,7 @@ func TestExecuteRefreshTokenGrantTypeSuccess(t *testing.T) {
 	response := testCase.UseCase.Execute(&request)
 
 	if response.Err != nil {
-		t.Fatal(fmt.Sprintf("Expected use case not to return error. Returned: %s", response.Err.Error()))
+		t.Fatalf("Expected use case not to return error. Returned: %s", response.Err.Error())
 	}
 	responseAuthentication := *response.Content.(*auth.Authentication)
 	if responseAuthentication.AccessToken == nil {

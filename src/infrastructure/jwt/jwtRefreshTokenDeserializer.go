@@ -20,6 +20,9 @@ func (deserializer *JWTRefreshTokenDeserializer) Deserialize(serializedToken str
 	jwtToken, err := jwt.Parse(serializedToken, func(token *jwt.Token) (interface{}, error) {
 		return key, nil
 	})
+	if err != nil {
+		return nil, err
+	}
 	if err := jwtToken.Claims.Valid(); err != nil {
 		return nil, err
 	}

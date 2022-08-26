@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"go-uaa/src/infrastructure/api/controllers"
 	"go-uaa/src/infrastructure/api/middlewares"
 	"go-uaa/src/infrastructure/dto"
@@ -58,7 +57,7 @@ func BuildHTTPServer(container *dig.Container) *echo.Echo {
 			server.PUT("/users/password", controller.Handle)
 		}), logger)
 	}); err != nil {
-		panic(fmt.Sprintf("Error adding HTTP API components to the dependency injection container"))
+		panic("Error adding HTTP API components to the dependency injection container")
 	}
 
 	return server
