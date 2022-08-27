@@ -9,6 +9,10 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - 8888:8888
+    depends_on:
+      - postgres
+      - rabbitmq
+    restart: on-failure
 
   swagger:
     image: swaggerapi/swagger-ui:v4.12.0
