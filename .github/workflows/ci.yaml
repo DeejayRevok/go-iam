@@ -4,33 +4,15 @@ on:
 permissions:
   contents: read
 jobs:
-  lint:
-    strategy:
-      matrix:
-        go: [1.18]
-        os: [macos-latest, windows-latest]
-    name: Lint
-    runs-on: ${{ matrix.os }}
+  ci:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-go@v3
-        with:
-          go-version: ${{ matrix.go }}
       - uses: actions/checkout@v3
+      - name: Set up environment
+        run: |
+          docker-compose build --build-arg DEVELOPMENT=false
+          docker-compose up -d
       - name: Run linters
-        uses: golangci/golangci-lint-action@v3
-        with:
-          version: latest
-  test:
-    strategy:
-      matrix:
-        go: [1.18]
-        os: [macos-latest, windows-latest]
-    name: Test
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/setup-go@v3
-        with:
-          go-version: ${{ matrix.go }}
-      - uses: actions/checkout@v3
+        run: docker exec go-uaa go run github.com/golangci/golangci-lint/cmd/golangci-lint@latest run -v
       - name: Run tests
         run: go test ./...

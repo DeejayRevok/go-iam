@@ -6,5 +6,6 @@ WORKDIR /app
 
 RUN go install
 
-EXPOSE 8888
-CMD ["go", "run", "main.go"]
+ARG DEVELOPMENT
+ENV DEVELOPMENT ${DEVELOPMENT}
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
