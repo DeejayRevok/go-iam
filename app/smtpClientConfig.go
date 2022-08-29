@@ -12,12 +12,17 @@ import (
 
 func BuildSMTPClient() *mail.SMTPClient {
 	host := os.Getenv("SMTP_SERVER")
+	strPort := os.Getenv("SMTP_PORT")
+	user := os.Getenv("SMTP_USER")
+	password := os.Getenv("SMTP_PASSWORD")
+	if host == "" || strPort == "" || user == "" || password == "" {
+		return nil
+	}
+
 	port, err := strconv.Atoi(os.Getenv("SMTP_PORT"))
 	if err != nil {
 		panic(fmt.Sprintf("Malformed SMTP port: %s", err.Error()))
 	}
-	user := os.Getenv("SMTP_USER")
-	password := os.Getenv("SMTP_PASSWORD")
 
 	smtpServer := mail.NewSMTPClient()
 	smtpServer.Host = host

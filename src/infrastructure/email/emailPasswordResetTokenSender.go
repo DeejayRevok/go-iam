@@ -1,6 +1,7 @@
 package email
 
 import (
+	"errors"
 	"fmt"
 	"go-uaa/src/domain/user"
 
@@ -12,6 +13,9 @@ type EmailPasswordResetTokenSender struct {
 }
 
 func (sender *EmailPasswordResetTokenSender) Send(resetToken string, receiver *user.User) error {
+	if sender.smtpClient == nil {
+		return errors.New("SMTP client not provided")
+	}
 	email := mail.NewMSG()
 
 	email.SetFrom("Go UAA <system@go-uaa.com>")

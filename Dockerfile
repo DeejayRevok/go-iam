@@ -8,4 +8,4 @@ RUN go install
 
 ARG DEVELOPMENT
 ENV DEVELOPMENT ${DEVELOPMENT}
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
+CMD ["sh", "run.sh"]

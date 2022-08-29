@@ -9,10 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up environment
-        run: |
-          docker-compose build --build-arg DEVELOPMENT=false
-          docker-compose up -d
+        run: make setup-env
       - name: Run linters
-        run: docker exec go-uaa go run github.com/golangci/golangci-lint/cmd/golangci-lint@latest run -v
+        run: make lint
       - name: Run tests
-        run: go test ./...
+        run: make test
