@@ -53,7 +53,7 @@ func (useCase *ResetPasswordUseCase) Execute(request any) internals.UseCaseRespo
 
 func (useCase *ResetPasswordUseCase) validateResetToken(resetToken string, passwordReset *user.UserPasswordReset) error {
 	if passwordReset.Expiration.Before(time.Now()) {
-		return fmt.Errorf("Reset token %s is expired", resetToken)
+		return fmt.Errorf("reset token %s is expired", resetToken)
 	}
 	err := useCase.hashComparator.Compare(resetToken, passwordReset.Token)
 	if err != nil {
