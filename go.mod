@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/google/uuid v1.3.0
+	github.com/graph-gophers/graphql-go v1.4.0
 	github.com/labstack/echo/v4 v4.7.2
 	github.com/mvrilo/go-redoc v0.1.1
 	github.com/rs/cors v1.8.2

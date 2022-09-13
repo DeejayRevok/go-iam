@@ -25,16 +25,24 @@ func (controller *CreateUserController) Handle(c echo.Context) error {
 	}
 
 	createUserRequest := createUser.CreateUserRequest{
-		Username: userCreationRequest.Username,
-		Email:    userCreationRequest.Email,
-		Password: userCreationRequest.Password,
-		Roles:    userCreationRequest.Roles,
+		Username: *userCreationRequest.Username,
+		Email:    *userCreationRequest.Email,
+		Password: *userCreationRequest.Password,
+		Roles:    controller.parseRoles(*userCreationRequest.Roles),
 	}
 	useCaseResponse := controller.useCaseExecutor.Execute(controller.createUserUseCase, &createUserRequest, nil)
 	if err := controller.handleUseCaseError(useCaseResponse.Err); err != nil {
 		return err
 	}
 	return c.NoContent(http.StatusCreated)
+}
+
+func (resolver *CreateUserController) parseRoles(roles []*string) []string {
+	parsedRoles := make([]string, 0)
+	for _, role := range roles {
+		parsedRoles = append(parsedRoles, *role)
+	}
+	return parsedRoles
 }
 
 func (controller *CreateUserController) handleUseCaseError(err error) error {

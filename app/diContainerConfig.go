@@ -30,6 +30,7 @@ import (
 	"go-uaa/src/infrastructure/database"
 	"go-uaa/src/infrastructure/dto"
 	"go-uaa/src/infrastructure/email"
+	"go-uaa/src/infrastructure/graph/resolvers"
 	"go-uaa/src/infrastructure/jwt"
 	"go-uaa/src/infrastructure/messaging"
 	"go-uaa/src/infrastructure/security"
@@ -130,6 +131,10 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(controllers.NewGetJWTKeySetController), logger)
 		handleError(container.Provide(controllers.NewRequestResetPasswordController), logger)
 		handleError(container.Provide(controllers.NewResetPasswordController), logger)
+
+		handleError(container.Provide(resolvers.NewMeResolver), logger)
+		handleError(container.Provide(resolvers.NewCreateUserResolver), logger)
+		handleError(container.Provide(resolvers.NewRootResolver), logger)
 
 		handleError(container.Provide(commands.NewBoostrapPermissionsCLI), logger)
 		handleError(container.Provide(commands.NewCreateSuperuserCLI), logger)

@@ -4,6 +4,7 @@ import (
 	"go-uaa/src/infrastructure/api/controllers"
 	"go-uaa/src/infrastructure/api/middlewares"
 	"go-uaa/src/infrastructure/dto"
+	"go-uaa/src/infrastructure/graph/resolvers"
 
 	"github.com/labstack/echo/v4"
 	"github.com/mvrilo/go-redoc"
@@ -55,6 +56,10 @@ func BuildHTTPServer(container *dig.Container) *echo.Echo {
 		}), logger)
 		handleError(container.Invoke(func(controller *controllers.ResetPasswordController) {
 			server.PUT("/users/password", controller.Handle)
+		}), logger)
+		handleError(container.Invoke(func(resolver *resolvers.RootResolver) {
+			handler := BuildGraphQLHTTPHandler(resolver, logger)
+			server.POST("/graphql", handler)
 		}), logger)
 	}); err != nil {
 		panic("Error adding HTTP API components to the dependency injection container")
