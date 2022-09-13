@@ -55,7 +55,7 @@ func getEchoHandler(schema *graphql.Schema) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		request := c.Request()
 		ctx := request.Context()
-		ctx = context.WithValue(ctx, "request", request)
+		ctx = context.WithValue(ctx, resolvers.RequestKey, request)
 		handler.ServeHTTP(c.Response().Writer, c.Request().WithContext(ctx))
 		return nil
 	}

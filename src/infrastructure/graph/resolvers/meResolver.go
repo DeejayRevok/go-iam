@@ -19,7 +19,7 @@ type MeResolver struct {
 }
 
 func (resolver *MeResolver) Me(c context.Context) (*modelResolvers.UserResolver, error) {
-	httpRequest := c.Value("request").(*http.Request)
+	httpRequest := c.Value(RequestKey).(*http.Request)
 	accessToken, err := resolver.accessTokenFinder.Find(httpRequest)
 	if err != nil {
 		return nil, err

@@ -1,5 +1,11 @@
 package resolvers
 
+type key int
+
+const (
+	RequestKey key = iota
+)
+
 type RootResolver struct {
 	MeResolver
 	CreateUserResolver
