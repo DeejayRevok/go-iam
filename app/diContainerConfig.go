@@ -34,6 +34,7 @@ import (
 	"go-uaa/src/infrastructure/jwt"
 	"go-uaa/src/infrastructure/messaging"
 	"go-uaa/src/infrastructure/security"
+	"go-uaa/src/infrastructure/tracing"
 	"go-uaa/src/infrastructure/transformers"
 
 	"github.com/streadway/amqp"
@@ -49,6 +50,7 @@ func BuildDIContainer() dig.Container {
 		panic(fmt.Sprintf("Error providing logger to the dependency injection container: %s", err.Error()))
 	}
 	if err := container.Invoke(func(logger *zap.Logger) {
+		handleError(container.Provide(tracing.NewJaegerTracerConfig), logger)
 		handleError(container.Provide(ConnectDatabase), logger)
 		handleError(container.Provide(ConnectToAMQPServer), logger)
 		handleError(container.Provide(LoadJWTSettings), logger)
