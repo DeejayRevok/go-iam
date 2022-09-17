@@ -19,7 +19,7 @@ func (controller *GetJWTKeySetController) Handle(c echo.Context) error {
 	if err != nil {
 		return controller.errorTransformer.Transform(err)
 	}
-	return controller.errorTransformer.Transform(controller.dtoSerializer.Serialize(c, keySet))
+	return controller.dtoSerializer.Serialize(c, keySet)
 }
 
 func NewGetJWTKeySetController(jwtKeySetBuilder *jwt.JWTKeySetBuilder, dtoSerializer *dto.EchoDTOSerializer, errorTransformer *transformers.ErrorToEchoErrorTransformer) *GetJWTKeySetController {

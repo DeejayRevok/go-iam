@@ -35,7 +35,7 @@ func (controller *GetAuthenticatedUserController) Handle(c echo.Context) error {
 	}
 
 	userResponse := controller.userToResponseTransformer.Transform(useCaseResponse.Content.(*user.User))
-	return controller.errorTransformer.Transform(controller.dtoSerializer.Serialize(c, userResponse))
+	return controller.dtoSerializer.Serialize(c, userResponse)
 }
 
 func NewGetAuthenticatedUserController(useCase *getAuthenticatedUser.GetAuthenticatedUserUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, accessTokenFinder *api.HTTPAccessTokenFinder, userTransformer *transformers.UserToResponseTransformer, dtoSerializer *dto.EchoDTOSerializer, errorTransformer *transformers.ErrorToEchoErrorTransformer) *GetAuthenticatedUserController {

@@ -52,5 +52,17 @@ services:
       - 15674:15674
       - 25672:25672
 
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090
+    volumes:
+      - ./tools/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+     - 3000:3000
+
 volumes:
   db:
