@@ -5,6 +5,7 @@ import (
 	"go-uaa/src/infrastructure/api/middlewares"
 	"go-uaa/src/infrastructure/dto"
 	"go-uaa/src/infrastructure/graph/resolvers"
+	"go-uaa/src/infrastructure/tracing"
 
 	"github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
@@ -29,6 +30,9 @@ func BuildHTTPServer(container *dig.Container) *echo.Echo {
 		}), logger)
 		handleError(container.Invoke(func(middleware *prometheus.Prometheus) {
 			middleware.Use(server)
+		}), logger)
+		handleError(container.Invoke(func(tracerConfig *tracing.JaegerTracerConfig) {
+			server.Use(middlewares.NewEchoJaegerMiddleware(tracerConfig))
 		}), logger)
 
 		handleError(container.Invoke(func(controller *controllers.CreateUserController) {
