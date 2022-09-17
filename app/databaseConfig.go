@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"os"
 
+	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	gormopentracing "gorm.io/plugin/opentracing"
 )
 
-func ConnectDatabase() *gorm.DB {
+func ConnectDatabase(logger *zap.Logger) *gorm.DB {
 	dbHost := os.Getenv("DATABASE_HOST")
 	dbPort := os.Getenv("DATABASE_PORT")
 	dbUser := os.Getenv("DATABASE_USER")
@@ -19,8 +20,10 @@ func ConnectDatabase() *gorm.DB {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", dbHost, dbUser, dbPassword, dbName, dbPort)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic(err)
+		logger.Fatal(fmt.Sprintf("Error connecting to database: %s", err))
 	}
-	db.Use(gormopentracing.New())
+	if err = db.Use(gormopentracing.New()); err != nil {
+		logger.Fatal(fmt.Sprintf("Error setting tracing for gorm: %s", err))
+	}
 	return db
 }
