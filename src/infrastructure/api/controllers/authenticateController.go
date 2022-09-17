@@ -42,7 +42,7 @@ func (controller *AuthenticateController) Handle(c echo.Context) error {
 	if err != nil {
 		return controller.errorTransformer.Transform(err)
 	}
-	return controller.errorTransformer.Transform(controller.dtoSerializer.Serialize(c, authenticationResponse))
+	return controller.dtoSerializer.Serialize(c, authenticationResponse)
 }
 
 func (controller *AuthenticateController) getRequestOrigin(request *http.Request) string {
