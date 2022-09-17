@@ -6,6 +6,7 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	gormopentracing "gorm.io/plugin/opentracing"
 )
 
 func ConnectDatabase() *gorm.DB {
@@ -20,5 +21,6 @@ func ConnectDatabase() *gorm.DB {
 	if err != nil {
 		panic(err)
 	}
+	db.Use(gormopentracing.New())
 	return db
 }
