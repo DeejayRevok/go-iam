@@ -3,6 +3,7 @@
 package mocks
 
 import (
+	context "context"
 	user "go-uaa/src/domain/user"
 
 	mock "github.com/stretchr/testify/mock"
@@ -15,13 +16,13 @@ type UserRepository struct {
 	mock.Mock
 }
 
-// FindByEmail provides a mock function with given fields: email
-func (_m *UserRepository) FindByEmail(email string) (*user.User, error) {
-	ret := _m.Called(email)
+// FindByEmail provides a mock function with given fields: ctx, email
+func (_m *UserRepository) FindByEmail(ctx context.Context, email string) (*user.User, error) {
+	ret := _m.Called(ctx, email)
 
 	var r0 *user.User
-	if rf, ok := ret.Get(0).(func(string) *user.User); ok {
-		r0 = rf(email)
+	if rf, ok := ret.Get(0).(func(context.Context, string) *user.User); ok {
+		r0 = rf(ctx, email)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*user.User)
@@ -29,8 +30,8 @@ func (_m *UserRepository) FindByEmail(email string) (*user.User, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(email)
+	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = rf(ctx, email)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -38,13 +39,13 @@ func (_m *UserRepository) FindByEmail(email string) (*user.User, error) {
 	return r0, r1
 }
 
-// FindByID provides a mock function with given fields: userID
-func (_m *UserRepository) FindByID(userID uuid.UUID) (*user.User, error) {
-	ret := _m.Called(userID)
+// FindByID provides a mock function with given fields: ctx, userID
+func (_m *UserRepository) FindByID(ctx context.Context, userID uuid.UUID) (*user.User, error) {
+	ret := _m.Called(ctx, userID)
 
 	var r0 *user.User
-	if rf, ok := ret.Get(0).(func(uuid.UUID) *user.User); ok {
-		r0 = rf(userID)
+	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID) *user.User); ok {
+		r0 = rf(ctx, userID)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*user.User)
@@ -52,8 +53,8 @@ func (_m *UserRepository) FindByID(userID uuid.UUID) (*user.User, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(uuid.UUID) error); ok {
-		r1 = rf(userID)
+	if rf, ok := ret.Get(1).(func(context.Context, uuid.UUID) error); ok {
+		r1 = rf(ctx, userID)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -61,13 +62,13 @@ func (_m *UserRepository) FindByID(userID uuid.UUID) (*user.User, error) {
 	return r0, r1
 }
 
-// FindByUsername provides a mock function with given fields: username
-func (_m *UserRepository) FindByUsername(username string) (*user.User, error) {
-	ret := _m.Called(username)
+// FindByUsername provides a mock function with given fields: ctx, username
+func (_m *UserRepository) FindByUsername(ctx context.Context, username string) (*user.User, error) {
+	ret := _m.Called(ctx, username)
 
 	var r0 *user.User
-	if rf, ok := ret.Get(0).(func(string) *user.User); ok {
-		r0 = rf(username)
+	if rf, ok := ret.Get(0).(func(context.Context, string) *user.User); ok {
+		r0 = rf(ctx, username)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*user.User)
@@ -75,8 +76,8 @@ func (_m *UserRepository) FindByUsername(username string) (*user.User, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(username)
+	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = rf(ctx, username)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -84,13 +85,13 @@ func (_m *UserRepository) FindByUsername(username string) (*user.User, error) {
 	return r0, r1
 }
 
-// Save provides a mock function with given fields: _a0
-func (_m *UserRepository) Save(_a0 user.User) error {
-	ret := _m.Called(_a0)
+// Save provides a mock function with given fields: ctx, _a1
+func (_m *UserRepository) Save(ctx context.Context, _a1 user.User) error {
+	ret := _m.Called(ctx, _a1)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(user.User) error); ok {
-		r0 = rf(_a0)
+	if rf, ok := ret.Get(0).(func(context.Context, user.User) error); ok {
+		r0 = rf(ctx, _a1)
 	} else {
 		r0 = ret.Error(0)
 	}

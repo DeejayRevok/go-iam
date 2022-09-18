@@ -1,9 +1,13 @@
 package user
 
-import "github.com/google/uuid"
+import (
+	"context"
+
+	"github.com/google/uuid"
+)
 
 type UserPasswordResetRepository interface {
-	Save(userPasswordReset UserPasswordReset) error
-	FindByUserID(userID uuid.UUID) (*UserPasswordReset, error)
-	Delete(userPasswordReset UserPasswordReset) error
+	Save(ctx context.Context, userPasswordReset UserPasswordReset) error
+	FindByUserID(ctx context.Context, userID uuid.UUID) (*UserPasswordReset, error)
+	Delete(ctx context.Context, userPasswordReset UserPasswordReset) error
 }

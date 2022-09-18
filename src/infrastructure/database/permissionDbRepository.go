@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"go-uaa/src/domain/permission"
 
 	"gorm.io/gorm"
@@ -11,16 +12,18 @@ type PermissionDbRepository struct {
 	db *gorm.DB
 }
 
-func (repo *PermissionDbRepository) Save(permission permission.Permission) error {
-	result := repo.db.Clauses(clause.OnConflict{
+func (repo *PermissionDbRepository) Save(ctx context.Context, permission permission.Permission) error {
+	db := repo.db.WithContext(ctx)
+	result := db.Clauses(clause.OnConflict{
 		UpdateAll: true,
 	}).Create(&permission)
 	return result.Error
 }
 
-func (repo *PermissionDbRepository) FindByNames(permissionNames []string) ([]permission.Permission, error) {
+func (repo *PermissionDbRepository) FindByNames(ctx context.Context, permissionNames []string) ([]permission.Permission, error) {
 	var foundPermissions []permission.Permission
-	result := repo.db.Where("name IN ?", permissionNames).Find(&foundPermissions)
+	db := repo.db.WithContext(ctx)
+	result := db.Where("name IN ?", permissionNames).Find(&foundPermissions)
 	if result.Error != nil {
 		return nil, result.Error
 	}

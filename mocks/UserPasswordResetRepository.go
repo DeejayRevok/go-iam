@@ -3,6 +3,7 @@
 package mocks
 
 import (
+	context "context"
 	user "go-uaa/src/domain/user"
 
 	mock "github.com/stretchr/testify/mock"
@@ -15,13 +16,13 @@ type UserPasswordResetRepository struct {
 	mock.Mock
 }
 
-// Delete provides a mock function with given fields: userPasswordReset
-func (_m *UserPasswordResetRepository) Delete(userPasswordReset user.UserPasswordReset) error {
-	ret := _m.Called(userPasswordReset)
+// Delete provides a mock function with given fields: ctx, userPasswordReset
+func (_m *UserPasswordResetRepository) Delete(ctx context.Context, userPasswordReset user.UserPasswordReset) error {
+	ret := _m.Called(ctx, userPasswordReset)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(user.UserPasswordReset) error); ok {
-		r0 = rf(userPasswordReset)
+	if rf, ok := ret.Get(0).(func(context.Context, user.UserPasswordReset) error); ok {
+		r0 = rf(ctx, userPasswordReset)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -29,13 +30,13 @@ func (_m *UserPasswordResetRepository) Delete(userPasswordReset user.UserPasswor
 	return r0
 }
 
-// FindByUserID provides a mock function with given fields: userID
-func (_m *UserPasswordResetRepository) FindByUserID(userID uuid.UUID) (*user.UserPasswordReset, error) {
-	ret := _m.Called(userID)
+// FindByUserID provides a mock function with given fields: ctx, userID
+func (_m *UserPasswordResetRepository) FindByUserID(ctx context.Context, userID uuid.UUID) (*user.UserPasswordReset, error) {
+	ret := _m.Called(ctx, userID)
 
 	var r0 *user.UserPasswordReset
-	if rf, ok := ret.Get(0).(func(uuid.UUID) *user.UserPasswordReset); ok {
-		r0 = rf(userID)
+	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID) *user.UserPasswordReset); ok {
+		r0 = rf(ctx, userID)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*user.UserPasswordReset)
@@ -43,8 +44,8 @@ func (_m *UserPasswordResetRepository) FindByUserID(userID uuid.UUID) (*user.Use
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(uuid.UUID) error); ok {
-		r1 = rf(userID)
+	if rf, ok := ret.Get(1).(func(context.Context, uuid.UUID) error); ok {
+		r1 = rf(ctx, userID)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -52,13 +53,13 @@ func (_m *UserPasswordResetRepository) FindByUserID(userID uuid.UUID) (*user.Use
 	return r0, r1
 }
 
-// Save provides a mock function with given fields: userPasswordReset
-func (_m *UserPasswordResetRepository) Save(userPasswordReset user.UserPasswordReset) error {
-	ret := _m.Called(userPasswordReset)
+// Save provides a mock function with given fields: ctx, userPasswordReset
+func (_m *UserPasswordResetRepository) Save(ctx context.Context, userPasswordReset user.UserPasswordReset) error {
+	ret := _m.Called(ctx, userPasswordReset)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(user.UserPasswordReset) error); ok {
-		r0 = rf(userPasswordReset)
+	if rf, ok := ret.Get(0).(func(context.Context, user.UserPasswordReset) error); ok {
+		r0 = rf(ctx, userPasswordReset)
 	} else {
 		r0 = ret.Error(0)
 	}
