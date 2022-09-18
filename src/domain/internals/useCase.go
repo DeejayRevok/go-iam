@@ -1,6 +1,8 @@
 package internals
 
+import "context"
+
 type UseCase interface {
-	Execute(request interface{}) UseCaseResponse
+	Execute(ctx context.Context, request interface{}) UseCaseResponse
 	RequiredPermissions() []string
 }

@@ -1,15 +1,17 @@
 package createRole
 
 import (
+	"context"
 	"errors"
 	"go-uaa/mocks"
 	"go-uaa/src/domain/permission"
 	"go-uaa/src/domain/role"
+	"go-uaa/src/infrastructure/logging"
 	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/mock"
-	"go.uber.org/zap"
+	"go.elastic.co/apm/v2"
 )
 
 type testCase struct {
@@ -19,7 +21,8 @@ type testCase struct {
 }
 
 func setUp(t *testing.T) testCase {
-	logger, _ := zap.NewDevelopment()
+	tracer := apm.DefaultTracer()
+	logger := logging.NewZapTracedLogger(tracer)
 	permissionRepoMock := mocks.NewPermissionRepository(t)
 	roleRepoMock := mocks.NewRoleRepository(t)
 	return testCase{
@@ -32,8 +35,9 @@ func setUp(t *testing.T) testCase {
 func TestExecuteWrongRequest(t *testing.T) {
 	testCase := setUp(t)
 	request := "wrongRequest"
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -53,8 +57,9 @@ func TestExecuteRoleFindPermissionsError(t *testing.T) {
 		Name:        roleName,
 		Permissions: permissionsNames,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -79,8 +84,9 @@ func TestExecuteRoleSaveError(t *testing.T) {
 		Name:        roleName,
 		Permissions: permissionsNames,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -106,8 +112,9 @@ func TestExecuteRoleSaveSuccess(t *testing.T) {
 		Name:        roleName,
 		Permissions: permissionsNames,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err != nil {
 		t.Fatal("Expected use case not to return error")

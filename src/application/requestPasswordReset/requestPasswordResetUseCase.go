@@ -1,6 +1,7 @@
 package requestPasswordReset
 
 import (
+	"context"
 	"fmt"
 	"go-uaa/src/domain/events"
 	"go-uaa/src/domain/hash"
@@ -9,7 +10,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"go.uber.org/zap"
 )
 
 type RequestPasswordResetUseCase struct {
@@ -17,19 +17,19 @@ type RequestPasswordResetUseCase struct {
 	userPasswordResetRepository user.UserPasswordResetRepository
 	hasher                      hash.Hasher
 	eventPublisher              events.EventPublisher
-	logger                      *zap.Logger
+	logger                      internals.Logger
 }
 
-func (useCase *RequestPasswordResetUseCase) Execute(request any) internals.UseCaseResponse {
+func (useCase *RequestPasswordResetUseCase) Execute(ctx context.Context, request any) internals.UseCaseResponse {
 	validatedRequest, errResponse := internals.ValidateUseCaseRequest[*RequestPasswordResetRequest](request)
 	if errResponse != nil {
 		return *errResponse
 	}
 
-	useCase.logger.Info(fmt.Sprintf("Starting password reset request for user with mail %s", validatedRequest.Email))
-	defer useCase.logger.Info(fmt.Sprintf("Finished password reset request for user with mail %s", validatedRequest.Email))
+	useCase.logger.Info(ctx, fmt.Sprintf("Starting password reset request for user with mail %s", validatedRequest.Email))
+	defer useCase.logger.Info(ctx, fmt.Sprintf("Finished password reset request for user with mail %s", validatedRequest.Email))
 
-	requestUser, err := useCase.userRepository.FindByEmail(validatedRequest.Email)
+	requestUser, err := useCase.userRepository.FindByEmail(ctx, validatedRequest.Email)
 	if err != nil {
 		return internals.ErrorUseCaseResponse(err)
 	}
@@ -44,7 +44,7 @@ func (useCase *RequestPasswordResetUseCase) Execute(request any) internals.UseCa
 		Expiration: time.Now().Add(time.Minute * 15),
 		UserID:     requestUser.ID,
 	}
-	if err = useCase.userPasswordResetRepository.Save(userPasswordReset); err != nil {
+	if err = useCase.userPasswordResetRepository.Save(ctx, userPasswordReset); err != nil {
 		return internals.ErrorUseCaseResponse(err)
 	}
 	if err = useCase.publishEvent(resetToken, requestUser); err != nil {
@@ -74,7 +74,7 @@ func (*RequestPasswordResetUseCase) RequiredPermissions() []string {
 	return make([]string, 0)
 }
 
-func NewRequestPasswordResetUseCase(userRepository user.UserRepository, userPasswordResetRepository user.UserPasswordResetRepository, eventPublisher events.EventPublisher, hasher hash.Hasher, logger *zap.Logger) *RequestPasswordResetUseCase {
+func NewRequestPasswordResetUseCase(userRepository user.UserRepository, userPasswordResetRepository user.UserPasswordResetRepository, eventPublisher events.EventPublisher, hasher hash.Hasher, logger internals.Logger) *RequestPasswordResetUseCase {
 	return &RequestPasswordResetUseCase{
 		userRepository:              userRepository,
 		userPasswordResetRepository: userPasswordResetRepository,

@@ -1,12 +1,14 @@
 package getApplicationHealth
 
 import (
+	"context"
 	"errors"
 	"go-uaa/mocks"
 	"go-uaa/src/domain/healthcheck"
+	"go-uaa/src/infrastructure/logging"
 	"testing"
 
-	"go.uber.org/zap"
+	"go.elastic.co/apm/v2"
 )
 
 type testCase struct {
@@ -15,7 +17,8 @@ type testCase struct {
 }
 
 func setUp(t *testing.T) testCase {
-	logger, _ := zap.NewDevelopment()
+	tracer := apm.DefaultTracer()
+	logger := logging.NewZapTracedLogger(tracer)
 	singleHealthCheckerMock := mocks.NewSingleHealthChecker(t)
 	singleHealthCheckers := []healthcheck.SingleHealthChecker{singleHealthCheckerMock}
 	healthChecker := healthcheck.NewHealthChecker(singleHealthCheckers)
@@ -29,8 +32,9 @@ func TestExecuteHealthCheckError(t *testing.T) {
 	testCase := setUp(t)
 	checkError := errors.New("Test health check error")
 	testCase.SingleHealthChecker.On("Check").Return(checkError)
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(struct{}{})
+	response := testCase.UseCase.Execute(ctx, struct{}{})
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -44,8 +48,9 @@ func TestExecuteHealthCheckError(t *testing.T) {
 func TestExecuteSuccess(t *testing.T) {
 	testCase := setUp(t)
 	testCase.SingleHealthChecker.On("Check").Return(nil)
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(struct{}{})
+	response := testCase.UseCase.Execute(ctx, struct{}{})
 
 	if response.Err != nil {
 		t.Fatal("Expected use case not to return error")

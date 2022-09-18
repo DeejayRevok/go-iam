@@ -1,16 +1,18 @@
 package resetPassword
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"go-uaa/mocks"
 	"go-uaa/src/domain/user"
+	"go-uaa/src/infrastructure/logging"
 	"testing"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/mock"
-	"go.uber.org/zap"
+	"go.elastic.co/apm/v2"
 )
 
 type testCase struct {
@@ -22,7 +24,8 @@ type testCase struct {
 }
 
 func setUp(t *testing.T) testCase {
-	logger, _ := zap.NewDevelopment()
+	tracer := apm.DefaultTracer()
+	logger := logging.NewZapTracedLogger(tracer)
 	userRepository := mocks.NewUserRepository(t)
 	userPasswordResetRepository := mocks.NewUserPasswordResetRepository(t)
 	hasher := mocks.NewHasher(t)
@@ -40,8 +43,9 @@ func setUp(t *testing.T) testCase {
 func TestExecuteWrongRequest(t *testing.T) {
 	testCase := setUp(t)
 	request := "wrongRequest"
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -58,10 +62,11 @@ func TestExecuteFindUserError(t *testing.T) {
 	request := ResetPasswordRequest{
 		UserEmail: testEmail,
 	}
+	ctx := context.Background()
 	testError := errors.New("Test find error")
 	testCase.UserRepository.On("FindByEmail", mock.Anything).Return(nil, testError)
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -81,6 +86,7 @@ func TestExecuteFindPasswordResetError(t *testing.T) {
 	request := ResetPasswordRequest{
 		UserEmail: testEmail,
 	}
+	ctx := context.Background()
 	testUser := user.User{
 		ID:       uuid.New(),
 		Username: "testUser",
@@ -90,7 +96,7 @@ func TestExecuteFindPasswordResetError(t *testing.T) {
 	testCase.UserRepository.On("FindByEmail", mock.Anything).Return(&testUser, nil)
 	testCase.UserPasswordResetRepository.On("FindByUserID", mock.Anything).Return(nil, testError)
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -112,6 +118,7 @@ func TestExecuteResetTokenExpired(t *testing.T) {
 		UserEmail:  testEmail,
 		ResetToken: testResetToken,
 	}
+	ctx := context.Background()
 	testUser := user.User{
 		ID:       uuid.New(),
 		Username: "testUser",
@@ -125,7 +132,7 @@ func TestExecuteResetTokenExpired(t *testing.T) {
 	testCase.UserRepository.On("FindByEmail", mock.Anything).Return(&testUser, nil)
 	testCase.UserPasswordResetRepository.On("FindByUserID", mock.Anything).Return(&testUserPasswordReset, nil)
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -148,6 +155,7 @@ func TestExecuteResetTokenComparisionFailed(t *testing.T) {
 		UserEmail:  testEmail,
 		ResetToken: testResetToken,
 	}
+	ctx := context.Background()
 	testUser := user.User{
 		ID:       uuid.New(),
 		Username: "testUser",
@@ -163,7 +171,7 @@ func TestExecuteResetTokenComparisionFailed(t *testing.T) {
 	testError := errors.New("Test hash comparision error")
 	testCase.HashComparator.On("Compare", mock.Anything, mock.Anything).Return(testError)
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -187,6 +195,7 @@ func TestExecutePasswordHashError(t *testing.T) {
 		ResetToken:  testResetToken,
 		NewPassword: testNewPassword,
 	}
+	ctx := context.Background()
 	testUser := user.User{
 		ID:       uuid.New(),
 		Username: "testUser",
@@ -203,7 +212,7 @@ func TestExecutePasswordHashError(t *testing.T) {
 	testError := errors.New("Test hashing error")
 	testCase.Hasher.On("Hash", mock.Anything).Return(nil, testError)
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -228,6 +237,7 @@ func TestExecuteDeleteResetError(t *testing.T) {
 		ResetToken:  testResetToken,
 		NewPassword: testNewPassword,
 	}
+	ctx := context.Background()
 	testUser := user.User{
 		ID:       uuid.New(),
 		Username: "testUser",
@@ -246,7 +256,7 @@ func TestExecuteDeleteResetError(t *testing.T) {
 	testError := errors.New("Test password reset delete error")
 	testCase.UserPasswordResetRepository.On("Delete", mock.Anything).Return(testError)
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -275,6 +285,7 @@ func TestExecuteSuccess(t *testing.T) {
 		ResetToken:  testResetToken,
 		NewPassword: testNewPassword,
 	}
+	ctx := context.Background()
 	testUser := user.User{
 		ID:       uuid.New(),
 		Username: "testUser",
@@ -292,7 +303,7 @@ func TestExecuteSuccess(t *testing.T) {
 	testCase.UserRepository.On("Save", mock.Anything).Return(nil)
 	testCase.UserPasswordResetRepository.On("Delete", mock.Anything).Return(nil)
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err != nil {
 		t.Fatal("Expected use case not to return error")

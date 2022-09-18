@@ -1,14 +1,16 @@
 package sendPasswordResetToken
 
 import (
+	"context"
 	"errors"
 	"go-uaa/mocks"
 	"go-uaa/src/domain/user"
+	"go-uaa/src/infrastructure/logging"
 	"testing"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/mock"
-	"go.uber.org/zap"
+	"go.elastic.co/apm/v2"
 )
 
 type testCase struct {
@@ -18,7 +20,8 @@ type testCase struct {
 }
 
 func setUp(t *testing.T) testCase {
-	logger, _ := zap.NewDevelopment()
+	tracer := apm.DefaultTracer()
+	logger := logging.NewZapTracedLogger(tracer)
 	userRepository := mocks.NewUserRepository(t)
 	resetTokenSender := mocks.NewPasswordResetTokenSender(t)
 
@@ -32,8 +35,9 @@ func setUp(t *testing.T) testCase {
 func TestExecuteWrongRequest(t *testing.T) {
 	testCase := setUp(t)
 	request := "wrongRequest"
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -50,10 +54,11 @@ func TestExecuteFindUserError(t *testing.T) {
 		UserID:     testReceiverID.String(),
 		ResetToken: testResetToken,
 	}
+	ctx := context.Background()
 	testError := errors.New("Test find error")
 	testCase.UserRepository.On("FindByID", mock.Anything).Return(nil, testError)
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -73,6 +78,7 @@ func TestExecuteSendError(t *testing.T) {
 		UserID:     testReceiverID.String(),
 		ResetToken: testResetToken,
 	}
+	ctx := context.Background()
 	testUser := user.User{
 		ID:       testReceiverID,
 		Username: "testUser",
@@ -81,7 +87,7 @@ func TestExecuteSendError(t *testing.T) {
 	testError := errors.New("Test send error")
 	testCase.PasswordResetTokenSender.On("Send", mock.Anything, mock.Anything).Return(testError)
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -101,6 +107,7 @@ func TestExecuteSuccess(t *testing.T) {
 		UserID:     testReceiverID.String(),
 		ResetToken: testResetToken,
 	}
+	ctx := context.Background()
 	testUser := user.User{
 		ID:       testReceiverID,
 		Username: "testUser",
@@ -108,7 +115,7 @@ func TestExecuteSuccess(t *testing.T) {
 	testCase.UserRepository.On("FindByID", mock.Anything).Return(&testUser, nil)
 	testCase.PasswordResetTokenSender.On("Send", mock.Anything, mock.Anything).Return(nil)
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err != nil {
 		t.Fatal("Expected use case not to return error")

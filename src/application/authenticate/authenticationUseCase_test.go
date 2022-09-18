@@ -1,6 +1,7 @@
 package authenticate
 
 import (
+	"context"
 	"fmt"
 	"go-uaa/mocks"
 	"go-uaa/src/domain/auth"
@@ -8,10 +9,11 @@ import (
 	"go-uaa/src/domain/auth/authenticationStrategy"
 	"go-uaa/src/domain/auth/refreshToken"
 	"go-uaa/src/domain/user"
+	"go-uaa/src/infrastructure/logging"
 	"testing"
 
 	"github.com/stretchr/testify/mock"
-	"go.uber.org/zap"
+	"go.elastic.co/apm/v2"
 )
 
 type testCase struct {
@@ -22,7 +24,8 @@ type testCase struct {
 }
 
 func setUp(t *testing.T) testCase {
-	logger, _ := zap.NewDevelopment()
+	tracer := apm.DefaultTracer()
+	logger := logging.NewZapTracedLogger(tracer)
 	userRepository := mocks.NewUserRepository(t)
 	hashComparator := mocks.NewHashComparator(t)
 	refreshTokenDeserializer := mocks.NewRefreshTokenDeserializer(t)
@@ -42,8 +45,9 @@ func setUp(t *testing.T) testCase {
 func TestExecuteWrongRequest(t *testing.T) {
 	testCase := setUp(t)
 	request := "wrongRequest"
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -63,8 +67,9 @@ func TestExecuteAuthenticatorFailsWrongGrantType(t *testing.T) {
 		GrantType:    wrongGrantType,
 		RefreshToken: "test",
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -94,8 +99,9 @@ func TestExecutePasswordGrantTypeSuccess(t *testing.T) {
 	testCase.UserRepository.On("FindByUsername", mock.Anything).Return(&testUser, nil)
 	testCase.UserRepository.On("Save", mock.Anything).Return(nil)
 	testCase.HashComparator.On("Compare", mock.Anything, mock.Anything).Return(nil)
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err != nil {
 		t.Fatal("Expected use case not to return error")
@@ -136,6 +142,7 @@ func TestExecuteRefreshTokenGrantTypeSuccess(t *testing.T) {
 		GrantType:    "refresh_token",
 		RefreshToken: "testRefreshTokenId",
 	}
+	ctx := context.Background()
 	testRefreshToken := refreshToken.RefreshToken{
 		Id:  "testRefreshTokenId",
 		Sub: "testUsername",
@@ -150,7 +157,7 @@ func TestExecuteRefreshTokenGrantTypeSuccess(t *testing.T) {
 	testCase.RefreshTokenDeserializer.On("Deserialize", mock.Anything).Return(&testRefreshToken, nil)
 	testCase.UserRepository.On("Save", mock.Anything).Return(nil)
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err != nil {
 		t.Fatalf("Expected use case not to return error. Returned: %s", response.Err.Error())

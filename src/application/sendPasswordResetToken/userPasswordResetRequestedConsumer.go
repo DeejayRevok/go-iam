@@ -1,6 +1,7 @@
 package sendPasswordResetToken
 
 import (
+	"context"
 	"fmt"
 	"go-uaa/src/domain/events"
 	"go-uaa/src/domain/user"
@@ -40,7 +41,8 @@ func (consumer *UserPasswordResetRequestedConsumer) handleEventMap(eventMap map[
 		UserID:     event.UserID,
 		ResetToken: event.ResetToken,
 	}
-	if useCaseResponse := consumer.sendResetTokenUseCase.Execute(&sendResetTokenRequest); useCaseResponse.Err != nil {
+	context := context.Background()
+	if useCaseResponse := consumer.sendResetTokenUseCase.Execute(context, &sendResetTokenRequest); useCaseResponse.Err != nil {
 		return useCaseResponse.Err
 	}
 	return nil

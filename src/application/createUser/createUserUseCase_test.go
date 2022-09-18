@@ -1,16 +1,18 @@
 package createUser
 
 import (
+	"context"
 	"errors"
 	"go-uaa/mocks"
 	"go-uaa/src/domain/role"
 	"go-uaa/src/domain/user"
+	"go-uaa/src/infrastructure/logging"
 	"reflect"
 	"testing"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/mock"
-	"go.uber.org/zap"
+	"go.elastic.co/apm/v2"
 )
 
 type testCase struct {
@@ -28,7 +30,8 @@ func setUp(t *testing.T) testCase {
 	roleRepositoryMock := mocks.NewRoleRepository(t)
 	eventPublisherMock := mocks.NewEventPublisher(t)
 	emailValidatorMock := mocks.NewEmailValidator(t)
-	logger, _ := zap.NewDevelopment()
+	tracer := apm.DefaultTracer()
+	logger := logging.NewZapTracedLogger(tracer)
 	return testCase{
 		UserRepo:       userRepositoryMock,
 		PasswordHasher: passwordHasherMock,
@@ -42,8 +45,9 @@ func setUp(t *testing.T) testCase {
 func TestExecuteWrongRequest(t *testing.T) {
 	testCase := setUp(t)
 	request := "wrongRequest"
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -67,8 +71,9 @@ func TestExecuteEmailNotValid(t *testing.T) {
 		Roles:     make([]string, 0),
 		Superuser: false,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -97,8 +102,9 @@ func TestExecutePasswordHashError(t *testing.T) {
 		Roles:     make([]string, 0),
 		Superuser: false,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -135,8 +141,9 @@ func TestExecuteFindRolesError(t *testing.T) {
 		Roles:     roleIDsStr,
 		Superuser: false,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -181,8 +188,9 @@ func TestExecuteSaveError(t *testing.T) {
 		Roles:     roleIDsStr,
 		Superuser: testIsSuperuser,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -229,8 +237,9 @@ func TestExecuteSuccess(t *testing.T) {
 		Roles:     roleIDsStr,
 		Superuser: testIsSuperuser,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err != nil {
 		t.Fatal("Expected use case not to return error")

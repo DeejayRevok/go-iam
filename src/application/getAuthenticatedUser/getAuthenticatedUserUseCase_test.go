@@ -1,15 +1,17 @@
 package getAuthenticatedUser
 
 import (
+	"context"
 	"errors"
 	"go-uaa/mocks"
 	"go-uaa/src/domain/auth/accessToken"
 	"go-uaa/src/domain/user"
+	"go-uaa/src/infrastructure/logging"
 	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/mock"
-	"go.uber.org/zap"
+	"go.elastic.co/apm/v2"
 )
 
 type testCase struct {
@@ -18,7 +20,8 @@ type testCase struct {
 }
 
 func setUp(t *testing.T) testCase {
-	logger, _ := zap.NewDevelopment()
+	tracer := apm.DefaultTracer()
+	logger := logging.NewZapTracedLogger(tracer)
 	userRepositoryMock := mocks.NewUserRepository(t)
 	return testCase{
 		UserRepo: userRepositoryMock,
@@ -29,8 +32,9 @@ func setUp(t *testing.T) testCase {
 func TestExecuteWrongRequest(t *testing.T) {
 	testCase := setUp(t)
 	request := "wrongRequest"
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -49,8 +53,9 @@ func TestExecuteFindError(t *testing.T) {
 	request := GetAuthenticatedUserRequest{
 		Token: testToken,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -74,8 +79,9 @@ func TestExecuteSuccess(t *testing.T) {
 	request := GetAuthenticatedUserRequest{
 		Token: testToken,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err != nil {
 		t.Fatal("Expected use case not to return error")

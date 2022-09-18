@@ -1,6 +1,7 @@
 package createUser
 
 import (
+	"context"
 	"fmt"
 	"go-uaa/src/domain/events"
 	"go-uaa/src/domain/hash"
@@ -9,7 +10,6 @@ import (
 	"go-uaa/src/domain/user"
 
 	"github.com/google/uuid"
-	"go.uber.org/zap"
 )
 
 type CreateUserUseCase struct {
@@ -18,17 +18,17 @@ type CreateUserUseCase struct {
 	roleRepository role.RoleRepository
 	eventPublisher events.EventPublisher
 	emailValidator user.EmailValidator
-	logger         *zap.Logger
+	logger         internals.Logger
 }
 
-func (useCase *CreateUserUseCase) Execute(request any) internals.UseCaseResponse {
+func (useCase *CreateUserUseCase) Execute(ctx context.Context, request any) internals.UseCaseResponse {
 	validatedRequest, errResponse := internals.ValidateUseCaseRequest[*CreateUserRequest](request)
 	if errResponse != nil {
 		return *errResponse
 	}
 
-	useCase.logger.Info(fmt.Sprintf("Starting user creation for username %s", validatedRequest.Username))
-	defer useCase.logger.Info(fmt.Sprintf("Finished user creation for username %s", validatedRequest.Username))
+	useCase.logger.Info(ctx, fmt.Sprintf("Starting user creation for username %s", validatedRequest.Username))
+	defer useCase.logger.Info(ctx, fmt.Sprintf("Finished user creation for username %s", validatedRequest.Username))
 
 	err := useCase.emailValidator.Validate(validatedRequest.Email)
 	if err != nil {
@@ -40,7 +40,7 @@ func (useCase *CreateUserUseCase) Execute(request any) internals.UseCaseResponse
 		return internals.ErrorUseCaseResponse(err)
 	}
 
-	userRoles, err := useCase.findRoles(validatedRequest.Roles)
+	userRoles, err := useCase.findRoles(ctx, validatedRequest.Roles)
 	if err != nil {
 		return internals.ErrorUseCaseResponse(err)
 	}
@@ -53,7 +53,7 @@ func (useCase *CreateUserUseCase) Execute(request any) internals.UseCaseResponse
 		Roles:     userRoles,
 		Superuser: validatedRequest.Superuser,
 	}
-	if err = useCase.userRepository.Save(user); err != nil {
+	if err = useCase.userRepository.Save(ctx, user); err != nil {
 		return internals.ErrorUseCaseResponse(err)
 	}
 	if err = useCase.publishEvent(&user); err != nil {
@@ -62,7 +62,7 @@ func (useCase *CreateUserUseCase) Execute(request any) internals.UseCaseResponse
 	return internals.EmptyUseCaseResponse()
 }
 
-func (useCase *CreateUserUseCase) findRoles(roleIDs []string) ([]role.Role, error) {
+func (useCase *CreateUserUseCase) findRoles(ctx context.Context, roleIDs []string) ([]role.Role, error) {
 	var roleUUIDs []uuid.UUID
 	for _, roleID := range roleIDs {
 		roleUUID, err := uuid.Parse(roleID)
@@ -71,7 +71,7 @@ func (useCase *CreateUserUseCase) findRoles(roleIDs []string) ([]role.Role, erro
 		}
 		roleUUIDs = append(roleUUIDs, roleUUID)
 	}
-	roles, err := useCase.roleRepository.FindByIDs(roleUUIDs)
+	roles, err := useCase.roleRepository.FindByIDs(ctx, roleUUIDs)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +91,7 @@ func (*CreateUserUseCase) RequiredPermissions() []string {
 	return []string{}
 }
 
-func NewCreateUserUseCase(userRepository user.UserRepository, passwordHasher hash.Hasher, roleRepository role.RoleRepository, eventPublisher events.EventPublisher, emailValidator user.EmailValidator, logger *zap.Logger) *CreateUserUseCase {
+func NewCreateUserUseCase(userRepository user.UserRepository, passwordHasher hash.Hasher, roleRepository role.RoleRepository, eventPublisher events.EventPublisher, emailValidator user.EmailValidator, logger internals.Logger) *CreateUserUseCase {
 	useCase := CreateUserUseCase{
 		userRepository: userRepository,
 		passwordHasher: passwordHasher,
