@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"context"
 	"go-uaa/src/application/createPermission"
 	"go-uaa/src/domain/permission"
 	"go-uaa/src/domain/role"
@@ -29,11 +30,12 @@ type BoostrapPermissionsCLI struct {
 func (cli *BoostrapPermissionsCLI) Execute(_ *cli.Context) error {
 	cli.logger.Info("Starting permissions bootstraping")
 	defer cli.logger.Info("Finished permissions bootstraping")
+	ctx := context.Background()
 	for _, permission := range permissions {
 		useCaseRequest := createPermission.CreatePermissionRequest{
 			Name: permission,
 		}
-		response := cli.createPermissionUseCase.Execute(&useCaseRequest)
+		response := cli.createPermissionUseCase.Execute(ctx, &useCaseRequest)
 		if response.Err != nil {
 			return response.Err
 		}

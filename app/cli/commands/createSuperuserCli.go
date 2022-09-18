@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"context"
 	"go-uaa/src/application/createUser"
 
 	"github.com/urfave/cli/v2"
@@ -20,6 +21,8 @@ func (cli *CreateSuperuserCLI) Execute(c *cli.Context) error {
 	email := c.String("email")
 	password := c.String("password")
 
+	ctx := context.Background()
+
 	superuserRequest := createUser.CreateUserRequest{
 		Username:  username,
 		Email:     email,
@@ -27,7 +30,7 @@ func (cli *CreateSuperuserCLI) Execute(c *cli.Context) error {
 		Roles:     make([]string, 0),
 		Superuser: true,
 	}
-	useCaseResponse := cli.createUserUseCase.Execute(&superuserRequest)
+	useCaseResponse := cli.createUserUseCase.Execute(ctx, &superuserRequest)
 	return useCaseResponse.Err
 }
 
