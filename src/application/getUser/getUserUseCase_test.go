@@ -49,7 +49,7 @@ func TestExecuteFindError(t *testing.T) {
 		UserId: testUserID,
 	}
 	findError := errors.New("Test find user by id error")
-	testCase.UserRepo.On("FindByID", mock.Anything).Return(nil, findError)
+	testCase.UserRepo.On("FindByID", mock.Anything, mock.Anything).Return(nil, findError)
 	ctx := context.Background()
 
 	response := testCase.UseCase.Execute(ctx, &request)
@@ -60,7 +60,7 @@ func TestExecuteFindError(t *testing.T) {
 	if response.Err != findError {
 		t.Fatal("Expected use case to return user repo find error")
 	}
-	testCase.UserRepo.AssertCalled(t, "FindByID", testUserID)
+	testCase.UserRepo.AssertCalled(t, "FindByID", ctx, testUserID)
 }
 
 func TestExecuteFindSuccess(t *testing.T) {
@@ -73,7 +73,7 @@ func TestExecuteFindSuccess(t *testing.T) {
 	testUser := user.User{
 		Username: "Test username",
 	}
-	testCase.UserRepo.On("FindByID", mock.Anything).Return(&testUser, nil)
+	testCase.UserRepo.On("FindByID", mock.Anything, mock.Anything).Return(&testUser, nil)
 
 	response := testCase.UseCase.Execute(ctx, &request)
 
@@ -84,5 +84,5 @@ func TestExecuteFindSuccess(t *testing.T) {
 	if !reflect.DeepEqual(responseUser, testUser) {
 		t.Fatal("Expected use case ro return same user as the repository")
 	}
-	testCase.UserRepo.AssertCalled(t, "FindByID", testUserID)
+	testCase.UserRepo.AssertCalled(t, "FindByID", ctx, testUserID)
 }

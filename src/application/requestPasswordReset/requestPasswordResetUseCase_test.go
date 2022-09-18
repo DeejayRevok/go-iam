@@ -62,7 +62,7 @@ func TestExecuteFindUserError(t *testing.T) {
 	}
 	ctx := context.Background()
 	testError := errors.New("Test find error")
-	testCase.UserRepository.On("FindByEmail", mock.Anything).Return(nil, testError)
+	testCase.UserRepository.On("FindByEmail", mock.Anything, mock.Anything).Return(nil, testError)
 
 	response := testCase.UseCase.Execute(ctx, &request)
 
@@ -72,7 +72,7 @@ func TestExecuteFindUserError(t *testing.T) {
 	if response.Err != testError {
 		t.Fatal("Expected use case to return same error as user repository find")
 	}
-	testCase.UserRepository.AssertCalled(t, "FindByEmail", testEmail)
+	testCase.UserRepository.AssertCalled(t, "FindByEmail", ctx, testEmail)
 	testCase.UserPasswordResetRepository.AssertNotCalled(t, "Save")
 	testCase.Hasher.AssertNotCalled(t, "Hash")
 	testCase.EventPublisher.AssertNotCalled(t, "Publish")
@@ -89,7 +89,7 @@ func TestExecuteHashingError(t *testing.T) {
 		Username: "testUser",
 		Email:    testEmail,
 	}
-	testCase.UserRepository.On("FindByEmail", mock.Anything).Return(&testUser, nil)
+	testCase.UserRepository.On("FindByEmail", mock.Anything, mock.Anything).Return(&testUser, nil)
 	testError := errors.New("Test hash error")
 	testCase.Hasher.On("Hash", mock.Anything).Return(nil, testError)
 
@@ -101,7 +101,7 @@ func TestExecuteHashingError(t *testing.T) {
 	if response.Err != testError {
 		t.Fatal("Expected use case to return same error as hasher hash error")
 	}
-	testCase.UserRepository.AssertCalled(t, "FindByEmail", testEmail)
+	testCase.UserRepository.AssertCalled(t, "FindByEmail", ctx, testEmail)
 	testCase.UserPasswordResetRepository.AssertNotCalled(t, "Save")
 	testCase.Hasher.AssertCalled(t, "Hash", mock.Anything)
 	testCase.EventPublisher.AssertNotCalled(t, "Publish")
@@ -119,11 +119,11 @@ func TestExecuteUserPasswordResetSaveError(t *testing.T) {
 		Username: "testUser",
 		Email:    testEmail,
 	}
-	testCase.UserRepository.On("FindByEmail", mock.Anything).Return(&testUser, nil)
+	testCase.UserRepository.On("FindByEmail", mock.Anything, mock.Anything).Return(&testUser, nil)
 	testResetTokenHash := "testHash"
 	testCase.Hasher.On("Hash", mock.Anything).Return(&testResetTokenHash, nil)
 	testError := errors.New("Test hash error")
-	testCase.UserPasswordResetRepository.On("Save", mock.Anything).Return(testError)
+	testCase.UserPasswordResetRepository.On("Save", mock.Anything, mock.Anything).Return(testError)
 
 	response := testCase.UseCase.Execute(ctx, &request)
 
@@ -133,8 +133,8 @@ func TestExecuteUserPasswordResetSaveError(t *testing.T) {
 	if response.Err != testError {
 		t.Fatal("Expected use case to return same error as user password reset repository save error")
 	}
-	testCase.UserRepository.AssertCalled(t, "FindByEmail", testEmail)
-	testCase.UserPasswordResetRepository.AssertCalled(t, "Save", mock.MatchedBy(func(reset user.UserPasswordReset) bool {
+	testCase.UserRepository.AssertCalled(t, "FindByEmail", ctx, testEmail)
+	testCase.UserPasswordResetRepository.AssertCalled(t, "Save", ctx, mock.MatchedBy(func(reset user.UserPasswordReset) bool {
 		return reset.Token == testResetTokenHash && reset.UserID == testUser.ID
 	}))
 	testCase.Hasher.AssertCalled(t, "Hash", mock.Anything)
@@ -153,10 +153,10 @@ func TestExecuteEventPublishError(t *testing.T) {
 		Username: "testUser",
 		Email:    testEmail,
 	}
-	testCase.UserRepository.On("FindByEmail", mock.Anything).Return(&testUser, nil)
+	testCase.UserRepository.On("FindByEmail", mock.Anything, mock.Anything).Return(&testUser, nil)
 	testResetTokenHash := "testHash"
 	testCase.Hasher.On("Hash", mock.Anything).Return(&testResetTokenHash, nil)
-	testCase.UserPasswordResetRepository.On("Save", mock.Anything).Return(nil)
+	testCase.UserPasswordResetRepository.On("Save", mock.Anything, mock.Anything).Return(nil)
 	testError := errors.New("Test hash error")
 	testCase.EventPublisher.On("Publish", mock.Anything).Return(testError)
 
@@ -168,8 +168,8 @@ func TestExecuteEventPublishError(t *testing.T) {
 	if response.Err != testError {
 		t.Fatal("Expected use case to return same error as event publish error")
 	}
-	testCase.UserRepository.AssertCalled(t, "FindByEmail", testEmail)
-	testCase.UserPasswordResetRepository.AssertCalled(t, "Save", mock.MatchedBy(func(reset user.UserPasswordReset) bool {
+	testCase.UserRepository.AssertCalled(t, "FindByEmail", ctx, testEmail)
+	testCase.UserPasswordResetRepository.AssertCalled(t, "Save", ctx, mock.MatchedBy(func(reset user.UserPasswordReset) bool {
 		return reset.Token == testResetTokenHash && reset.UserID == testUser.ID
 	}))
 	testCase.Hasher.AssertCalled(t, "Hash", mock.Anything)
@@ -190,10 +190,10 @@ func TestExecuteSuccess(t *testing.T) {
 		Username: "testUser",
 		Email:    testEmail,
 	}
-	testCase.UserRepository.On("FindByEmail", mock.Anything).Return(&testUser, nil)
+	testCase.UserRepository.On("FindByEmail", mock.Anything, mock.Anything).Return(&testUser, nil)
 	testResetTokenHash := "testHash"
 	testCase.Hasher.On("Hash", mock.Anything).Return(&testResetTokenHash, nil)
-	testCase.UserPasswordResetRepository.On("Save", mock.Anything).Return(nil)
+	testCase.UserPasswordResetRepository.On("Save", mock.Anything, mock.Anything).Return(nil)
 	testCase.EventPublisher.On("Publish", mock.Anything).Return(nil)
 
 	response := testCase.UseCase.Execute(ctx, &request)
@@ -204,8 +204,8 @@ func TestExecuteSuccess(t *testing.T) {
 	if response.Content != nil {
 		t.Fatal("Expected use case to return an empty response")
 	}
-	testCase.UserRepository.AssertCalled(t, "FindByEmail", testEmail)
-	testCase.UserPasswordResetRepository.AssertCalled(t, "Save", mock.MatchedBy(func(reset user.UserPasswordReset) bool {
+	testCase.UserRepository.AssertCalled(t, "FindByEmail", ctx, testEmail)
+	testCase.UserPasswordResetRepository.AssertCalled(t, "Save", ctx, mock.MatchedBy(func(reset user.UserPasswordReset) bool {
 		return reset.Token == testResetTokenHash && reset.UserID == testUser.ID
 	}))
 	testCase.Hasher.AssertCalled(t, "Hash", mock.Anything)

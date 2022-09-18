@@ -43,7 +43,7 @@ func TestExecuteWrongRequest(t *testing.T) {
 func TestExecutePermissionSaveError(t *testing.T) {
 	testCase := setUp(t)
 	saveError := errors.New("Test save error")
-	testCase.PermissionRepo.On("Save", mock.Anything).Return(saveError)
+	testCase.PermissionRepo.On("Save", mock.Anything, mock.Anything).Return(saveError)
 	permissionName := "testPermission"
 	request := CreatePermissionRequest{
 		Name: permissionName,
@@ -61,12 +61,12 @@ func TestExecutePermissionSaveError(t *testing.T) {
 	expectedSavePermission := permission.Permission{
 		Name: permissionName,
 	}
-	testCase.PermissionRepo.AssertCalled(t, "Save", expectedSavePermission)
+	testCase.PermissionRepo.AssertCalled(t, "Save", ctx, expectedSavePermission)
 }
 
 func TestExecuteSuccess(t *testing.T) {
 	testCase := setUp(t)
-	testCase.PermissionRepo.On("Save", mock.Anything).Return(nil)
+	testCase.PermissionRepo.On("Save", mock.Anything, mock.Anything).Return(nil)
 	permissionName := "testPermission"
 	request := CreatePermissionRequest{
 		Name: permissionName,
@@ -81,5 +81,5 @@ func TestExecuteSuccess(t *testing.T) {
 	expectedSavePermission := permission.Permission{
 		Name: permissionName,
 	}
-	testCase.PermissionRepo.AssertCalled(t, "Save", expectedSavePermission)
+	testCase.PermissionRepo.AssertCalled(t, "Save", ctx, expectedSavePermission)
 }

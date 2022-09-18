@@ -133,7 +133,7 @@ func TestExecuteFindRolesError(t *testing.T) {
 	roleIDs := []uuid.UUID{testUUID1, testUUID2}
 	roleIDsStr := []string{testUUID1Str, testUUID2Str}
 	findError := errors.New("Test find roles error")
-	testCase.RoleRepo.On("FindByIDs", mock.Anything).Return(nil, findError)
+	testCase.RoleRepo.On("FindByIDs", mock.Anything, mock.Anything).Return(nil, findError)
 	request := &CreateUserRequest{
 		Username:  "Test",
 		Email:     testEmail,
@@ -153,7 +153,7 @@ func TestExecuteFindRolesError(t *testing.T) {
 	}
 	testCase.EmailValidator.AssertCalled(t, "Validate", testEmail)
 	testCase.PasswordHasher.AssertCalled(t, "Hash", testPassword)
-	testCase.RoleRepo.AssertCalled(t, "FindByIDs", roleIDs)
+	testCase.RoleRepo.AssertCalled(t, "FindByIDs", ctx, roleIDs)
 	testCase.UserRepo.AssertNotCalled(t, "Save")
 	testCase.EventPublisher.AssertNotCalled(t, "Publish")
 }
@@ -176,9 +176,9 @@ func TestExecuteSaveError(t *testing.T) {
 		Name: "Test role",
 	}
 	roles := []role.Role{testRole, testRole}
-	testCase.RoleRepo.On("FindByIDs", mock.Anything).Return(roles, nil)
+	testCase.RoleRepo.On("FindByIDs", mock.Anything, mock.Anything).Return(roles, nil)
 	saveError := errors.New("Test find roles error")
-	testCase.UserRepo.On("Save", mock.Anything).Return(saveError)
+	testCase.UserRepo.On("Save", mock.Anything, mock.Anything).Return(saveError)
 	testUsername := "Test user name"
 	testIsSuperuser := false
 	request := &CreateUserRequest{
@@ -200,8 +200,8 @@ func TestExecuteSaveError(t *testing.T) {
 	}
 	testCase.EmailValidator.AssertCalled(t, "Validate", testEmail)
 	testCase.PasswordHasher.AssertCalled(t, "Hash", testPassword)
-	testCase.RoleRepo.AssertCalled(t, "FindByIDs", roleIDs)
-	testCase.UserRepo.AssertCalled(t, "Save", mock.MatchedBy(func(user user.User) bool {
+	testCase.RoleRepo.AssertCalled(t, "FindByIDs", ctx, roleIDs)
+	testCase.UserRepo.AssertCalled(t, "Save", ctx, mock.MatchedBy(func(user user.User) bool {
 		return user.Username == testUsername && reflect.DeepEqual(user.Roles, roles) && user.Email == testEmail && user.Password == testPasswordHash && user.Superuser == testIsSuperuser
 	}))
 	testCase.EventPublisher.AssertNotCalled(t, "Publish")
@@ -225,8 +225,8 @@ func TestExecuteSuccess(t *testing.T) {
 		Name: "Test role",
 	}
 	roles := []role.Role{testRole, testRole}
-	testCase.RoleRepo.On("FindByIDs", mock.Anything).Return(roles, nil)
-	testCase.UserRepo.On("Save", mock.Anything).Return(nil)
+	testCase.RoleRepo.On("FindByIDs", mock.Anything, mock.Anything).Return(roles, nil)
+	testCase.UserRepo.On("Save", mock.Anything, mock.Anything).Return(nil)
 	testCase.EventPublisher.On("Publish", mock.Anything).Return(nil)
 	testUsername := "Test user name"
 	testIsSuperuser := false
@@ -246,8 +246,8 @@ func TestExecuteSuccess(t *testing.T) {
 	}
 	testCase.EmailValidator.AssertCalled(t, "Validate", testEmail)
 	testCase.PasswordHasher.AssertCalled(t, "Hash", testPassword)
-	testCase.RoleRepo.AssertCalled(t, "FindByIDs", roleIDs)
-	testCase.UserRepo.AssertCalled(t, "Save", mock.MatchedBy(func(user user.User) bool {
+	testCase.RoleRepo.AssertCalled(t, "FindByIDs", ctx, roleIDs)
+	testCase.UserRepo.AssertCalled(t, "Save", ctx, mock.MatchedBy(func(user user.User) bool {
 		return user.Username == testUsername && reflect.DeepEqual(user.Roles, roles) && user.Email == testEmail && user.Password == testPasswordHash && user.Superuser == testIsSuperuser
 	}))
 	testCase.EventPublisher.AssertCalled(t, "Publish", mock.MatchedBy(func(event user.UserCreatedEvent) bool {
