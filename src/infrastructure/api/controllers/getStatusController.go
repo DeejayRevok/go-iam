@@ -16,7 +16,8 @@ type GetStatusController struct {
 }
 
 func (controller *GetStatusController) Handle(c echo.Context) error {
-	useCaseResponse := controller.useCaseExecutor.Execute(controller.getApplicationHealthUseCase, struct{}{}, nil)
+	ctx := c.Request().Context()
+	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.getApplicationHealthUseCase, struct{}{}, nil)
 	if useCaseResponse.Err != nil {
 		return controller.errorTransformer.Transform(useCaseResponse.Err)
 	}

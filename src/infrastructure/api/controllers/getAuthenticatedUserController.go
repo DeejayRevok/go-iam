@@ -26,10 +26,11 @@ func (controller *GetAuthenticatedUserController) Handle(c echo.Context) error {
 		return controller.errorTransformer.Transform(err)
 	}
 
+	ctx := c.Request().Context()
 	useCaseRequest := getAuthenticatedUser.GetAuthenticatedUserRequest{
 		Token: *accessToken,
 	}
-	useCaseResponse := controller.useCaseExecutor.Execute(controller.getAuthenticatedUserUseCase, &useCaseRequest, nil)
+	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.getAuthenticatedUserUseCase, &useCaseRequest, nil)
 	if useCaseResponse.Err != nil {
 		return controller.errorTransformer.Transform(useCaseResponse.Err)
 	}

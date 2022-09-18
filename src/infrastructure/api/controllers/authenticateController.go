@@ -34,7 +34,7 @@ func (controller *AuthenticateController) Handle(c echo.Context) error {
 		GrantType:    authRequestDTO.GrantType,
 		RefreshToken: authRequestDTO.RefreshToken,
 	}
-	useCaseResponse := controller.useCaseExecutor.Execute(controller.authenticateUseCase, &authenticationRequest, nil)
+	useCaseResponse := controller.useCaseExecutor.Execute(httpRequest.Context(), controller.authenticateUseCase, &authenticationRequest, nil)
 	if useCaseResponse.Err != nil {
 		return controller.errorTransformer.Transform(useCaseResponse.Err)
 	}
