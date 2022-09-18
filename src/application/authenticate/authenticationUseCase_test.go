@@ -1,6 +1,7 @@
 package authenticate
 
 import (
+	"context"
 	"fmt"
 	"go-uaa/mocks"
 	"go-uaa/src/domain/auth"
@@ -8,10 +9,11 @@ import (
 	"go-uaa/src/domain/auth/authenticationStrategy"
 	"go-uaa/src/domain/auth/refreshToken"
 	"go-uaa/src/domain/user"
+	"go-uaa/src/infrastructure/logging"
 	"testing"
 
 	"github.com/stretchr/testify/mock"
-	"go.uber.org/zap"
+	"go.elastic.co/apm/v2"
 )
 
 type testCase struct {
@@ -22,7 +24,8 @@ type testCase struct {
 }
 
 func setUp(t *testing.T) testCase {
-	logger, _ := zap.NewDevelopment()
+	tracer := apm.DefaultTracer()
+	logger := logging.NewZapTracedLogger(tracer)
 	userRepository := mocks.NewUserRepository(t)
 	hashComparator := mocks.NewHashComparator(t)
 	refreshTokenDeserializer := mocks.NewRefreshTokenDeserializer(t)
@@ -42,8 +45,9 @@ func setUp(t *testing.T) testCase {
 func TestExecuteWrongRequest(t *testing.T) {
 	testCase := setUp(t)
 	request := "wrongRequest"
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -63,13 +67,14 @@ func TestExecuteAuthenticatorFailsWrongGrantType(t *testing.T) {
 		GrantType:    wrongGrantType,
 		RefreshToken: "test",
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
 	}
-	if response.Err.Error() != fmt.Sprintf("Grant type %s is not supported", wrongGrantType) {
+	if response.Err.Error() != fmt.Sprintf("grant type %s is not supported", wrongGrantType) {
 		t.Fatal("Expected use case to return grant type not supported error")
 	}
 	testCase.UserRepository.AssertNotCalled(t, "Save")
@@ -91,11 +96,12 @@ func TestExecutePasswordGrantTypeSuccess(t *testing.T) {
 		Password:     "testPassword",
 		RefreshToken: "",
 	}
-	testCase.UserRepository.On("FindByUsername", mock.Anything).Return(&testUser, nil)
-	testCase.UserRepository.On("Save", mock.Anything).Return(nil)
+	testCase.UserRepository.On("FindByUsername", mock.Anything, mock.Anything).Return(&testUser, nil)
+	testCase.UserRepository.On("Save", mock.Anything, mock.Anything).Return(nil)
 	testCase.HashComparator.On("Compare", mock.Anything, mock.Anything).Return(nil)
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err != nil {
 		t.Fatal("Expected use case not to return error")
@@ -119,9 +125,9 @@ func TestExecutePasswordGrantTypeSuccess(t *testing.T) {
 	if responseAuthentication.TokenType != "bearer" {
 		t.Fatal("Expected use case to return bearer token type")
 	}
-	testCase.UserRepository.AssertCalled(t, "FindByUsername", request.Username)
+	testCase.UserRepository.AssertCalled(t, "FindByUsername", ctx, request.Username)
 	testCase.HashComparator.AssertCalled(t, "Compare", request.Password, testUser.Password)
-	testCase.UserRepository.AssertCalled(t, "Save", mock.MatchedBy(func(user user.User) bool {
+	testCase.UserRepository.AssertCalled(t, "Save", ctx, mock.MatchedBy(func(user user.User) bool {
 		return user.Username == testUser.Username && user.RefreshToken != ""
 	}))
 	testCase.RefreshTokenDeserializer.AssertNotCalled(t, "Deserialize")
@@ -136,6 +142,7 @@ func TestExecuteRefreshTokenGrantTypeSuccess(t *testing.T) {
 		GrantType:    "refresh_token",
 		RefreshToken: "testRefreshTokenId",
 	}
+	ctx := context.Background()
 	testRefreshToken := refreshToken.RefreshToken{
 		Id:  "testRefreshTokenId",
 		Sub: "testUsername",
@@ -146,11 +153,11 @@ func TestExecuteRefreshTokenGrantTypeSuccess(t *testing.T) {
 		Password:     "testPassword",
 		RefreshToken: "testRefreshTokenId",
 	}
-	testCase.UserRepository.On("FindByUsername", mock.Anything).Return(&testUser, nil)
+	testCase.UserRepository.On("FindByUsername", mock.Anything, mock.Anything).Return(&testUser, nil)
 	testCase.RefreshTokenDeserializer.On("Deserialize", mock.Anything).Return(&testRefreshToken, nil)
-	testCase.UserRepository.On("Save", mock.Anything).Return(nil)
+	testCase.UserRepository.On("Save", mock.Anything, mock.Anything).Return(nil)
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err != nil {
 		t.Fatalf("Expected use case not to return error. Returned: %s", response.Err.Error())
@@ -174,9 +181,9 @@ func TestExecuteRefreshTokenGrantTypeSuccess(t *testing.T) {
 	if responseAuthentication.TokenType != "bearer" {
 		t.Fatal("Expected use case to return bearer token type")
 	}
-	testCase.UserRepository.AssertCalled(t, "FindByUsername", request.Username)
+	testCase.UserRepository.AssertCalled(t, "FindByUsername", ctx, request.Username)
 	testCase.HashComparator.AssertNotCalled(t, "Compare")
-	testCase.UserRepository.AssertCalled(t, "Save", mock.MatchedBy(func(user user.User) bool {
+	testCase.UserRepository.AssertCalled(t, "Save", ctx, mock.MatchedBy(func(user user.User) bool {
 		return user.Username == testUser.Username && user.RefreshToken != ""
 	}))
 	testCase.RefreshTokenDeserializer.AssertCalled(t, "Deserialize", request.RefreshToken)

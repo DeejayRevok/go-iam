@@ -1,13 +1,12 @@
 package resetPassword
 
 import (
+	"context"
 	"fmt"
 	"go-uaa/src/domain/hash"
 	"go-uaa/src/domain/internals"
 	"go-uaa/src/domain/user"
 	"time"
-
-	"go.uber.org/zap"
 )
 
 type ResetPasswordUseCase struct {
@@ -15,23 +14,23 @@ type ResetPasswordUseCase struct {
 	userPasswordResetRepository user.UserPasswordResetRepository
 	hashComparator              hash.HashComparator
 	hasher                      hash.Hasher
-	logger                      *zap.Logger
+	logger                      internals.Logger
 }
 
-func (useCase *ResetPasswordUseCase) Execute(request any) internals.UseCaseResponse {
+func (useCase *ResetPasswordUseCase) Execute(ctx context.Context, request any) internals.UseCaseResponse {
 	validatedRequest, errResponse := internals.ValidateUseCaseRequest[*ResetPasswordRequest](request)
 	if errResponse != nil {
 		return *errResponse
 	}
 
-	useCase.logger.Info(fmt.Sprintf("Starting password reset with token %s", validatedRequest.ResetToken))
-	defer useCase.logger.Info(fmt.Sprintf("Finished password reset with token %s", validatedRequest.ResetToken))
+	useCase.logger.Info(ctx, fmt.Sprintf("Starting password reset with token %s", validatedRequest.ResetToken))
+	defer useCase.logger.Info(ctx, fmt.Sprintf("Finished password reset with token %s", validatedRequest.ResetToken))
 
-	user, err := useCase.userRepository.FindByEmail(validatedRequest.UserEmail)
+	user, err := useCase.userRepository.FindByEmail(ctx, validatedRequest.UserEmail)
 	if err != nil {
 		return internals.ErrorUseCaseResponse(err)
 	}
-	passwordReset, err := useCase.userPasswordResetRepository.FindByUserID(user.ID)
+	passwordReset, err := useCase.userPasswordResetRepository.FindByUserID(ctx, user.ID)
 	if err != nil {
 		return internals.ErrorUseCaseResponse(err)
 	}
@@ -40,11 +39,11 @@ func (useCase *ResetPasswordUseCase) Execute(request any) internals.UseCaseRespo
 	if err != nil {
 		return internals.ErrorUseCaseResponse(err)
 	}
-	err = useCase.storeNewPassword(validatedRequest.NewPassword, user)
+	err = useCase.storeNewPassword(ctx, validatedRequest.NewPassword, user)
 	if err != nil {
 		return internals.ErrorUseCaseResponse(err)
 	}
-	err = useCase.userPasswordResetRepository.Delete(*passwordReset)
+	err = useCase.userPasswordResetRepository.Delete(ctx, *passwordReset)
 	if err != nil {
 		return internals.ErrorUseCaseResponse(err)
 	}
@@ -62,20 +61,20 @@ func (useCase *ResetPasswordUseCase) validateResetToken(resetToken string, passw
 	return nil
 }
 
-func (useCase *ResetPasswordUseCase) storeNewPassword(newPassword string, user *user.User) error {
+func (useCase *ResetPasswordUseCase) storeNewPassword(ctx context.Context, newPassword string, user *user.User) error {
 	newPasswordHash, err := useCase.hasher.Hash(newPassword)
 	if err != nil {
 		return err
 	}
 	user.Password = *newPasswordHash
-	return useCase.userRepository.Save(*user)
+	return useCase.userRepository.Save(ctx, *user)
 }
 
 func (*ResetPasswordUseCase) RequiredPermissions() []string {
 	return make([]string, 0)
 }
 
-func NewResetPasswordUseCase(userRepository user.UserRepository, userPasswordResetRepository user.UserPasswordResetRepository, hashComparator hash.HashComparator, hasher hash.Hasher, logger *zap.Logger) *ResetPasswordUseCase {
+func NewResetPasswordUseCase(userRepository user.UserRepository, userPasswordResetRepository user.UserPasswordResetRepository, hashComparator hash.HashComparator, hasher hash.Hasher, logger internals.Logger) *ResetPasswordUseCase {
 	return &ResetPasswordUseCase{
 		userRepository:              userRepository,
 		userPasswordResetRepository: userPasswordResetRepository,

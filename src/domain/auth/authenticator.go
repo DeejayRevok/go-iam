@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"fmt"
 	"go-uaa/src/domain/auth/authenticationStrategy"
 	"go-uaa/src/domain/user"
@@ -12,7 +13,7 @@ type Authenticator struct {
 	refreshTokenAuthenticationStrategy *authenticationStrategy.RefreshTokenAuthenticationStrategy
 }
 
-func (authenticator *Authenticator) Authenticate(grantType string, request *authenticationStrategy.AuthenticationStrategyRequest) (*user.User, error) {
+func (authenticator *Authenticator) Authenticate(ctx context.Context, grantType string, request *authenticationStrategy.AuthenticationStrategyRequest) (*user.User, error) {
 	strategy, err := authenticator.getStrategy(grantType)
 	if err != nil {
 		return nil, err
@@ -20,7 +21,7 @@ func (authenticator *Authenticator) Authenticate(grantType string, request *auth
 	if err = strategy.ValidateStrategyRequest(request); err != nil {
 		return nil, err
 	}
-	user, err := strategy.Authenticate(request)
+	user, err := strategy.Authenticate(ctx, request)
 	if err == nil {
 		return user, nil
 	}
@@ -39,7 +40,7 @@ func (authenticator *Authenticator) getStrategy(grantType string) (authenticatio
 	case "refresh_token":
 		return authenticator.refreshTokenAuthenticationStrategy, nil
 	default:
-		return nil, fmt.Errorf("Grant type %s is not supported", grantType)
+		return nil, fmt.Errorf("grant type %s is not supported", grantType)
 	}
 }
 

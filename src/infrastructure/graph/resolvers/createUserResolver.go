@@ -6,6 +6,7 @@ import (
 	"go-uaa/src/domain/internals"
 	"go-uaa/src/infrastructure/dto"
 	"go-uaa/src/infrastructure/graph/modelResolvers"
+	"net/http"
 )
 
 type CreateUserResolver struct {
@@ -14,13 +15,15 @@ type CreateUserResolver struct {
 }
 
 func (resolver *CreateUserResolver) CreateUser(c context.Context, args *struct{ Input *dto.UserCreationRequestDTO }) (*modelResolvers.CreationResponse, error) {
+	httpRequest := c.Value(RequestKey).(*http.Request)
+	useCaseCtx := httpRequest.Context()
 	createUserRequest := createUser.CreateUserRequest{
 		Username: *args.Input.Username,
 		Email:    *args.Input.Email,
 		Password: *args.Input.Password,
 		Roles:    resolver.parseRoles(*args.Input.Roles),
 	}
-	useCaseResponse := resolver.useCaseExecutor.Execute(resolver.createUserUseCase, &createUserRequest, nil)
+	useCaseResponse := resolver.useCaseExecutor.Execute(useCaseCtx, resolver.createUserUseCase, &createUserRequest, nil)
 	if useCaseResponse.Err != nil {
 		return modelResolvers.NewFailedCreationResponse(), useCaseResponse.Err
 	}

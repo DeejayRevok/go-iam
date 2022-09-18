@@ -20,6 +20,7 @@ type MeResolver struct {
 
 func (resolver *MeResolver) Me(c context.Context) (*modelResolvers.UserResolver, error) {
 	httpRequest := c.Value(RequestKey).(*http.Request)
+	useCaseCtx := httpRequest.Context()
 	accessToken, err := resolver.accessTokenFinder.Find(httpRequest)
 	if err != nil {
 		return nil, err
@@ -28,7 +29,7 @@ func (resolver *MeResolver) Me(c context.Context) (*modelResolvers.UserResolver,
 	useCaseRequest := getAuthenticatedUser.GetAuthenticatedUserRequest{
 		Token: *accessToken,
 	}
-	useCaseResponse := resolver.useCaseExecutor.Execute(resolver.getAuthenticatedUserUseCase, &useCaseRequest, nil)
+	useCaseResponse := resolver.useCaseExecutor.Execute(useCaseCtx, resolver.getAuthenticatedUserUseCase, &useCaseRequest, nil)
 	if useCaseResponse.Err != nil {
 		return nil, useCaseResponse.Err
 	}

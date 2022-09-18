@@ -32,7 +32,8 @@ func (controller *CreatePermissionController) Handle(c echo.Context) error {
 	createPermissionRequest := createPermission.CreatePermissionRequest{
 		Name: creationRequestDTO.Name,
 	}
-	useCaseResponse := controller.useCaseExecutor.Execute(controller.createPermissionUseCase, &createPermissionRequest, accessToken)
+	ctx := c.Request().Context()
+	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.createPermissionUseCase, &createPermissionRequest, accessToken)
 	if useCaseResponse.Err != nil {
 		return controller.errorTransformer.Transform(useCaseResponse.Err)
 	}

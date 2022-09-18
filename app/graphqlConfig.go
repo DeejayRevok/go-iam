@@ -10,7 +10,6 @@ import (
 
 	"github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
-	"github.com/graph-gophers/graphql-go/trace/opentracing"
 	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
 )
@@ -24,7 +23,7 @@ func BuildGraphQLHTTPHandler(resolver *resolvers.RootResolver, logger *zap.Logge
 	if err != nil {
 		logger.Fatal(err.Error())
 	}
-	parsedSchema, err := graphql.ParseSchema(schema, resolver, graphql.Tracer(opentracing.Tracer{}))
+	parsedSchema, err := graphql.ParseSchema(schema, resolver)
 	if err != nil {
 		logger.Fatal(err.Error())
 	}

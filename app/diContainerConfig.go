@@ -32,9 +32,9 @@ import (
 	"go-uaa/src/infrastructure/email"
 	"go-uaa/src/infrastructure/graph/resolvers"
 	"go-uaa/src/infrastructure/jwt"
+	"go-uaa/src/infrastructure/logging"
 	"go-uaa/src/infrastructure/messaging"
 	"go-uaa/src/infrastructure/security"
-	"go-uaa/src/infrastructure/tracing"
 	"go-uaa/src/infrastructure/transformers"
 
 	"github.com/streadway/amqp"
@@ -45,12 +45,15 @@ import (
 
 func BuildDIContainer() dig.Container {
 	container := dig.New()
-
-	if err := container.Provide(NewLogger); err != nil {
-		panic(fmt.Sprintf("Error providing logger to the dependency injection container: %s", err.Error()))
+	if err := container.Provide(NewAPMTracer); err != nil {
+		panic(fmt.Sprintf("Error providing APM tracer to the dependency injection container: %s", err.Error()))
+	}
+	if err := container.Provide(logging.NewZapLogger); err != nil {
+		panic(fmt.Sprintf("Error providing zap logger to the dependency injection container: %s", err.Error()))
 	}
 	if err := container.Invoke(func(logger *zap.Logger) {
-		handleError(container.Provide(tracing.NewJaegerTracerConfig), logger)
+		handleError(container.Provide(logging.NewZapTracedLogger, dig.As(new(internals.Logger))), logger)
+		handleError(container.Provide(logging.NewZapGormTracedLogger), logger)
 		handleError(container.Provide(ConnectDatabase), logger)
 		handleError(container.Provide(ConnectToAMQPServer), logger)
 		handleError(container.Provide(LoadJWTSettings), logger)

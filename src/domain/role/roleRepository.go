@@ -1,8 +1,12 @@
 package role
 
-import "github.com/google/uuid"
+import (
+	"context"
+
+	"github.com/google/uuid"
+)
 
 type RoleRepository interface {
-	Save(role Role) error
-	FindByIDs(roleIDs []uuid.UUID) ([]Role, error)
+	Save(ctx context.Context, role Role) error
+	FindByIDs(ctx context.Context, roleIDs []uuid.UUID) ([]Role, error)
 }

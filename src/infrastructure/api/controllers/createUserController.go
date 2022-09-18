@@ -24,13 +24,14 @@ func (controller *CreateUserController) Handle(c echo.Context) error {
 		return controller.errorTransformer.Transform(err)
 	}
 
+	ctx := c.Request().Context()
 	createUserRequest := createUser.CreateUserRequest{
 		Username: *userCreationRequest.Username,
 		Email:    *userCreationRequest.Email,
 		Password: *userCreationRequest.Password,
 		Roles:    controller.parseRoles(*userCreationRequest.Roles),
 	}
-	useCaseResponse := controller.useCaseExecutor.Execute(controller.createUserUseCase, &createUserRequest, nil)
+	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.createUserUseCase, &createUserRequest, nil)
 	if err := controller.handleUseCaseError(useCaseResponse.Err); err != nil {
 		return err
 	}

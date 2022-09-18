@@ -3,6 +3,7 @@
 package mocks
 
 import (
+	context "context"
 	role "go-uaa/src/domain/role"
 
 	mock "github.com/stretchr/testify/mock"
@@ -15,13 +16,13 @@ type RoleRepository struct {
 	mock.Mock
 }
 
-// FindByIDs provides a mock function with given fields: roleIDs
-func (_m *RoleRepository) FindByIDs(roleIDs []uuid.UUID) ([]role.Role, error) {
-	ret := _m.Called(roleIDs)
+// FindByIDs provides a mock function with given fields: ctx, roleIDs
+func (_m *RoleRepository) FindByIDs(ctx context.Context, roleIDs []uuid.UUID) ([]role.Role, error) {
+	ret := _m.Called(ctx, roleIDs)
 
 	var r0 []role.Role
-	if rf, ok := ret.Get(0).(func([]uuid.UUID) []role.Role); ok {
-		r0 = rf(roleIDs)
+	if rf, ok := ret.Get(0).(func(context.Context, []uuid.UUID) []role.Role); ok {
+		r0 = rf(ctx, roleIDs)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]role.Role)
@@ -29,8 +30,8 @@ func (_m *RoleRepository) FindByIDs(roleIDs []uuid.UUID) ([]role.Role, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func([]uuid.UUID) error); ok {
-		r1 = rf(roleIDs)
+	if rf, ok := ret.Get(1).(func(context.Context, []uuid.UUID) error); ok {
+		r1 = rf(ctx, roleIDs)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -38,13 +39,13 @@ func (_m *RoleRepository) FindByIDs(roleIDs []uuid.UUID) ([]role.Role, error) {
 	return r0, r1
 }
 
-// Save provides a mock function with given fields: _a0
-func (_m *RoleRepository) Save(_a0 role.Role) error {
-	ret := _m.Called(_a0)
+// Save provides a mock function with given fields: ctx, _a1
+func (_m *RoleRepository) Save(ctx context.Context, _a1 role.Role) error {
+	ret := _m.Called(ctx, _a1)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(role.Role) error); ok {
-		r0 = rf(_a0)
+	if rf, ok := ret.Get(0).(func(context.Context, role.Role) error); ok {
+		r0 = rf(ctx, _a1)
 	} else {
 		r0 = ret.Error(0)
 	}

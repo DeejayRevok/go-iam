@@ -3,6 +3,7 @@
 package mocks
 
 import (
+	context "context"
 	permission "go-uaa/src/domain/permission"
 
 	mock "github.com/stretchr/testify/mock"
@@ -13,13 +14,13 @@ type PermissionRepository struct {
 	mock.Mock
 }
 
-// FindByNames provides a mock function with given fields: permissionNames
-func (_m *PermissionRepository) FindByNames(permissionNames []string) ([]permission.Permission, error) {
-	ret := _m.Called(permissionNames)
+// FindByNames provides a mock function with given fields: ctx, permissionNames
+func (_m *PermissionRepository) FindByNames(ctx context.Context, permissionNames []string) ([]permission.Permission, error) {
+	ret := _m.Called(ctx, permissionNames)
 
 	var r0 []permission.Permission
-	if rf, ok := ret.Get(0).(func([]string) []permission.Permission); ok {
-		r0 = rf(permissionNames)
+	if rf, ok := ret.Get(0).(func(context.Context, []string) []permission.Permission); ok {
+		r0 = rf(ctx, permissionNames)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]permission.Permission)
@@ -27,8 +28,8 @@ func (_m *PermissionRepository) FindByNames(permissionNames []string) ([]permiss
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func([]string) error); ok {
-		r1 = rf(permissionNames)
+	if rf, ok := ret.Get(1).(func(context.Context, []string) error); ok {
+		r1 = rf(ctx, permissionNames)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -36,13 +37,13 @@ func (_m *PermissionRepository) FindByNames(permissionNames []string) ([]permiss
 	return r0, r1
 }
 
-// Save provides a mock function with given fields: _a0
-func (_m *PermissionRepository) Save(_a0 permission.Permission) error {
-	ret := _m.Called(_a0)
+// Save provides a mock function with given fields: ctx, _a1
+func (_m *PermissionRepository) Save(ctx context.Context, _a1 permission.Permission) error {
+	ret := _m.Called(ctx, _a1)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(permission.Permission) error); ok {
-		r0 = rf(_a0)
+	if rf, ok := ret.Get(0).(func(context.Context, permission.Permission) error); ok {
+		r0 = rf(ctx, _a1)
 	} else {
 		r0 = ret.Error(0)
 	}

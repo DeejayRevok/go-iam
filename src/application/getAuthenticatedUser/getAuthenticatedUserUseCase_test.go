@@ -1,15 +1,17 @@
 package getAuthenticatedUser
 
 import (
+	"context"
 	"errors"
 	"go-uaa/mocks"
 	"go-uaa/src/domain/auth/accessToken"
 	"go-uaa/src/domain/user"
+	"go-uaa/src/infrastructure/logging"
 	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/mock"
-	"go.uber.org/zap"
+	"go.elastic.co/apm/v2"
 )
 
 type testCase struct {
@@ -18,7 +20,8 @@ type testCase struct {
 }
 
 func setUp(t *testing.T) testCase {
-	logger, _ := zap.NewDevelopment()
+	tracer := apm.DefaultTracer()
+	logger := logging.NewZapTracedLogger(tracer)
 	userRepositoryMock := mocks.NewUserRepository(t)
 	return testCase{
 		UserRepo: userRepositoryMock,
@@ -29,8 +32,9 @@ func setUp(t *testing.T) testCase {
 func TestExecuteWrongRequest(t *testing.T) {
 	testCase := setUp(t)
 	request := "wrongRequest"
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -41,7 +45,7 @@ func TestExecuteWrongRequest(t *testing.T) {
 func TestExecuteFindError(t *testing.T) {
 	testCase := setUp(t)
 	findError := errors.New("Test find user error")
-	testCase.UserRepo.On("FindByUsername", mock.Anything).Return(nil, findError)
+	testCase.UserRepo.On("FindByUsername", mock.Anything, mock.Anything).Return(nil, findError)
 	testUsername := "TestUser"
 	testToken := accessToken.AccessToken{
 		Sub: testUsername,
@@ -49,8 +53,9 @@ func TestExecuteFindError(t *testing.T) {
 	request := GetAuthenticatedUserRequest{
 		Token: testToken,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -58,7 +63,7 @@ func TestExecuteFindError(t *testing.T) {
 	if response.Err != findError {
 		t.Fatal("Expected use case to return user repository find error")
 	}
-	testCase.UserRepo.AssertCalled(t, "FindByUsername", testUsername)
+	testCase.UserRepo.AssertCalled(t, "FindByUsername", ctx, testUsername)
 }
 
 func TestExecuteSuccess(t *testing.T) {
@@ -67,15 +72,16 @@ func TestExecuteSuccess(t *testing.T) {
 	testUser := user.User{
 		Username: testUsername,
 	}
-	testCase.UserRepo.On("FindByUsername", mock.Anything).Return(&testUser, nil)
+	testCase.UserRepo.On("FindByUsername", mock.Anything, mock.Anything).Return(&testUser, nil)
 	testToken := accessToken.AccessToken{
 		Sub: testUsername,
 	}
 	request := GetAuthenticatedUserRequest{
 		Token: testToken,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err != nil {
 		t.Fatal("Expected use case not to return error")
@@ -84,5 +90,5 @@ func TestExecuteSuccess(t *testing.T) {
 	if !reflect.DeepEqual(responseUser, testUser) {
 		t.Fatal("Expected use case ro return same user as the repository")
 	}
-	testCase.UserRepo.AssertCalled(t, "FindByUsername", testUsername)
+	testCase.UserRepo.AssertCalled(t, "FindByUsername", ctx, testUsername)
 }

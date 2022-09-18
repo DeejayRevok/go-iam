@@ -1,6 +1,7 @@
 package authenticationStrategy
 
 import (
+	"context"
 	"errors"
 	"go-uaa/src/domain/hash"
 	"go-uaa/src/domain/user"
@@ -11,8 +12,8 @@ type PasswordAuthenticationStrategy struct {
 	passwordHashComparator hash.HashComparator
 }
 
-func (strategy *PasswordAuthenticationStrategy) Authenticate(request *AuthenticationStrategyRequest) (*user.User, error) {
-	user, err := strategy.userRepository.FindByUsername(request.Username)
+func (strategy *PasswordAuthenticationStrategy) Authenticate(ctx context.Context, request *AuthenticationStrategyRequest) (*user.User, error) {
+	user, err := strategy.userRepository.FindByUsername(ctx, request.Username)
 	if err != nil {
 		return nil, err
 	}
@@ -36,10 +37,10 @@ func (strategy *PasswordAuthenticationStrategy) Authenticate(request *Authentica
 
 func (strategy *PasswordAuthenticationStrategy) ValidateStrategyRequest(request *AuthenticationStrategyRequest) error {
 	if request.Username == "" {
-		return errors.New("Missing username for password authentication")
+		return errors.New("missing username for password authentication")
 	}
 	if request.Password == "" {
-		return errors.New("Missing password for password authentication")
+		return errors.New("missing password for password authentication")
 	}
 	return nil
 }

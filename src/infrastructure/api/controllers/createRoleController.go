@@ -29,11 +29,12 @@ func (controller *CreateRoleController) Handle(c echo.Context) error {
 	if err := controller.dtoDeserializer.Deserialize(c, &creationRequestDTO); err != nil {
 		return controller.errorTransformer.Transform(err)
 	}
+	ctx := c.Request().Context()
 	createRoleRequest := createRole.CreateRoleRequest{
 		Name:        creationRequestDTO.Name,
 		Permissions: creationRequestDTO.Permissions,
 	}
-	useCaseResponse := controller.useCaseExecutor.Execute(controller.createRoleUseCase, &createRoleRequest, accessToken)
+	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.createRoleUseCase, &createRoleRequest, accessToken)
 	if useCaseResponse.Err != nil {
 		return controller.errorTransformer.Transform(useCaseResponse.Err)
 	}

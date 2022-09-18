@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"go-uaa/src/domain/role"
 
 	"github.com/google/uuid"
@@ -12,16 +13,18 @@ type RoleDbRepository struct {
 	db *gorm.DB
 }
 
-func (repo *RoleDbRepository) Save(role role.Role) error {
-	result := repo.db.Clauses(clause.OnConflict{
+func (repo *RoleDbRepository) Save(ctx context.Context, role role.Role) error {
+	db := repo.db.WithContext(ctx)
+	result := db.Clauses(clause.OnConflict{
 		UpdateAll: true,
 	}).Create(&role)
 	return result.Error
 }
 
-func (repo *RoleDbRepository) FindByIDs(roleIDs []uuid.UUID) ([]role.Role, error) {
+func (repo *RoleDbRepository) FindByIDs(ctx context.Context, roleIDs []uuid.UUID) ([]role.Role, error) {
 	var foundRoles []role.Role
-	result := repo.db.Where("id IN ?", roleIDs).Find(&foundRoles)
+	db := repo.db.WithContext(ctx)
+	result := db.Where("id IN ?", roleIDs).Find(&foundRoles)
 	if result.Error != nil {
 		return nil, result.Error
 	}

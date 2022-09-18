@@ -1,13 +1,15 @@
 package createPermission
 
 import (
+	"context"
 	"errors"
 	"go-uaa/mocks"
 	"go-uaa/src/domain/permission"
+	"go-uaa/src/infrastructure/logging"
 	"testing"
 
 	"github.com/stretchr/testify/mock"
-	"go.uber.org/zap"
+	"go.elastic.co/apm/v2"
 )
 
 type testCase struct {
@@ -16,7 +18,8 @@ type testCase struct {
 }
 
 func setUp(t *testing.T) testCase {
-	logger, _ := zap.NewDevelopment()
+	tracer := apm.DefaultTracer()
+	logger := logging.NewZapTracedLogger(tracer)
 	permissionRepoMock := mocks.NewPermissionRepository(t)
 	return testCase{
 		PermissionRepo: permissionRepoMock,
@@ -27,8 +30,9 @@ func setUp(t *testing.T) testCase {
 func TestExecuteWrongRequest(t *testing.T) {
 	testCase := setUp(t)
 	request := "wrongRequest"
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(request)
+	response := testCase.UseCase.Execute(ctx, request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -39,13 +43,14 @@ func TestExecuteWrongRequest(t *testing.T) {
 func TestExecutePermissionSaveError(t *testing.T) {
 	testCase := setUp(t)
 	saveError := errors.New("Test save error")
-	testCase.PermissionRepo.On("Save", mock.Anything).Return(saveError)
+	testCase.PermissionRepo.On("Save", mock.Anything, mock.Anything).Return(saveError)
 	permissionName := "testPermission"
 	request := CreatePermissionRequest{
 		Name: permissionName,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err == nil {
 		t.Fatal("Expected use case to return error")
@@ -56,18 +61,19 @@ func TestExecutePermissionSaveError(t *testing.T) {
 	expectedSavePermission := permission.Permission{
 		Name: permissionName,
 	}
-	testCase.PermissionRepo.AssertCalled(t, "Save", expectedSavePermission)
+	testCase.PermissionRepo.AssertCalled(t, "Save", ctx, expectedSavePermission)
 }
 
 func TestExecuteSuccess(t *testing.T) {
 	testCase := setUp(t)
-	testCase.PermissionRepo.On("Save", mock.Anything).Return(nil)
+	testCase.PermissionRepo.On("Save", mock.Anything, mock.Anything).Return(nil)
 	permissionName := "testPermission"
 	request := CreatePermissionRequest{
 		Name: permissionName,
 	}
+	ctx := context.Background()
 
-	response := testCase.UseCase.Execute(&request)
+	response := testCase.UseCase.Execute(ctx, &request)
 
 	if response.Err != nil {
 		t.Fatal("Expected use case to not return error")
@@ -75,5 +81,5 @@ func TestExecuteSuccess(t *testing.T) {
 	expectedSavePermission := permission.Permission{
 		Name: permissionName,
 	}
-	testCase.PermissionRepo.AssertCalled(t, "Save", expectedSavePermission)
+	testCase.PermissionRepo.AssertCalled(t, "Save", ctx, expectedSavePermission)
 }

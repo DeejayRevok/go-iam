@@ -1,6 +1,7 @@
 package authenticate
 
 import (
+	"context"
 	"fmt"
 	"go-uaa/src/domain/auth"
 	"go-uaa/src/domain/auth/accessToken"
@@ -9,8 +10,6 @@ import (
 	"go-uaa/src/domain/internals"
 	"go-uaa/src/domain/user"
 	"time"
-
-	"go.uber.org/zap"
 )
 
 type AuthenticationUseCase struct {
@@ -18,19 +17,19 @@ type AuthenticationUseCase struct {
 	accessTokenGenerator  *accessToken.AccessTokenGenerator
 	refreshTokenGenerator *refreshToken.RefreshTokenGenerator
 	userRepository        user.UserRepository
-	logger                *zap.Logger
+	logger                internals.Logger
 }
 
-func (useCase *AuthenticationUseCase) Execute(request any) internals.UseCaseResponse {
+func (useCase *AuthenticationUseCase) Execute(ctx context.Context, request any) internals.UseCaseResponse {
 	validatedRequest, errResponse := internals.ValidateUseCaseRequest[*AuthenticationRequest](request)
 	if errResponse != nil {
 		return *errResponse
 	}
 
-	useCase.logger.Info(fmt.Sprintf("Starting authentication for %s", validatedRequest.Username))
-	defer useCase.logger.Info(fmt.Sprintf("Finished authentication for %s", validatedRequest.Username))
+	useCase.logger.Info(ctx, fmt.Sprintf("Starting authentication for %s", validatedRequest.Username))
+	defer useCase.logger.Info(ctx, fmt.Sprintf("Finished authentication for %s", validatedRequest.Username))
 
-	user, err := useCase.authenticator.Authenticate(validatedRequest.GrantType, useCase.createAuthenticationStrategyRequest(validatedRequest))
+	user, err := useCase.authenticator.Authenticate(ctx, validatedRequest.GrantType, useCase.createAuthenticationStrategyRequest(validatedRequest))
 	if err != nil {
 		return internals.ErrorUseCaseResponse(err)
 	}
@@ -44,7 +43,7 @@ func (useCase *AuthenticationUseCase) Execute(request any) internals.UseCaseResp
 		User: user,
 	}
 	refreshToken := useCase.refreshTokenGenerator.Generate(&refreshTokenRequest)
-	if err = useCase.updateUserRefreshToken(user, &refreshToken); err != nil {
+	if err = useCase.updateUserRefreshToken(ctx, user, &refreshToken); err != nil {
 		return internals.ErrorUseCaseResponse(err)
 	}
 
@@ -73,16 +72,16 @@ func (useCase *AuthenticationUseCase) createAuthentication(accessTokenInstance *
 	}
 }
 
-func (useCase *AuthenticationUseCase) updateUserRefreshToken(user *user.User, refreshToken *refreshToken.RefreshToken) error {
+func (useCase *AuthenticationUseCase) updateUserRefreshToken(ctx context.Context, user *user.User, refreshToken *refreshToken.RefreshToken) error {
 	user.RefreshToken = refreshToken.Id
-	return useCase.userRepository.Save(*user)
+	return useCase.userRepository.Save(ctx, *user)
 }
 
 func (*AuthenticationUseCase) RequiredPermissions() []string {
 	return []string{}
 }
 
-func NewAuthenticationUseCase(authenticator *auth.Authenticator, accesTokenGenerator *accessToken.AccessTokenGenerator, refreshTokenGenerator *refreshToken.RefreshTokenGenerator, userRepository user.UserRepository, logger *zap.Logger) *AuthenticationUseCase {
+func NewAuthenticationUseCase(authenticator *auth.Authenticator, accesTokenGenerator *accessToken.AccessTokenGenerator, refreshTokenGenerator *refreshToken.RefreshTokenGenerator, userRepository user.UserRepository, logger internals.Logger) *AuthenticationUseCase {
 	useCase := AuthenticationUseCase{
 		authenticator:         authenticator,
 		accessTokenGenerator:  accesTokenGenerator,

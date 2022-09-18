@@ -31,10 +31,11 @@ func (controller *GetUserController) Handle(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Error processing user id")
 	}
+	ctx := c.Request().Context()
 	userRequest := getUser.GetUserRequest{
 		UserId: userId,
 	}
-	useCaseResponse := controller.useCaseExecutor.Execute(controller.getUserUseCase, &userRequest, accessToken)
+	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.getUserUseCase, &userRequest, accessToken)
 	if useCaseResponse.Err != nil {
 		return controller.errorTransformer.Transform(useCaseResponse.Err)
 	}
