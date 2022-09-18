@@ -1,6 +1,7 @@
 package authenticationStrategy
 
 import (
+	"context"
 	"errors"
 	"go-uaa/src/domain/auth/refreshToken"
 	"go-uaa/src/domain/user"
@@ -11,13 +12,13 @@ type RefreshTokenAuthenticationStrategy struct {
 	refreshTokenDeserializer refreshToken.RefreshTokenDeserializer
 }
 
-func (strategy *RefreshTokenAuthenticationStrategy) Authenticate(request *AuthenticationStrategyRequest) (*user.User, error) {
+func (strategy *RefreshTokenAuthenticationStrategy) Authenticate(ctx context.Context, request *AuthenticationStrategyRequest) (*user.User, error) {
 	refreshToken, err := strategy.getRefreshToken(request.RefreshToken)
 	if err != nil {
 		return nil, err
 	}
 
-	user, err := strategy.userRepository.FindByUsername(refreshToken.Sub)
+	user, err := strategy.userRepository.FindByUsername(ctx, refreshToken.Sub)
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +31,7 @@ func (strategy *RefreshTokenAuthenticationStrategy) Authenticate(request *Authen
 	}
 
 	if user.RefreshToken != refreshToken.Id {
-		if err := strategy.invalidateUserRefreshToken(user); err != nil {
+		if err := strategy.invalidateUserRefreshToken(ctx, user); err != nil {
 			return nil, err
 		}
 		return nil, StrategyAuthenticationError{
@@ -44,7 +45,7 @@ func (strategy *RefreshTokenAuthenticationStrategy) Authenticate(request *Authen
 
 func (strategy *RefreshTokenAuthenticationStrategy) ValidateStrategyRequest(request *AuthenticationStrategyRequest) error {
 	if request.RefreshToken == "" {
-		return errors.New("Missing refresh token for refresh_token authentication")
+		return errors.New("missing refresh token for refresh_token authentication")
 	}
 	return nil
 }
@@ -57,9 +58,9 @@ func (strategy *RefreshTokenAuthenticationStrategy) getRefreshToken(serializedRe
 	return refreshToken, nil
 }
 
-func (strategy *RefreshTokenAuthenticationStrategy) invalidateUserRefreshToken(user *user.User) error {
+func (strategy *RefreshTokenAuthenticationStrategy) invalidateUserRefreshToken(ctx context.Context, user *user.User) error {
 	user.RefreshToken = ""
-	return strategy.userRepository.Save(*user)
+	return strategy.userRepository.Save(ctx, *user)
 }
 
 func NewRefreshTokenAuthenticationStrategy(userRepository user.UserRepository, refreshTokenDeserializer refreshToken.RefreshTokenDeserializer) *RefreshTokenAuthenticationStrategy {
