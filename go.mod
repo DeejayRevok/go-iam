@@ -20,6 +20,7 @@ require (
 	go.elastic.co/apm/v2 v2.1.0
 	go.uber.org/zap v1.21.0
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa
+	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gorm.io/gorm v1.23.5
 )
 
