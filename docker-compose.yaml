@@ -96,6 +96,16 @@ services:
     depends_on:
       - elasticsearch
 
+  logstash:
+    image: logstash:7.6.0
+    command: logstash -f /usr/local/etc/logstash.conf
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./tools/logstash.conf:/usr/local/etc/logstash.conf
+
 volumes:
   db:
   elasticsearch_data:
