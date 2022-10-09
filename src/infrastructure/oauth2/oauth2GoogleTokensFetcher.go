@@ -1,6 +1,7 @@
 package oauth2
 
 import (
+	"context"
 	"go-uaa/src/domain/auth/thirdParty"
 	"go-uaa/src/infrastructure/transformers"
 
@@ -22,7 +23,7 @@ func (fetcher *Oauth2GoogleTokensFetcher) Fetch(code string, callbackURL string)
 		Scopes:       []string{googleEmailScope},
 		Endpoint:     google.Endpoint,
 	}
-	response, err := oauthConfing.Exchange(oauth2.NoContext, code)
+	response, err := oauthConfing.Exchange(context.Background(), code)
 	if err != nil {
 		return nil, err
 	}
