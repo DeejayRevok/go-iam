@@ -17,11 +17,12 @@ func (middleware *EchoLogMiddleware) Middleware() echo.MiddlewareFunc {
 			err := next(c)
 			request := c.Request()
 			response := c.Response()
+			if err != nil {
+				middleware.logger.Error(err.Error())
+				c.Error(err)
+			}
 			if request.URL.Path != "/metrics" {
 				middleware.logger.Info(fmt.Sprintf("Executed HTTP %s request for %s with response status %d", request.Method, request.RequestURI, response.Status))
-			}
-			if err != nil {
-				c.Error(err)
 			}
 			return nil
 		}
