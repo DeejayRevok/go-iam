@@ -29,7 +29,7 @@ func (controller *ResetPasswordController) Handle(c echo.Context) error {
 		ResetToken:  resetDTO.ResetToken,
 		NewPassword: resetDTO.NewPassword,
 	}
-	if useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.resetPasswordUseCase, &useCaseRequest, nil); useCaseResponse.Err != nil {
+	if useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.resetPasswordUseCase, &useCaseRequest, nil, nil); useCaseResponse.Err != nil {
 		return controller.errorTransformer.Transform(useCaseResponse.Err)
 	}
 	return c.NoContent(http.StatusOK)
