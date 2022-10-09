@@ -17,6 +17,9 @@ func (finder *HTTPAccessTokenFinder) Find(httpRequest *http.Request) (*accessTok
 	if err != nil {
 		return nil, err
 	}
+	if serializedToken == "" {
+		return nil, nil
+	}
 	token, err := finder.tokenDeserializer.Deserialize(serializedToken)
 	if err != nil {
 		return nil, err
@@ -27,7 +30,7 @@ func (finder *HTTPAccessTokenFinder) Find(httpRequest *http.Request) (*accessTok
 func (*HTTPAccessTokenFinder) getSerializedAccessToken(request http.Request) (string, error) {
 	authorizationHeader := request.Header.Get("Authorization")
 	if authorizationHeader == "" {
-		return "", echo.NewHTTPError(http.StatusBadRequest, "Missing authorization header")
+		return "", nil
 	}
 	splittedHeader := strings.Split(authorizationHeader, " ")
 	if len(splittedHeader) < 2 {

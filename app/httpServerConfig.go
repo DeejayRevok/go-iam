@@ -19,17 +19,17 @@ func BuildHTTPServer(container *dig.Container) *echo.Echo {
 	server.Use(middlewares.NewEchoAPMMiddleware())
 
 	if err := container.Invoke(func(logger *zap.Logger) {
+		handleError(container.Invoke(func(middleware *prometheus.Prometheus) {
+			middleware.Use(server)
+		}), logger)
 		handleError(container.Invoke(func(validator *dto.DTOValidator) {
 			server.Validator = validator
-		}), logger)
-		handleError(container.Invoke(func(redoc *redoc.Redoc) {
-			server.Use(middlewares.NewEchoRedocMiddleware(*redoc))
 		}), logger)
 		handleError(container.Invoke(func(middleware *middlewares.EchoLogMiddleware) {
 			server.Use(middleware.Middleware())
 		}), logger)
-		handleError(container.Invoke(func(middleware *prometheus.Prometheus) {
-			middleware.Use(server)
+		handleError(container.Invoke(func(redoc *redoc.Redoc) {
+			server.Use(middlewares.NewEchoRedocMiddleware(*redoc))
 		}), logger)
 
 		handleError(container.Invoke(func(controller *controllers.CreateUserController) {
@@ -48,7 +48,7 @@ func BuildHTTPServer(container *dig.Container) *echo.Echo {
 			server.POST("/permissions", controller.Handle)
 		}), logger)
 		handleError(container.Invoke(func(controller *controllers.AuthenticateController) {
-			server.POST("/token", controller.Handle)
+			server.POST("/auth/token", controller.Handle)
 		}), logger)
 		handleError(container.Invoke(func(controller *controllers.GetJWTKeySetController) {
 			server.GET("/jwks", controller.Handle)
@@ -65,6 +65,12 @@ func BuildHTTPServer(container *dig.Container) *echo.Echo {
 		handleError(container.Invoke(func(resolver *resolvers.RootResolver) {
 			handler := BuildGraphQLHTTPHandler(resolver, logger)
 			server.POST("/graphql", handler)
+		}), logger)
+		handleError(container.Invoke(func(controller *controllers.GetThirdPartyAuthenticationController) {
+			server.GET("/auth/third-party/:provider", controller.Handle)
+		}), logger)
+		handleError(container.Invoke(func(controller *controllers.ThirdPartyAuthenticationCallbackController) {
+			server.GET("/auth/:provider/callback", controller.Handle)
 		}), logger)
 	}); err != nil {
 		panic("Error adding HTTP API components to the dependency injection container")

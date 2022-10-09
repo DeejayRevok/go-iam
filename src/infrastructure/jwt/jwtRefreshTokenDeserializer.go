@@ -28,7 +28,7 @@ func (deserializer *JWTRefreshTokenDeserializer) Deserialize(serializedToken str
 	}
 	tokenClaims, typeCheck := jwtToken.Claims.(jwt.MapClaims)
 	if !typeCheck {
-		return nil, errors.New("Token claims not valid")
+		return nil, errors.New("token claims not valid")
 	}
 	return deserializer.tokenTransformer.Transform(&tokenClaims)
 }

@@ -32,6 +32,9 @@ paths:
           $ref: "#/components/responses/BadRequest"
   /users/{userId}:
     get:
+      security:
+        - BearerAuth: []
+        - CookieAuth: []
       operationId: getUser
       summary: Get user data
       tags:
@@ -55,6 +58,7 @@ paths:
     get:
       security:
         - BearerAuth: []
+        - CookieAuth: []
       operationId: getAuthenticatedUser
       summary: Get authenticated user data
       tags:
@@ -104,6 +108,9 @@ paths:
           $ref: "#/components/responses/BadRequest"
   /roles:
     post:
+      security:
+        - BearerAuth: []
+        - CookieAuth: []
       operationId: createRole
       summary: Create a new Role
       tags:
@@ -121,6 +128,9 @@ paths:
           $ref: "#/components/responses/BadRequest"
   /permissions:
     post:
+      security:
+        - BearerAuth: []
+        - CookieAuth: []
       operationId: createPermission
       summary: Create a new Permission
       tags:
@@ -136,7 +146,7 @@ paths:
           description: The permission has been created
         400:
           $ref: "#/components/responses/BadRequest"
-  /token:
+  /auth/token:
     post:
       operationId: authenticateUser
       summary: Perform the authentication process
@@ -161,6 +171,38 @@ paths:
           $ref: "#/components/responses/UnauthorizedError"
         500:
           $ref: "#/components/responses/InternalServerError"
+  /auth/third-party/{provider}:
+    get:
+      operationId: thirdPartyAuthentication
+      summary: Authenticate against a third party provider
+      tags:
+       - Authentication
+      parameters:
+        - in: path
+          name: provider
+          schema:
+            type: string
+          required: true
+          description: Name of the third party authentication provider
+      responses:
+        307:
+          description: Redirection to the third party provider authentication url
+  /auth/{provider}/callback:
+    get:
+      operationId: thirdPartyAuthenticationCallback
+      summary: Third party provider authentication callback
+      tags:
+       - Authentication
+      parameters:
+        - in: path
+          name: provider
+          schema:
+            type: string
+          required: true
+          description: Name of the third party authentication provider
+      responses:
+        200:
+          description: The third party authentication was successfull
   /jwks:
     get:
       operationId: getJWTKeySet
@@ -182,6 +224,10 @@ components:
     BearerAuth:
       type: http
       scheme: bearer
+    CookieAuth:
+      type: apiKey
+      in: cookie
+      name: session
   schemas:
     User:
       type: object

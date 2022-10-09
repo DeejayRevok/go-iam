@@ -9,20 +9,24 @@ import (
 	"go-uaa/src/application/createUser"
 	"go-uaa/src/application/getApplicationHealth"
 	"go-uaa/src/application/getAuthenticatedUser"
+	"go-uaa/src/application/getThirdPartyAuthenticationUrl"
 	"go-uaa/src/application/getUser"
 	"go-uaa/src/application/requestPasswordReset"
 	"go-uaa/src/application/resetPassword"
 	"go-uaa/src/application/sendPasswordResetToken"
+	"go-uaa/src/application/thirdPartyAuthentication"
 	"go-uaa/src/domain/auth"
 	"go-uaa/src/domain/auth/accessToken"
 	"go-uaa/src/domain/auth/authenticationStrategy"
 	"go-uaa/src/domain/auth/refreshToken"
+	"go-uaa/src/domain/auth/thirdParty"
 	"go-uaa/src/domain/events"
 	"go-uaa/src/domain/hash"
 	"go-uaa/src/domain/healthcheck"
 	"go-uaa/src/domain/internals"
 	"go-uaa/src/domain/permission"
 	"go-uaa/src/domain/role"
+	"go-uaa/src/domain/session"
 	"go-uaa/src/domain/user"
 	"go-uaa/src/infrastructure/api"
 	"go-uaa/src/infrastructure/api/controllers"
@@ -34,6 +38,7 @@ import (
 	"go-uaa/src/infrastructure/jwt"
 	"go-uaa/src/infrastructure/logging"
 	"go-uaa/src/infrastructure/messaging"
+	"go-uaa/src/infrastructure/oauth2"
 	"go-uaa/src/infrastructure/security"
 	"go-uaa/src/infrastructure/transformers"
 
@@ -58,6 +63,9 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(ConnectToAMQPServer), logger)
 		handleError(container.Provide(LoadJWTSettings), logger)
 		handleError(container.Provide(BuildSMTPClient), logger)
+		handleError(container.Provide(BuildOauth2GoogleAuthURLBuilder), logger)
+		handleError(container.Provide(BuildOauth2GoogleTokensFetcher), logger)
+		handleError(container.Provide(BuildThirdPartyAuthStateChecker), logger)
 
 		handleError(container.Provide(database.NewPermissionDbRepository, dig.As(new(permission.PermissionRepository))), logger)
 		handleError(container.Provide(database.NewRoleDbRepository, dig.As(new(role.RoleRepository))), logger)
@@ -67,6 +75,7 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(security.NewBcryptHasher, dig.As(new(hash.Hasher))), logger)
 		handleError(container.Provide(security.NewBcryptHashComparator, dig.As(new(hash.HashComparator))), logger)
 		handleError(container.Provide(security.NewMailCheckerEmailValidator, dig.As(new(user.EmailValidator))), logger)
+
 		handleError(container.Provide(jwt.NewJWTTokenGenerator), logger)
 		handleError(container.Provide(jwt.NewJWTClaimsToAccessTokenTransformer), logger)
 		handleError(container.Provide(jwt.NewJWTClaimsToRefreshTokenTransformer), logger)
@@ -74,6 +83,9 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(jwt.NewJWTRefreshTokenDeserializer, dig.As(new(refreshToken.RefreshTokenDeserializer))), logger)
 		handleError(container.Provide(jwt.NewJWTRSAKeyToJWTKeyResponseTransformer), logger)
 		handleError(container.Provide(jwt.NewJWTKeySetBuilder), logger)
+		handleError(container.Provide(jwt.NewJWTThirdPartyTokensToEmailTransformer, dig.As(new(thirdParty.ThirdPartyTokensToEmailTransformer))), logger)
+		handleError(container.Provide(jwt.NewJWTClaimsToSessionTransformer), logger)
+		handleError(container.Provide(jwt.NewJWTSessionDeserializer), logger)
 
 		handleError(container.Provide(transformers.NewRoleToResponseTransformer), logger)
 		handleError(container.Provide(transformers.NewUserToResponseTransformer), logger)
@@ -84,12 +96,18 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(transformers.NewAuthenticationToResponseTransformer), logger)
 		handleError(container.Provide(transformers.NewAMQPDeliveryToMapTransformer), logger)
 		handleError(container.Provide(transformers.NewErrorToEchoErrorTransformer), logger)
+		handleError(container.Provide(transformers.NewOauth2TokenToThirdPartyTokensTransformer), logger)
+		handleError(container.Provide(transformers.NewSessionToJWTClaimsTransformer), logger)
 
+		handleError(container.Provide(session.NewSessionGenerator), logger)
 		handleError(container.Provide(accessToken.NewAccessTokenGenerator), logger)
 		handleError(container.Provide(refreshToken.NewRefreshTokenGenerator), logger)
 		handleError(container.Provide(authenticationStrategy.NewPasswordAuthenticationStrategy), logger)
 		handleError(container.Provide(authenticationStrategy.NewRefreshTokenAuthenticationStrategy), logger)
 		handleError(container.Provide(auth.NewAuthenticator), logger)
+
+		handleError(container.Provide(oauth2.NewOauth2ThirdPartyAuthURLBuilderFactory, dig.As(new(thirdParty.ThirdPartyAuthURLBuilderFactory))), logger)
+		handleError(container.Provide(oauth2.NewOauth2ThirdPartyTokensFetcherFactory, dig.As(new(thirdParty.ThirdPartyTokensFetcherFactory))), logger)
 
 		handleError(container.Provide(func(amqpConnection *amqp.Connection, logger *zap.Logger) *amqp.Channel {
 			amqpChannel, err := amqpConnection.Channel()
@@ -116,6 +134,8 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(sendPasswordResetToken.NewSendPasswordResetTokenUseCase), logger)
 		handleError(container.Provide(sendPasswordResetToken.NewUserPasswordResetRequestedConsumer), logger)
 		handleError(container.Provide(resetPassword.NewResetPasswordUseCase), logger)
+		handleError(container.Provide(getThirdPartyAuthenticationUrl.NewGetThirdPartyAuthenticationURLUseCase), logger)
+		handleError(container.Provide(thirdPartyAuthentication.NewThirdPartyAuthenticationUseCase), logger)
 
 		handleError(container.Provide(dto.NewEchoDTOSerializer), logger)
 		handleError(container.Provide(dto.NewEchoDTODeserializer), logger)
@@ -128,6 +148,9 @@ func BuildDIContainer() dig.Container {
 		addHealthCheckDependencies(container, logger)
 
 		handleError(container.Provide(api.NewHTTPAccessTokenFinder), logger)
+		handleError(container.Provide(api.NewHTTPThirdPartyCallbackURLBuilder), logger)
+		handleError(container.Provide(api.NewEchoSessionSetter), logger)
+		handleError(container.Provide(api.NewHTTPSessionFinder), logger)
 		handleError(container.Provide(controllers.NewCreateUserController), logger)
 		handleError(container.Provide(controllers.NewGetUserController), logger)
 		handleError(container.Provide(controllers.NewCreatePermissionController), logger)
@@ -137,6 +160,8 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(controllers.NewGetJWTKeySetController), logger)
 		handleError(container.Provide(controllers.NewRequestResetPasswordController), logger)
 		handleError(container.Provide(controllers.NewResetPasswordController), logger)
+		handleError(container.Provide(controllers.NewGetThirdPartyAuthenticationController), logger)
+		handleError(container.Provide(controllers.NewThirdPartyAuthenticationCallbackController), logger)
 
 		handleError(container.Provide(resolvers.NewMeResolver), logger)
 		handleError(container.Provide(resolvers.NewCreateUserResolver), logger)

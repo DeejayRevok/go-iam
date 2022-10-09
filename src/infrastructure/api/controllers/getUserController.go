@@ -3,6 +3,7 @@ package controllers
 import (
 	"go-uaa/src/application/getUser"
 	"go-uaa/src/domain/internals"
+	"go-uaa/src/domain/session"
 	"go-uaa/src/domain/user"
 	"go-uaa/src/infrastructure/api"
 	"go-uaa/src/infrastructure/dto"
@@ -20,13 +21,23 @@ type GetUserController struct {
 	dtoSerializer     *dto.EchoDTOSerializer
 	userTransformer   *transformers.UserToResponseTransformer
 	errorTransformer  *transformers.ErrorToEchoErrorTransformer
+	sessionFinder     *api.HTTPSessionFinder
 }
 
 func (controller *GetUserController) Handle(c echo.Context) error {
-	accessToken, err := controller.accessTokenFinder.Find(c.Request())
+	request := c.Request()
+	accessToken, err := controller.accessTokenFinder.Find(request)
 	if err != nil {
 		return controller.errorTransformer.Transform(err)
 	}
+	var requestSession *session.Session
+	if accessToken == nil {
+		requestSession, err = controller.sessionFinder.Find(request)
+	}
+	if err != nil {
+		return controller.errorTransformer.Transform(err)
+	}
+
 	userId, err := uuid.Parse(c.Param("id"))
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Error processing user id")
@@ -35,7 +46,7 @@ func (controller *GetUserController) Handle(c echo.Context) error {
 	userRequest := getUser.GetUserRequest{
 		UserId: userId,
 	}
-	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.getUserUseCase, &userRequest, accessToken)
+	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.getUserUseCase, &userRequest, accessToken, requestSession)
 	if useCaseResponse.Err != nil {
 		return controller.errorTransformer.Transform(useCaseResponse.Err)
 	}
@@ -43,7 +54,7 @@ func (controller *GetUserController) Handle(c echo.Context) error {
 	return controller.errorTransformer.Transform(controller.dtoSerializer.Serialize(c, userResponse))
 }
 
-func NewGetUserController(getUserUseCase *getUser.GetUserUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, accessTokenFinder *api.HTTPAccessTokenFinder, dtoSerializer *dto.EchoDTOSerializer, userTransformer *transformers.UserToResponseTransformer, errorTransformer *transformers.ErrorToEchoErrorTransformer) *GetUserController {
+func NewGetUserController(getUserUseCase *getUser.GetUserUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, accessTokenFinder *api.HTTPAccessTokenFinder, dtoSerializer *dto.EchoDTOSerializer, userTransformer *transformers.UserToResponseTransformer, errorTransformer *transformers.ErrorToEchoErrorTransformer, sessionFinder *api.HTTPSessionFinder) *GetUserController {
 	controller := GetUserController{
 		getUserUseCase:    getUserUseCase,
 		useCaseExecutor:   useCaseExecutor,
@@ -51,6 +62,7 @@ func NewGetUserController(getUserUseCase *getUser.GetUserUseCase, useCaseExecuto
 		dtoSerializer:     dtoSerializer,
 		userTransformer:   userTransformer,
 		errorTransformer:  errorTransformer,
+		sessionFinder:     sessionFinder,
 	}
 	return &controller
 }

@@ -51,7 +51,7 @@ func TestExecuteFindError(t *testing.T) {
 		Sub: testUsername,
 	}
 	request := GetAuthenticatedUserRequest{
-		Token: testToken,
+		Token: &testToken,
 	}
 	ctx := context.Background()
 
@@ -77,7 +77,7 @@ func TestExecuteSuccess(t *testing.T) {
 		Sub: testUsername,
 	}
 	request := GetAuthenticatedUserRequest{
-		Token: testToken,
+		Token: &testToken,
 	}
 	ctx := context.Background()
 
