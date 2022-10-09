@@ -11,6 +11,7 @@ services:
         DEVELOPMENT: "true"
     ports:
       - 8888:8888
+      - 9273:9273
     depends_on:
       - postgres
       - rabbitmq
