@@ -8,6 +8,7 @@ import (
 	"go-uaa/src/domain/auth/authenticationStrategy"
 	"go-uaa/src/domain/auth/refreshToken"
 	"go-uaa/src/domain/internals"
+	"go-uaa/src/domain/session"
 	"go-uaa/src/domain/user"
 	"time"
 )
@@ -17,6 +18,7 @@ type AuthenticationUseCase struct {
 	accessTokenGenerator  *accessToken.AccessTokenGenerator
 	refreshTokenGenerator *refreshToken.RefreshTokenGenerator
 	userRepository        user.UserRepository
+	sessionGenerator      *session.SessionGenerator
 	logger                internals.Logger
 }
 
@@ -48,8 +50,13 @@ func (useCase *AuthenticationUseCase) Execute(ctx context.Context, request any) 
 	}
 
 	authentication := useCase.createAuthentication(&accessToken, &refreshToken)
+	session := useCase.sessionGenerator.Generate(user.ID)
+	responseContent := AuthenticationResponse{
+		Authentication: &authentication,
+		Session:        session,
+	}
 	return internals.UseCaseResponse{
-		Content: &authentication,
+		Content: &responseContent,
 		Err:     nil,
 	}
 }
@@ -81,12 +88,13 @@ func (*AuthenticationUseCase) RequiredPermissions() []string {
 	return []string{}
 }
 
-func NewAuthenticationUseCase(authenticator *auth.Authenticator, accesTokenGenerator *accessToken.AccessTokenGenerator, refreshTokenGenerator *refreshToken.RefreshTokenGenerator, userRepository user.UserRepository, logger internals.Logger) *AuthenticationUseCase {
+func NewAuthenticationUseCase(authenticator *auth.Authenticator, accesTokenGenerator *accessToken.AccessTokenGenerator, refreshTokenGenerator *refreshToken.RefreshTokenGenerator, userRepository user.UserRepository, sessionGenerator *session.SessionGenerator, logger internals.Logger) *AuthenticationUseCase {
 	useCase := AuthenticationUseCase{
 		authenticator:         authenticator,
 		accessTokenGenerator:  accesTokenGenerator,
 		refreshTokenGenerator: refreshTokenGenerator,
 		userRepository:        userRepository,
+		sessionGenerator:      sessionGenerator,
 		logger:                logger,
 	}
 	return &useCase

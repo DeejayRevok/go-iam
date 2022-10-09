@@ -8,6 +8,7 @@ import (
 	"go-uaa/src/domain/auth/accessToken"
 	"go-uaa/src/domain/auth/authenticationStrategy"
 	"go-uaa/src/domain/auth/refreshToken"
+	"go-uaa/src/domain/session"
 	"go-uaa/src/domain/user"
 	"go-uaa/src/infrastructure/logging"
 	"testing"
@@ -34,11 +35,12 @@ func setUp(t *testing.T) testCase {
 	authenticator := auth.NewAuthenticator(passwordAuthStrategy, refreshTokenAuthStrategy)
 	accessTokenGenerator := accessToken.NewAccessTokenGenerator()
 	refreshTokenGenerator := refreshToken.NewRefreshTokenGenerator()
+	sessionGenerator := session.NewSessionGenerator()
 	return testCase{
 		UserRepository:           userRepository,
 		HashComparator:           hashComparator,
 		RefreshTokenDeserializer: refreshTokenDeserializer,
-		UseCase:                  NewAuthenticationUseCase(authenticator, accessTokenGenerator, refreshTokenGenerator, userRepository, logger),
+		UseCase:                  NewAuthenticationUseCase(authenticator, accessTokenGenerator, refreshTokenGenerator, userRepository, sessionGenerator, logger),
 	}
 }
 
@@ -106,7 +108,10 @@ func TestExecutePasswordGrantTypeSuccess(t *testing.T) {
 	if response.Err != nil {
 		t.Fatal("Expected use case not to return error")
 	}
-	responseAuthentication := *response.Content.(*auth.Authentication)
+	authenticateResponse := *response.Content.(*AuthenticationResponse)
+	responseAuthentication := authenticateResponse.Authentication
+	responseSession := authenticateResponse.Session
+
 	if responseAuthentication.AccessToken == nil {
 		t.Fatal("Expected use case to return an access token")
 	}
@@ -124,6 +129,12 @@ func TestExecutePasswordGrantTypeSuccess(t *testing.T) {
 	}
 	if responseAuthentication.TokenType != "bearer" {
 		t.Fatal("Expected use case to return bearer token type")
+	}
+	if responseSession == nil {
+		t.Fatal("Expected use to return a session")
+	}
+	if responseSession.UserID != testUser.ID.String() {
+		t.Fatal("Expected session user id to be the same as the found user id")
 	}
 	testCase.UserRepository.AssertCalled(t, "FindByUsername", ctx, request.Username)
 	testCase.HashComparator.AssertCalled(t, "Compare", request.Password, testUser.Password)
@@ -162,7 +173,9 @@ func TestExecuteRefreshTokenGrantTypeSuccess(t *testing.T) {
 	if response.Err != nil {
 		t.Fatalf("Expected use case not to return error. Returned: %s", response.Err.Error())
 	}
-	responseAuthentication := *response.Content.(*auth.Authentication)
+	authenticateResponse := *response.Content.(*AuthenticationResponse)
+	responseAuthentication := authenticateResponse.Authentication
+	responseSession := authenticateResponse.Session
 	if responseAuthentication.AccessToken == nil {
 		t.Fatal("Expected use case to return an access token")
 	}
@@ -180,6 +193,12 @@ func TestExecuteRefreshTokenGrantTypeSuccess(t *testing.T) {
 	}
 	if responseAuthentication.TokenType != "bearer" {
 		t.Fatal("Expected use case to return bearer token type")
+	}
+	if responseSession == nil {
+		t.Fatal("Expected use to return a session")
+	}
+	if responseSession.UserID != testUser.ID.String() {
+		t.Fatal("Expected session user id to be the same as the found user id")
 	}
 	testCase.UserRepository.AssertCalled(t, "FindByUsername", ctx, request.Username)
 	testCase.HashComparator.AssertNotCalled(t, "Compare")
