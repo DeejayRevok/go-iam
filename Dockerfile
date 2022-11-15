@@ -5,17 +5,8 @@ RUN apt-get install apt-transport-https
 RUN echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-7.x.list
 RUN apt-get update && apt-get install filebeat && apt-get install metricbeat=7.11.2
 
-RUN wget -qO- https://repos.influxdata.com/influxdb.key | apt-key add -
-RUN apt-get install -y lsb-release
-RUN echo "deb https://repos.influxdata.com/debian $(lsb_release -cs) stable"| tee /etc/apt/sources.list.d/influxdb.list
-RUN apt-get update && apt-get install telegraf
-
 COPY ./tools/filebeat.yml /etc/filebeat/filebeat.yml
-<<<<<<< Updated upstream
-COPY ./tools/telegraf.conf /etc/telegraf/telegraf.conf
-=======
 COPY ./tools/metricbeat.yml /etc/metricbeat/metricbeat.yml
->>>>>>> Stashed changes
 
 RUN mkdir /var/log/uaa
 RUN mkdir /app
