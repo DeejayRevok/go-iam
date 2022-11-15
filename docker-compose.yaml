@@ -37,17 +37,6 @@ services:
       - 5432:5432
     volumes:
       - db:/var/lib/postgresql/data
-
-  postgres-exporter:
-    image: prometheuscommunity/postgres-exporter
-    ports:
-      - 9187:9187
-    environment:
-      DATA_SOURCE_NAME: "postgresql://test_user:test_password@postgres:5432/uaa?sslmode=disable"
-    depends_on:
-      - postgres
-      - prometheus
-
   
   rabbitmq:
     image: rabbitmq:3.8.19-management
@@ -63,18 +52,6 @@ services:
       - 15672:15672
       - 15674:15674
       - 25672:25672
-
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - 9090:9090
-    volumes:
-      - ./tools/prometheus.yml:/etc/prometheus/prometheus.yml
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-     - 3000:3000
 
   kibana:
     image: kibana:7.6.0
@@ -95,7 +72,7 @@ services:
       discovery.type: "single-node"
 
   apm-server:
-    image: store/elastic/apm-server:7.6.0
+    image: elastic/apm-server:7.6.0
     ports:
       - "8200:8200"
     environment:
