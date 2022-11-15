@@ -6,7 +6,6 @@ import (
 	"go-uaa/src/infrastructure/dto"
 	"go-uaa/src/infrastructure/graph/resolvers"
 
-	"github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
 	"github.com/mvrilo/go-redoc"
 	"go.uber.org/dig"
@@ -19,9 +18,6 @@ func BuildHTTPServer(container *dig.Container) *echo.Echo {
 	server.Use(middlewares.NewEchoAPMMiddleware())
 
 	if err := container.Invoke(func(logger *zap.Logger) {
-		handleError(container.Invoke(func(middleware *prometheus.Prometheus) {
-			middleware.Use(server)
-		}), logger)
 		handleError(container.Invoke(func(validator *dto.DTOValidator) {
 			server.Validator = validator
 		}), logger)

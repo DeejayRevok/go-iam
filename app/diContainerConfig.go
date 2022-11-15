@@ -143,7 +143,6 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(dto.NewDTOValidator), logger)
 		handleError(container.Provide(middlewares.NewEchoLogMiddleware), logger)
 		handleError(container.Provide(NewRedocConfiguration), logger)
-		handleError(container.Provide(middlewares.NewEchoPrometheusMiddleware), logger)
 
 		addHealthCheckDependencies(container, logger)
 
