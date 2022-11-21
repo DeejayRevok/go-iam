@@ -37,6 +37,7 @@ func (controller *ThirdPartyAuthenticationCallbackController) Handle(c echo.Cont
 	request := c.Request()
 	ctx := request.Context()
 	authRequest := authenticate.AuthenticationRequest{
+		Issuer:                 controller.getRequestOrigin(request),
 		ThirdPartyState:        state,
 		ThirdPartyCode:         code,
 		ThirdPartyAuthProvider: authProvider,
@@ -70,6 +71,10 @@ func (*ThirdPartyAuthenticationCallbackController) setCookie(c echo.Context, coo
 	cookie.Secure = true
 	cookie.Path = "/"
 	c.SetCookie(cookie)
+}
+
+func (*ThirdPartyAuthenticationCallbackController) getRequestOrigin(request *http.Request) string {
+	return request.Header.Get("origin")
 }
 
 func NewThirdPartyAuthenticationCallbackController(callbackURLBuilder *api.HTTPThirdPartyCallbackURLBuilder, authenticationUseCase *authenticate.AuthenticationUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, errorTransformer *transformers.ErrorToEchoErrorTransformer, authenticationTransformer *transformers.AuthenticationToResponseTransformer) *ThirdPartyAuthenticationCallbackController {

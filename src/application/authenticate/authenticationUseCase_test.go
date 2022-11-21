@@ -207,11 +207,8 @@ func TestExecuteRefreshTokenGrantTypeSuccess(t *testing.T) {
 func TestThirdPartyGrantTypeSuccess(t *testing.T) {
 	testCase := setUp(t)
 	request := AuthenticationRequest{
-		Username:               "testUsername",
-		Password:               "testPassword",
 		Issuer:                 "testIssuer",
-		GrantType:              "refresh_token",
-		RefreshToken:           "testRefreshTokenId",
+		GrantType:              "third_party",
 		ThirdPartyState:        testCase.InternalState,
 		ThirdPartyCode:         "testCode",
 		ThirdPartyAuthProvider: "testAuthProvider",
@@ -233,7 +230,8 @@ func TestThirdPartyGrantTypeSuccess(t *testing.T) {
 		Password:     "testPassword",
 		RefreshToken: "testRefreshTokenId",
 	}
-	testCase.UserRepository.On("FindByEmail", mock.Anything, mock.Anything).Return(testUser, nil)
+	testCase.UserRepository.On("FindByEmail", mock.Anything, mock.Anything).Return(&testUser, nil)
+	testCase.UserRepository.On("Save", mock.Anything, mock.Anything).Return(nil)
 
 	response := testCase.UseCase.Execute(ctx, &request)
 
@@ -264,4 +262,7 @@ func TestThirdPartyGrantTypeSuccess(t *testing.T) {
 	tokensFetcherMock.AssertCalled(t, "Fetch", request.ThirdPartyCode, request.ThirdPartyCallbackURL)
 	testCase.TokensToEmailTransformer.AssertCalled(t, "Transform", testTokens)
 	testCase.UserRepository.AssertCalled(t, "FindByEmail", ctx, testEmail)
+	testCase.UserRepository.AssertCalled(t, "Save", ctx, mock.MatchedBy(func(user user.User) bool {
+		return user.Username == testUser.Username && user.RefreshToken != ""
+	}))
 }
