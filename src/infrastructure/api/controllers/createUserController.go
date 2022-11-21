@@ -31,7 +31,7 @@ func (controller *CreateUserController) Handle(c echo.Context) error {
 		Password: *userCreationRequest.Password,
 		Roles:    controller.parseRoles(*userCreationRequest.Roles),
 	}
-	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.createUserUseCase, &createUserRequest, nil, nil)
+	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.createUserUseCase, &createUserRequest, nil)
 	if err := controller.handleUseCaseError(useCaseResponse.Err); err != nil {
 		return err
 	}

@@ -1,9 +1,8 @@
 package controllers
 
 import (
-	"go-uaa/src/application/thirdPartyAuthentication"
+	"go-uaa/src/application/authenticate"
 	"go-uaa/src/domain/internals"
-	"go-uaa/src/domain/session"
 	"go-uaa/src/infrastructure/api"
 	"go-uaa/src/infrastructure/transformers"
 	"net/http"
@@ -12,11 +11,11 @@ import (
 )
 
 type ThirdPartyAuthenticationCallbackController struct {
-	callbackURLBuilder              *api.HTTPThirdPartyCallbackURLBuilder
-	thirdPartyAuthenticationUseCase *thirdPartyAuthentication.ThirdPartyAuthenticationUseCase
-	useCaseExecutor                 *internals.AuthorizedUseCaseExecutor
-	errorTransformer                *transformers.ErrorToEchoErrorTransformer
-	sessionSetter                   *api.EchoSessionSetter
+	callbackURLBuilder        *api.HTTPThirdPartyCallbackURLBuilder
+	authenticationUseCase     *authenticate.AuthenticationUseCase
+	useCaseExecutor           *internals.AuthorizedUseCaseExecutor
+	errorTransformer          *transformers.ErrorToEchoErrorTransformer
+	authenticationTransformer *transformers.AuthenticationToResponseTransformer
 }
 
 func (controller *ThirdPartyAuthenticationCallbackController) Handle(c echo.Context) error {
@@ -37,31 +36,52 @@ func (controller *ThirdPartyAuthenticationCallbackController) Handle(c echo.Cont
 
 	request := c.Request()
 	ctx := request.Context()
-	authRequest := thirdPartyAuthentication.ThirdPartyAuthenticationRequest{
-		State:        state,
-		Code:         code,
-		AuthProvider: authProvider,
-		CallbackURL:  controller.callbackURLBuilder.Build(authProvider, request),
+	authRequest := authenticate.AuthenticationRequest{
+		Issuer:                 controller.getRequestOrigin(request),
+		ThirdPartyState:        state,
+		ThirdPartyCode:         code,
+		ThirdPartyAuthProvider: authProvider,
+		ThirdPartyCallbackURL:  controller.callbackURLBuilder.Build(authProvider, request),
+		GrantType:              "third_party",
 	}
 
-	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.thirdPartyAuthenticationUseCase, &authRequest, nil, nil)
+	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.authenticationUseCase, &authRequest, nil)
 	if useCaseResponse.Err != nil {
 		return controller.errorTransformer.Transform(useCaseResponse.Err)
 	}
-
-	c, err := controller.sessionSetter.Set(c, useCaseResponse.Content.(*session.Session))
+	authenticationResponse := useCaseResponse.Content.(*authenticate.AuthenticationResponse)
+	authenticationDTO, err := controller.authenticationTransformer.Transform(authenticationResponse.Authentication)
 	if err != nil {
 		return controller.errorTransformer.Transform(err)
 	}
+	controller.setAuthenticationCookies(c, authenticationDTO.AccessToken, authenticationDTO.RefreshToken)
 	return c.NoContent(http.StatusOK)
 }
 
-func NewThirdPartyAuthenticationCallbackController(callbackURLBuilder *api.HTTPThirdPartyCallbackURLBuilder, thirdPartyAuthenticationUseCase *thirdPartyAuthentication.ThirdPartyAuthenticationUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, errorTransformer *transformers.ErrorToEchoErrorTransformer, sessionSetter *api.EchoSessionSetter) *ThirdPartyAuthenticationCallbackController {
+func (controller *ThirdPartyAuthenticationCallbackController) setAuthenticationCookies(c echo.Context, accessToken string, refreshToken string) {
+	controller.setCookie(c, "access_token", accessToken)
+	controller.setCookie(c, "refresh_token", refreshToken)
+}
+
+func (*ThirdPartyAuthenticationCallbackController) setCookie(c echo.Context, cookieName string, cookieValue string) {
+	cookie := new(http.Cookie)
+	cookie.Name = cookieName
+	cookie.Value = cookieValue
+	cookie.HttpOnly = false
+	cookie.Secure = true
+	cookie.Path = "/"
+	c.SetCookie(cookie)
+}
+
+func (*ThirdPartyAuthenticationCallbackController) getRequestOrigin(request *http.Request) string {
+	return request.Header.Get("origin")
+}
+
+func NewThirdPartyAuthenticationCallbackController(callbackURLBuilder *api.HTTPThirdPartyCallbackURLBuilder, authenticationUseCase *authenticate.AuthenticationUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, errorTransformer *transformers.ErrorToEchoErrorTransformer, authenticationTransformer *transformers.AuthenticationToResponseTransformer) *ThirdPartyAuthenticationCallbackController {
 	return &ThirdPartyAuthenticationCallbackController{
-		callbackURLBuilder:              callbackURLBuilder,
-		thirdPartyAuthenticationUseCase: thirdPartyAuthenticationUseCase,
-		useCaseExecutor:                 useCaseExecutor,
-		errorTransformer:                errorTransformer,
-		sessionSetter:                   sessionSetter,
+		callbackURLBuilder:    callbackURLBuilder,
+		authenticationUseCase: authenticationUseCase,
+		useCaseExecutor:       useCaseExecutor,
+		errorTransformer:      errorTransformer,
 	}
 }

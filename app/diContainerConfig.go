@@ -14,7 +14,6 @@ import (
 	"go-uaa/src/application/requestPasswordReset"
 	"go-uaa/src/application/resetPassword"
 	"go-uaa/src/application/sendPasswordResetToken"
-	"go-uaa/src/application/thirdPartyAuthentication"
 	"go-uaa/src/domain/auth"
 	"go-uaa/src/domain/auth/accessToken"
 	"go-uaa/src/domain/auth/authenticationStrategy"
@@ -26,7 +25,6 @@ import (
 	"go-uaa/src/domain/internals"
 	"go-uaa/src/domain/permission"
 	"go-uaa/src/domain/role"
-	"go-uaa/src/domain/session"
 	"go-uaa/src/domain/user"
 	"go-uaa/src/infrastructure/api"
 	"go-uaa/src/infrastructure/api/controllers"
@@ -84,8 +82,6 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(jwt.NewJWTRSAKeyToJWTKeyResponseTransformer), logger)
 		handleError(container.Provide(jwt.NewJWTKeySetBuilder), logger)
 		handleError(container.Provide(jwt.NewJWTThirdPartyTokensToEmailTransformer, dig.As(new(thirdParty.ThirdPartyTokensToEmailTransformer))), logger)
-		handleError(container.Provide(jwt.NewJWTClaimsToSessionTransformer), logger)
-		handleError(container.Provide(jwt.NewJWTSessionDeserializer), logger)
 
 		handleError(container.Provide(transformers.NewRoleToResponseTransformer), logger)
 		handleError(container.Provide(transformers.NewUserToResponseTransformer), logger)
@@ -97,13 +93,11 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(transformers.NewAMQPDeliveryToMapTransformer), logger)
 		handleError(container.Provide(transformers.NewErrorToEchoErrorTransformer), logger)
 		handleError(container.Provide(transformers.NewOauth2TokenToThirdPartyTokensTransformer), logger)
-		handleError(container.Provide(transformers.NewSessionToJWTClaimsTransformer), logger)
-
-		handleError(container.Provide(session.NewSessionGenerator), logger)
 		handleError(container.Provide(accessToken.NewAccessTokenGenerator), logger)
 		handleError(container.Provide(refreshToken.NewRefreshTokenGenerator), logger)
 		handleError(container.Provide(authenticationStrategy.NewPasswordAuthenticationStrategy), logger)
 		handleError(container.Provide(authenticationStrategy.NewRefreshTokenAuthenticationStrategy), logger)
+		handleError(container.Provide(authenticationStrategy.NewThirdPartyAuthenticationStrategy), logger)
 		handleError(container.Provide(auth.NewAuthenticator), logger)
 
 		handleError(container.Provide(oauth2.NewOauth2ThirdPartyAuthURLBuilderFactory, dig.As(new(thirdParty.ThirdPartyAuthURLBuilderFactory))), logger)
@@ -135,7 +129,6 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(sendPasswordResetToken.NewUserPasswordResetRequestedConsumer), logger)
 		handleError(container.Provide(resetPassword.NewResetPasswordUseCase), logger)
 		handleError(container.Provide(getThirdPartyAuthenticationUrl.NewGetThirdPartyAuthenticationURLUseCase), logger)
-		handleError(container.Provide(thirdPartyAuthentication.NewThirdPartyAuthenticationUseCase), logger)
 
 		handleError(container.Provide(dto.NewEchoDTOSerializer), logger)
 		handleError(container.Provide(dto.NewEchoDTODeserializer), logger)
@@ -148,8 +141,6 @@ func BuildDIContainer() dig.Container {
 
 		handleError(container.Provide(api.NewHTTPAccessTokenFinder), logger)
 		handleError(container.Provide(api.NewHTTPThirdPartyCallbackURLBuilder), logger)
-		handleError(container.Provide(api.NewEchoSessionSetter), logger)
-		handleError(container.Provide(api.NewHTTPSessionFinder), logger)
 		handleError(container.Provide(controllers.NewCreateUserController), logger)
 		handleError(container.Provide(controllers.NewGetUserController), logger)
 		handleError(container.Provide(controllers.NewCreatePermissionController), logger)

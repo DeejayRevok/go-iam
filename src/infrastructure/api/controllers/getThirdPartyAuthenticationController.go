@@ -30,7 +30,7 @@ func (controller *GetThirdPartyAuthenticationController) Handle(c echo.Context) 
 		CallbackURL:  controller.callbackURLBuilder.Build(authProvider, request),
 	}
 
-	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.getThirdPartyAuthenticationUrlUseCase, &getUrlRequest, nil, nil)
+	useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.getThirdPartyAuthenticationUrlUseCase, &getUrlRequest, nil)
 	if useCaseResponse.Err != nil {
 		return controller.errorTransformer.Transform(useCaseResponse.Err)
 	}

@@ -28,7 +28,7 @@ func (controller *RequestResetPasswordController) Handle(c echo.Context) error {
 	useCaseRequest := requestPasswordReset.RequestPasswordResetRequest{
 		Email: requestResetDTO.Email,
 	}
-	if useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.requestResetPasswordUseCase, &useCaseRequest, nil, nil); useCaseResponse.Err != nil {
+	if useCaseResponse := controller.useCaseExecutor.Execute(ctx, controller.requestResetPasswordUseCase, &useCaseRequest, nil); useCaseResponse.Err != nil {
 		return controller.errorTransformer.Transform(useCaseResponse.Err)
 	}
 

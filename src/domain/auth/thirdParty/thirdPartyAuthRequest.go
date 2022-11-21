@@ -1,6 +1,6 @@
-package thirdPartyAuthentication
+package thirdParty
 
-type ThirdPartyAuthenticationRequest struct {
+type ThirdPartyAuthRequest struct {
 	State        string
 	Code         string
 	AuthProvider string
