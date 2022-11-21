@@ -224,10 +224,6 @@ components:
     BearerAuth:
       type: http
       scheme: bearer
-    CookieAuth:
-      type: apiKey
-      in: cookie
-      name: session
   schemas:
     User:
       type: object

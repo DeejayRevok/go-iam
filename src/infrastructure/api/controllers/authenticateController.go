@@ -3,7 +3,6 @@ package controllers
 import (
 	"go-uaa/src/application/authenticate"
 	"go-uaa/src/domain/internals"
-	"go-uaa/src/infrastructure/api"
 	"go-uaa/src/infrastructure/dto"
 	"go-uaa/src/infrastructure/transformers"
 	"net/http"
@@ -18,7 +17,6 @@ type AuthenticateController struct {
 	dtoDeserializer           *dto.EchoDTODeserializer
 	dtoSerializer             *dto.EchoDTOSerializer
 	errorTransformer          *transformers.ErrorToEchoErrorTransformer
-	sessionSetter             *api.EchoSessionSetter
 }
 
 func (controller *AuthenticateController) Handle(c echo.Context) error {
@@ -35,16 +33,12 @@ func (controller *AuthenticateController) Handle(c echo.Context) error {
 		GrantType:    authRequestDTO.GrantType,
 		RefreshToken: authRequestDTO.RefreshToken,
 	}
-	useCaseResponse := controller.useCaseExecutor.Execute(httpRequest.Context(), controller.authenticateUseCase, &authenticationRequest, nil, nil)
+	useCaseResponse := controller.useCaseExecutor.Execute(httpRequest.Context(), controller.authenticateUseCase, &authenticationRequest, nil)
 	if useCaseResponse.Err != nil {
 		return controller.errorTransformer.Transform(useCaseResponse.Err)
 	}
 	authenticationResponse := useCaseResponse.Content.(*authenticate.AuthenticationResponse)
 	authenticationDTO, err := controller.authenticationTransformer.Transform(authenticationResponse.Authentication)
-	if err != nil {
-		return controller.errorTransformer.Transform(err)
-	}
-	c, err = controller.sessionSetter.Set(c, authenticationResponse.Session)
 	if err != nil {
 		return controller.errorTransformer.Transform(err)
 	}
@@ -55,7 +49,7 @@ func (controller *AuthenticateController) getRequestOrigin(request *http.Request
 	return request.Header.Get("origin")
 }
 
-func NewAuthenticateController(useCase *authenticate.AuthenticationUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, transformer *transformers.AuthenticationToResponseTransformer, dtoDeserializer *dto.EchoDTODeserializer, dtoSerializer *dto.EchoDTOSerializer, errorTransformer *transformers.ErrorToEchoErrorTransformer, sessionSetter *api.EchoSessionSetter) *AuthenticateController {
+func NewAuthenticateController(useCase *authenticate.AuthenticationUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, transformer *transformers.AuthenticationToResponseTransformer, dtoDeserializer *dto.EchoDTODeserializer, dtoSerializer *dto.EchoDTOSerializer, errorTransformer *transformers.ErrorToEchoErrorTransformer) *AuthenticateController {
 	return &AuthenticateController{
 		authenticateUseCase:       useCase,
 		useCaseExecutor:           useCaseExecutor,
@@ -63,6 +57,5 @@ func NewAuthenticateController(useCase *authenticate.AuthenticationUseCase, useC
 		dtoDeserializer:           dtoDeserializer,
 		dtoSerializer:             dtoSerializer,
 		errorTransformer:          errorTransformer,
-		sessionSetter:             sessionSetter,
 	}
 }

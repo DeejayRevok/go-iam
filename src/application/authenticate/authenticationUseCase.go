@@ -7,8 +7,8 @@ import (
 	"go-uaa/src/domain/auth/accessToken"
 	"go-uaa/src/domain/auth/authenticationStrategy"
 	"go-uaa/src/domain/auth/refreshToken"
+	"go-uaa/src/domain/auth/thirdParty"
 	"go-uaa/src/domain/internals"
-	"go-uaa/src/domain/session"
 	"go-uaa/src/domain/user"
 	"time"
 )
@@ -18,7 +18,6 @@ type AuthenticationUseCase struct {
 	accessTokenGenerator  *accessToken.AccessTokenGenerator
 	refreshTokenGenerator *refreshToken.RefreshTokenGenerator
 	userRepository        user.UserRepository
-	sessionGenerator      *session.SessionGenerator
 	logger                internals.Logger
 }
 
@@ -50,10 +49,8 @@ func (useCase *AuthenticationUseCase) Execute(ctx context.Context, request any) 
 	}
 
 	authentication := useCase.createAuthentication(&accessToken, &refreshToken)
-	session := useCase.sessionGenerator.Generate(user.ID)
 	responseContent := AuthenticationResponse{
 		Authentication: &authentication,
-		Session:        session,
 	}
 	return internals.UseCaseResponse{
 		Content: &responseContent,
@@ -66,6 +63,12 @@ func (useCase *AuthenticationUseCase) createAuthenticationStrategyRequest(reques
 		Username:     request.Username,
 		Password:     request.Password,
 		RefreshToken: request.RefreshToken,
+		ThirdPartyAuthRequest: &thirdParty.ThirdPartyAuthRequest{
+			State:        request.ThirdPartyState,
+			Code:         request.ThirdPartyCode,
+			CallbackURL:  request.ThirdPartyCallbackURL,
+			AuthProvider: request.ThirdPartyAuthProvider,
+		},
 	}
 	return &strategyRequest
 }
@@ -88,13 +91,12 @@ func (*AuthenticationUseCase) RequiredPermissions() []string {
 	return []string{}
 }
 
-func NewAuthenticationUseCase(authenticator *auth.Authenticator, accesTokenGenerator *accessToken.AccessTokenGenerator, refreshTokenGenerator *refreshToken.RefreshTokenGenerator, userRepository user.UserRepository, sessionGenerator *session.SessionGenerator, logger internals.Logger) *AuthenticationUseCase {
+func NewAuthenticationUseCase(authenticator *auth.Authenticator, accesTokenGenerator *accessToken.AccessTokenGenerator, refreshTokenGenerator *refreshToken.RefreshTokenGenerator, userRepository user.UserRepository, logger internals.Logger) *AuthenticationUseCase {
 	useCase := AuthenticationUseCase{
 		authenticator:         authenticator,
 		accessTokenGenerator:  accesTokenGenerator,
 		refreshTokenGenerator: refreshTokenGenerator,
 		userRepository:        userRepository,
-		sessionGenerator:      sessionGenerator,
 		logger:                logger,
 	}
 	return &useCase

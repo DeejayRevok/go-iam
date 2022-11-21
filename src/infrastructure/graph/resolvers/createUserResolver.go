@@ -23,7 +23,7 @@ func (resolver *CreateUserResolver) CreateUser(c context.Context, args *struct{ 
 		Password: *args.Input.Password,
 		Roles:    resolver.parseRoles(*args.Input.Roles),
 	}
-	useCaseResponse := resolver.useCaseExecutor.Execute(useCaseCtx, resolver.createUserUseCase, &createUserRequest, nil, nil)
+	useCaseResponse := resolver.useCaseExecutor.Execute(useCaseCtx, resolver.createUserUseCase, &createUserRequest, nil)
 	if useCaseResponse.Err != nil {
 		return modelResolvers.NewFailedCreationResponse(), useCaseResponse.Err
 	}

@@ -4,7 +4,6 @@ import (
 	"context"
 	"go-uaa/src/application/getAuthenticatedUser"
 	"go-uaa/src/domain/internals"
-	"go-uaa/src/domain/session"
 	"go-uaa/src/domain/user"
 	"go-uaa/src/infrastructure/api"
 	"go-uaa/src/infrastructure/graph/modelResolvers"
@@ -17,7 +16,6 @@ type MeResolver struct {
 	useCaseExecutor             *internals.AuthorizedUseCaseExecutor
 	accessTokenFinder           *api.HTTPAccessTokenFinder
 	userToResponseTransformer   *transformers.UserToResponseTransformer
-	sessionFinder               *api.HTTPSessionFinder
 }
 
 func (resolver *MeResolver) Me(c context.Context) (*modelResolvers.UserResolver, error) {
@@ -27,19 +25,14 @@ func (resolver *MeResolver) Me(c context.Context) (*modelResolvers.UserResolver,
 	if err != nil {
 		return nil, err
 	}
-	var requestSession *session.Session
-	if accessToken == nil {
-		requestSession, err = resolver.sessionFinder.Find(httpRequest)
-	}
 	if err != nil {
 		return nil, err
 	}
 
 	useCaseRequest := getAuthenticatedUser.GetAuthenticatedUserRequest{
-		Token:   accessToken,
-		Session: requestSession,
+		Token: accessToken,
 	}
-	useCaseResponse := resolver.useCaseExecutor.Execute(useCaseCtx, resolver.getAuthenticatedUserUseCase, &useCaseRequest, nil, nil)
+	useCaseResponse := resolver.useCaseExecutor.Execute(useCaseCtx, resolver.getAuthenticatedUserUseCase, &useCaseRequest, nil)
 	if useCaseResponse.Err != nil {
 		return nil, useCaseResponse.Err
 	}
@@ -47,12 +40,11 @@ func (resolver *MeResolver) Me(c context.Context) (*modelResolvers.UserResolver,
 	return modelResolvers.NewUserResolver(*userResponse), nil
 }
 
-func NewMeResolver(getAuthenticatedUserUseCase *getAuthenticatedUser.GetAuthenticatedUserUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, accessTokenFinder *api.HTTPAccessTokenFinder, userToResponseTransformer *transformers.UserToResponseTransformer, sessionFinder *api.HTTPSessionFinder) *MeResolver {
+func NewMeResolver(getAuthenticatedUserUseCase *getAuthenticatedUser.GetAuthenticatedUserUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, accessTokenFinder *api.HTTPAccessTokenFinder, userToResponseTransformer *transformers.UserToResponseTransformer) *MeResolver {
 	return &MeResolver{
 		getAuthenticatedUserUseCase: getAuthenticatedUserUseCase,
 		useCaseExecutor:             useCaseExecutor,
 		accessTokenFinder:           accessTokenFinder,
 		userToResponseTransformer:   userToResponseTransformer,
-		sessionFinder:               sessionFinder,
 	}
 }
