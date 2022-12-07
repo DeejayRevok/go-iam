@@ -1,9 +1,9 @@
 package authenticationStrategy
 
-import "go-uaa/src/domain/auth/thirdParty"
+import "go-iam/src/domain/auth/thirdParty"
 
 type AuthenticationStrategyRequest struct {
-	Username              string
+	Email                 string
 	Password              string
 	RefreshToken          string
 	ThirdPartyAuthRequest *thirdParty.ThirdPartyAuthRequest

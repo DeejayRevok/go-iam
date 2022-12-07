@@ -2,7 +2,7 @@ package messaging
 
 import (
 	"fmt"
-	"go-uaa/src/infrastructure/transformers"
+	"go-iam/src/infrastructure/transformers"
 
 	"github.com/google/uuid"
 	"github.com/streadway/amqp"
@@ -16,7 +16,7 @@ type AMQPQueueEventListener struct {
 	logger                       *zap.Logger
 }
 
-func (listener *AMQPQueueEventListener) Listen(eventChannel chan map[string]string) error {
+func (listener *AMQPQueueEventListener) Listen(eventChannel chan map[string]interface{}) error {
 	consumerTag := fmt.Sprintf("%sConsumer.%s", listener.eventQueueName, uuid.New().String())
 	deliveries, err := listener.amqpChannel.Consume(
 		listener.eventQueueName,
@@ -34,7 +34,7 @@ func (listener *AMQPQueueEventListener) Listen(eventChannel chan map[string]stri
 	return nil
 }
 
-func (listener *AMQPQueueEventListener) handleDelivery(deliveries <-chan amqp.Delivery, eventChannel chan map[string]string) {
+func (listener *AMQPQueueEventListener) handleDelivery(deliveries <-chan amqp.Delivery, eventChannel chan map[string]interface{}) {
 	for delivery := range deliveries {
 		listener.logger.Info(fmt.Sprintf("got %dB delivery: [%v] %q", len(delivery.Body), delivery.DeliveryTag, delivery.Body))
 		eventMap, err := listener.amqpDeliveryToMapTransformer.Transform(&delivery)

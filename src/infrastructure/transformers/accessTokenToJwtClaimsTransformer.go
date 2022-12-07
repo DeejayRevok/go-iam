@@ -1,7 +1,7 @@
 package transformers
 
 import (
-	"go-uaa/src/domain/auth/accessToken"
+	"go-iam/src/domain/auth/accessToken"
 
 	"github.com/golang-jwt/jwt"
 )

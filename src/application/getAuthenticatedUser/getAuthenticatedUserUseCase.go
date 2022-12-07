@@ -3,9 +3,9 @@ package getAuthenticatedUser
 import (
 	"context"
 	"errors"
-	"go-uaa/src/domain/auth/accessToken"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/auth/accessToken"
+	"go-iam/src/domain/internals"
+	"go-iam/src/domain/user"
 )
 
 type GetAuthenticatedUserUseCase struct {
@@ -40,11 +40,7 @@ func (useCase *GetAuthenticatedUserUseCase) Execute(ctx context.Context, request
 }
 
 func (useCase *GetAuthenticatedUserUseCase) getUserFromAccessToken(ctx context.Context, token *accessToken.AccessToken) (*user.User, error) {
-	return useCase.userRepository.FindByUsername(ctx, token.Sub)
-}
-
-func (*GetAuthenticatedUserUseCase) RequiredPermissions() []string {
-	return []string{}
+	return useCase.userRepository.FindByEmail(ctx, token.Sub)
 }
 
 func NewGetAuthenticatedUserUseCase(userRepository user.UserRepository, logger internals.Logger) *GetAuthenticatedUserUseCase {

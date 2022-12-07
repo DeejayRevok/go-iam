@@ -3,8 +3,8 @@ package sendPasswordResetToken
 import (
 	"context"
 	"fmt"
-	"go-uaa/src/domain/events"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/events"
+	"go-iam/src/domain/user"
 	"reflect"
 
 	"go.uber.org/zap"
@@ -17,7 +17,7 @@ type UserPasswordResetRequestedConsumer struct {
 }
 
 func (consumer *UserPasswordResetRequestedConsumer) Consume() error {
-	eventMapChannel := make(chan map[string]string)
+	eventMapChannel := make(chan map[string]interface{})
 	err := consumer.eventListener.Listen(eventMapChannel)
 	if err != nil {
 		return err
@@ -26,7 +26,7 @@ func (consumer *UserPasswordResetRequestedConsumer) Consume() error {
 	return nil
 }
 
-func (consumer *UserPasswordResetRequestedConsumer) consumeEventMaps(eventMapChannel chan map[string]string) {
+func (consumer *UserPasswordResetRequestedConsumer) consumeEventMaps(eventMapChannel chan map[string]interface{}) {
 	for eventMap := range eventMapChannel {
 		err := consumer.handleEventMap(eventMap)
 		if err != nil {
@@ -35,7 +35,7 @@ func (consumer *UserPasswordResetRequestedConsumer) consumeEventMaps(eventMapCha
 	}
 }
 
-func (consumer *UserPasswordResetRequestedConsumer) handleEventMap(eventMap map[string]string) error {
+func (consumer *UserPasswordResetRequestedConsumer) handleEventMap(eventMap map[string]interface{}) error {
 	event := user.UserPasswordResetRequestedEventFromMap(eventMap)
 	sendResetTokenRequest := SendPasswordResetTokenRequest{
 		UserID:     event.UserID,

@@ -1,8 +1,6 @@
 package accessToken
 
 import (
-	"go-uaa/src/domain/user"
-	"strings"
 	"time"
 )
 
@@ -13,21 +11,11 @@ func (generator *AccessTokenGenerator) Generate(request *AccessTokenRequest) Acc
 	exp := iat.Add(time.Hour * time.Duration(AccessTokenDefaultExpirationHours))
 	return AccessToken{
 		Iss:   request.Issuer,
-		Sub:   request.User.Username,
+		Sub:   request.User.Email,
 		Iat:   iat.Unix(),
 		Exp:   exp.Unix(),
-		Scope: generator.getScopes(request.User),
+		Scope: "",
 	}
-}
-
-func (generator *AccessTokenGenerator) getScopes(user *user.User) string {
-	scopes := make([]string, 0)
-	for _, role := range user.Roles {
-		for _, permission := range role.Permissions {
-			scopes = append(scopes, permission.Name)
-		}
-	}
-	return strings.Join(scopes[:], " ")
 }
 
 func NewAccessTokenGenerator() *AccessTokenGenerator {

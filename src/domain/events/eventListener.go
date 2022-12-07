@@ -1,5 +1,5 @@
 package events
 
 type EventListener interface {
-	Listen(eventChannel chan map[string]string) error
+	Listen(eventChannel chan map[string]interface{}) error
 }

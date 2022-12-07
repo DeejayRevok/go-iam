@@ -1,7 +1,7 @@
 package getAuthenticatedUser
 
 import (
-	"go-uaa/src/domain/auth/accessToken"
+	"go-iam/src/domain/auth/accessToken"
 )
 
 type GetAuthenticatedUserRequest struct {

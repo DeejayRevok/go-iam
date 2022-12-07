@@ -2,7 +2,7 @@ package app
 
 import (
 	"fmt"
-	"go-uaa/src/application/sendPasswordResetToken"
+	"go-iam/src/application/sendPasswordResetToken"
 
 	"go.uber.org/dig"
 	"go.uber.org/zap"

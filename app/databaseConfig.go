@@ -2,7 +2,7 @@ package app
 
 import (
 	"fmt"
-	"go-uaa/src/infrastructure/logging"
+	"go-iam/src/infrastructure/logging"
 	"os"
 
 	postgres "go.elastic.co/apm/module/apmgormv2/v2/driver/postgres"

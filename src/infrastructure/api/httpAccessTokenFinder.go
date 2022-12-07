@@ -1,7 +1,7 @@
 package api
 
 import (
-	"go-uaa/src/domain/auth/accessToken"
+	"go-iam/src/domain/auth/accessToken"
 	"net/http"
 	"strings"
 

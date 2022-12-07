@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: UAA
+  title: IAM
   version: 0.1.0
 
 paths:
@@ -30,35 +30,10 @@ paths:
           description: The user has been created
         400:
           $ref: "#/components/responses/BadRequest"
-  /users/{userId}:
-    get:
-      security:
-        - BearerAuth: []
-        - CookieAuth: []
-      operationId: getUser
-      summary: Get user data
-      tags:
-       - Users
-      parameters:
-        - in: path
-          name: userId
-          schema:
-            type: string
-            format: uuid
-          required: true
-          description: Identifier of the user to get
-      responses:
-        200:
-          description: User data
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
   /users/me:
     get:
       security:
         - BearerAuth: []
-        - CookieAuth: []
       operationId: getAuthenticatedUser
       summary: Get authenticated user data
       tags:
@@ -104,46 +79,6 @@ paths:
       responses:
         200:
           description: Password reset successfull
-        400:
-          $ref: "#/components/responses/BadRequest"
-  /roles:
-    post:
-      security:
-        - BearerAuth: []
-        - CookieAuth: []
-      operationId: createRole
-      summary: Create a new Role
-      tags:
-       - Roles
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateRoleRequest"
-      responses:
-        201:
-          description: The role has been created
-        400:
-          $ref: "#/components/responses/BadRequest"
-  /permissions:
-    post:
-      security:
-        - BearerAuth: []
-        - CookieAuth: []
-      operationId: createPermission
-      summary: Create a new Permission
-      tags:
-        - Permissions
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreatePermissionRequest"
-      responses:
-        201:
-          description: The permission has been created
         400:
           $ref: "#/components/responses/BadRequest"
   /auth/token:
@@ -231,7 +166,6 @@ components:
         - id
         - username
         - email
-        - roles
       properties:
         id:
           type: string
@@ -243,50 +177,12 @@ components:
         email:
           type: string
           description: Email of the user
-        roles:
-          type: array
-          description: Roles assigned to the user
-          items:
-            $ref: "#/components/schemas/Role"
-    Role:
-      type: object
-      required:
-        - id
-        - name
-        - permissions
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Identifier of the role
-        name:
-          type: string
-          description: Name of the role
-        permissions:
-          type: array
-          description: Permissions assigned to the role
-          items:
-            $ref: "#/components/schemas/Permission"
-    Permission:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Identifier of the permission
-        name:
-          type: string
-          description: Name of the permission
     CreateUserRequest:
       type: object
       required:
         - username
         - email
         - password
-        - roles
       properties:
         username:
           type: string
@@ -297,37 +193,6 @@ components:
         password:
           type: string
           description: Password of the user
-        roles:
-          type: array
-          description: Roles to assign to the user
-          items:
-            type: string
-            format: uuid
-            description: Identifier of the role
-    CreateRoleRequest:
-      type: object
-      required:
-        - name
-        - permissions
-      properties:
-        name:
-          type: string
-          description: Name of the role
-        permissions:
-          type: array
-          description: Permissions assigned to this role
-          items:
-            type: string
-            format: uuid
-            description: Identifier of the permission
-    CreatePermissionRequest:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          description: Name of the permission
     BadRequestSchema:
       type: object
       required:
@@ -341,9 +206,9 @@ components:
       required:
         - grant_type
       properties:
-        username:
+        email:
           type: string
-          description: User username to authenticate with password grant type
+          description: User email to authenticate with password grant type
         password:
           type: string
           description: User password to use with password grant type

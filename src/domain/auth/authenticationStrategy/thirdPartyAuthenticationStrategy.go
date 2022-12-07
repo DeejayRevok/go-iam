@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"go-uaa/src/domain/auth/thirdParty"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/auth/thirdParty"
+	"go-iam/src/domain/user"
 )
 
 type ThirdPartyAuthenticationStrategy struct {

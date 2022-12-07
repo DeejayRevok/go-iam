@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"go-uaa/src/application/authenticate"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/infrastructure/dto"
-	"go-uaa/src/infrastructure/transformers"
+	"go-iam/src/application/authenticate"
+	"go-iam/src/domain/internals"
+	"go-iam/src/infrastructure/dto"
+	"go-iam/src/infrastructure/transformers"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -12,7 +12,7 @@ import (
 
 type AuthenticateController struct {
 	authenticateUseCase       *authenticate.AuthenticationUseCase
-	useCaseExecutor           *internals.AuthorizedUseCaseExecutor
+	useCaseExecutor           *internals.UseCaseExecutor
 	authenticationTransformer *transformers.AuthenticationToResponseTransformer
 	dtoDeserializer           *dto.EchoDTODeserializer
 	dtoSerializer             *dto.EchoDTOSerializer
@@ -27,7 +27,7 @@ func (controller *AuthenticateController) Handle(c echo.Context) error {
 	}
 	httpRequest := c.Request()
 	authenticationRequest := authenticate.AuthenticationRequest{
-		Username:     authRequestDTO.Username,
+		Email:        authRequestDTO.Email,
 		Password:     authRequestDTO.Password,
 		Issuer:       controller.getRequestOrigin(httpRequest),
 		GrantType:    authRequestDTO.GrantType,
@@ -49,7 +49,7 @@ func (controller *AuthenticateController) getRequestOrigin(request *http.Request
 	return request.Header.Get("origin")
 }
 
-func NewAuthenticateController(useCase *authenticate.AuthenticationUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, transformer *transformers.AuthenticationToResponseTransformer, dtoDeserializer *dto.EchoDTODeserializer, dtoSerializer *dto.EchoDTOSerializer, errorTransformer *transformers.ErrorToEchoErrorTransformer) *AuthenticateController {
+func NewAuthenticateController(useCase *authenticate.AuthenticationUseCase, useCaseExecutor *internals.UseCaseExecutor, transformer *transformers.AuthenticationToResponseTransformer, dtoDeserializer *dto.EchoDTODeserializer, dtoSerializer *dto.EchoDTOSerializer, errorTransformer *transformers.ErrorToEchoErrorTransformer) *AuthenticateController {
 	return &AuthenticateController{
 		authenticateUseCase:       useCase,
 		useCaseExecutor:           useCaseExecutor,

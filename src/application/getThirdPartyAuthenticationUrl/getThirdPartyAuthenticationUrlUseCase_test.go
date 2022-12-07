@@ -3,8 +3,8 @@ package getThirdPartyAuthenticationUrl
 import (
 	"context"
 	"errors"
-	"go-uaa/mocks"
-	"go-uaa/src/infrastructure/logging"
+	"go-iam/mocks"
+	"go-iam/src/infrastructure/logging"
 	"testing"
 
 	"github.com/stretchr/testify/mock"

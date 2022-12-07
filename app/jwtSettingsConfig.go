@@ -1,7 +1,7 @@
 package app
 
 import (
-	"go-uaa/src/infrastructure/jwt"
+	"go-iam/src/infrastructure/jwt"
 	"io/ioutil"
 	"os"
 )

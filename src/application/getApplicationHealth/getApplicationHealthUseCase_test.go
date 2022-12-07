@@ -3,9 +3,9 @@ package getApplicationHealth
 import (
 	"context"
 	"errors"
-	"go-uaa/mocks"
-	"go-uaa/src/domain/healthcheck"
-	"go-uaa/src/infrastructure/logging"
+	"go-iam/mocks"
+	"go-iam/src/domain/healthcheck"
+	"go-iam/src/infrastructure/logging"
 	"testing"
 
 	"go.elastic.co/apm/v2"

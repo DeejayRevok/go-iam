@@ -2,8 +2,8 @@ package oauth2
 
 import (
 	"context"
-	"go-uaa/src/domain/auth/thirdParty"
-	"go-uaa/src/infrastructure/transformers"
+	"go-iam/src/domain/auth/thirdParty"
+	"go-iam/src/infrastructure/transformers"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"

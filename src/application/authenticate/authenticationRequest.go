@@ -1,7 +1,7 @@
 package authenticate
 
 type AuthenticationRequest struct {
-	Username               string
+	Email                  string
 	Password               string
 	Issuer                 string
 	GrantType              string

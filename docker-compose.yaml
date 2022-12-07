@@ -1,8 +1,7 @@
 version: "3"
 services:
-  uaa:
-    image: go-uaa:latest
-    container_name: "go-uaa"
+  iam:
+    image: go-iam:latest
     env_file: .env
     build:
       context: .
@@ -11,9 +10,8 @@ services:
         DEVELOPMENT: "true"
     ports:
       - 8888:8888
-      - 9273:9273
     depends_on:
-      - postgres
+      - iam-postgres
       - rabbitmq
     restart: on-failure
     volumes:
@@ -27,23 +25,23 @@ services:
       SWAGGER_JSON_URL: http://localhost:8888/openapi.yaml
       BASE_URL: /swagger
 
-  postgres:
+  iam-postgres:
     image: postgres:14.1
     environment:
       POSTGRES_USER: test_user
       POSTGRES_PASSWORD: test_password
-      POSTGRES_DB: uaa
+      POSTGRES_DB: iam
     ports:
       - 5432:5432
     volumes:
-      - db:/var/lib/postgresql/data
+      - iam_db:/var/lib/postgresql/data
   
   rabbitmq:
     image: rabbitmq:3.8.19-management
     environment:
       RABBITMQ_DEFAULT_USER: test_user
       RABBITMQ_DEFAULT_PASS: test_password
-      RABBITMQ_DEFAULT_VHOST: uaa
+      RABBITMQ_DEFAULT_VHOST: /
     ports:
       - 4369:4369
       - 5671:5671
@@ -96,5 +94,5 @@ services:
       - ./tools/logstash.conf:/usr/local/etc/logstash.conf
 
 volumes:
-  db:
+  iam_db:
   elasticsearch_data:

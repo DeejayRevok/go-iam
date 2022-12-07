@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"go-uaa/mocks"
-	"go-uaa/src/domain/user"
-	"go-uaa/src/infrastructure/logging"
+	"go-iam/mocks"
+	"go-iam/src/domain/user"
+	"go-iam/src/infrastructure/logging"
 	"testing"
 	"time"
 

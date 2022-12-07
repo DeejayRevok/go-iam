@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"go-uaa/src/infrastructure/dto"
-	"go-uaa/src/infrastructure/jwt"
-	"go-uaa/src/infrastructure/transformers"
+	"go-iam/src/infrastructure/dto"
+	"go-iam/src/infrastructure/jwt"
+	"go-iam/src/infrastructure/transformers"
 
 	"github.com/labstack/echo/v4"
 )

@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"go-uaa/src/application/getApplicationHealth"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/infrastructure/transformers"
+	"go-iam/src/application/getApplicationHealth"
+	"go-iam/src/domain/internals"
+	"go-iam/src/infrastructure/transformers"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -11,7 +11,7 @@ import (
 
 type GetStatusController struct {
 	getApplicationHealthUseCase *getApplicationHealth.GetApplicationHealthUseCase
-	useCaseExecutor             *internals.AuthorizedUseCaseExecutor
+	useCaseExecutor             *internals.UseCaseExecutor
 	errorTransformer            *transformers.ErrorToEchoErrorTransformer
 }
 
@@ -24,7 +24,7 @@ func (controller *GetStatusController) Handle(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
-func NewGetStatusController(getApplicationHealthUseCase *getApplicationHealth.GetApplicationHealthUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, errorTransformer *transformers.ErrorToEchoErrorTransformer) *GetStatusController {
+func NewGetStatusController(getApplicationHealthUseCase *getApplicationHealth.GetApplicationHealthUseCase, useCaseExecutor *internals.UseCaseExecutor, errorTransformer *transformers.ErrorToEchoErrorTransformer) *GetStatusController {
 	controller := GetStatusController{
 		getApplicationHealthUseCase: getApplicationHealthUseCase,
 		useCaseExecutor:             useCaseExecutor,

@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"go-uaa/src/application/authenticate"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/infrastructure/api"
-	"go-uaa/src/infrastructure/transformers"
+	"go-iam/src/application/authenticate"
+	"go-iam/src/domain/internals"
+	"go-iam/src/infrastructure/api"
+	"go-iam/src/infrastructure/transformers"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -13,7 +13,7 @@ import (
 type ThirdPartyAuthenticationCallbackController struct {
 	callbackURLBuilder        *api.HTTPThirdPartyCallbackURLBuilder
 	authenticationUseCase     *authenticate.AuthenticationUseCase
-	useCaseExecutor           *internals.AuthorizedUseCaseExecutor
+	useCaseExecutor           *internals.UseCaseExecutor
 	errorTransformer          *transformers.ErrorToEchoErrorTransformer
 	authenticationTransformer *transformers.AuthenticationToResponseTransformer
 }
@@ -77,11 +77,12 @@ func (*ThirdPartyAuthenticationCallbackController) getRequestOrigin(request *htt
 	return request.Header.Get("origin")
 }
 
-func NewThirdPartyAuthenticationCallbackController(callbackURLBuilder *api.HTTPThirdPartyCallbackURLBuilder, authenticationUseCase *authenticate.AuthenticationUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, errorTransformer *transformers.ErrorToEchoErrorTransformer, authenticationTransformer *transformers.AuthenticationToResponseTransformer) *ThirdPartyAuthenticationCallbackController {
+func NewThirdPartyAuthenticationCallbackController(callbackURLBuilder *api.HTTPThirdPartyCallbackURLBuilder, authenticationUseCase *authenticate.AuthenticationUseCase, useCaseExecutor *internals.UseCaseExecutor, errorTransformer *transformers.ErrorToEchoErrorTransformer, authenticationTransformer *transformers.AuthenticationToResponseTransformer) *ThirdPartyAuthenticationCallbackController {
 	return &ThirdPartyAuthenticationCallbackController{
-		callbackURLBuilder:    callbackURLBuilder,
-		authenticationUseCase: authenticationUseCase,
-		useCaseExecutor:       useCaseExecutor,
-		errorTransformer:      errorTransformer,
+		callbackURLBuilder:        callbackURLBuilder,
+		authenticationUseCase:     authenticationUseCase,
+		useCaseExecutor:           useCaseExecutor,
+		errorTransformer:          errorTransformer,
+		authenticationTransformer: authenticationTransformer,
 	}
 }

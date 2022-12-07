@@ -3,8 +3,8 @@ package getThirdPartyAuthenticationUrl
 import (
 	"context"
 	"fmt"
-	"go-uaa/src/domain/auth/thirdParty"
-	"go-uaa/src/domain/internals"
+	"go-iam/src/domain/auth/thirdParty"
+	"go-iam/src/domain/internals"
 )
 
 type GetThirdPartyAuthenticationURLUseCase struct {
@@ -31,10 +31,6 @@ func (useCase *GetThirdPartyAuthenticationURLUseCase) Execute(ctx context.Contex
 		Content: authURL,
 		Err:     nil,
 	}
-}
-
-func (*GetThirdPartyAuthenticationURLUseCase) RequiredPermissions() []string {
-	return []string{}
 }
 
 func NewGetThirdPartyAuthenticationURLUseCase(authURLBuilderFactory thirdParty.ThirdPartyAuthURLBuilderFactory, logger internals.Logger) *GetThirdPartyAuthenticationURLUseCase {

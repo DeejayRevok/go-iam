@@ -10,14 +10,14 @@ filebeat.inputs:
 - type: log
 
   # Unique ID among all inputs, an ID is required.
-  id: uaa-logs
+  id: iam-logs
 
   # Change to true to enable this input configuration.
   enabled: true
 
   # Paths that should be crawled and fetched. Glob based paths.
   paths:
-    - /var/log/uaa/*.log
+    - /var/log/iam/*.log
     #- c:\programdata\elasticsearch\logs\*
 
   # Exclude lines. A list of regular expressions to match. It drops the lines that are

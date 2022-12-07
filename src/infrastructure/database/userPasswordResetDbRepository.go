@@ -2,7 +2,7 @@ package database
 
 import (
 	"context"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/user"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -23,6 +23,9 @@ func (repo *UserPasswordResetDbRepository) Save(ctx context.Context, userPasswor
 func (repo *UserPasswordResetDbRepository) FindByUserID(ctx context.Context, userID uuid.UUID) (*user.UserPasswordReset, error) {
 	var foundReset user.UserPasswordReset
 	result := repo.db.Where(user.UserPasswordReset{UserID: userID}).First(&foundReset)
+	if result.RowsAffected == 0 {
+		return nil, nil
+	}
 	if result.Error != nil {
 		return nil, result.Error
 	}

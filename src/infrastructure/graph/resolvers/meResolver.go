@@ -2,18 +2,18 @@ package resolvers
 
 import (
 	"context"
-	"go-uaa/src/application/getAuthenticatedUser"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/domain/user"
-	"go-uaa/src/infrastructure/api"
-	"go-uaa/src/infrastructure/graph/modelResolvers"
-	"go-uaa/src/infrastructure/transformers"
+	"go-iam/src/application/getAuthenticatedUser"
+	"go-iam/src/domain/internals"
+	"go-iam/src/domain/user"
+	"go-iam/src/infrastructure/api"
+	"go-iam/src/infrastructure/graph/modelResolvers"
+	"go-iam/src/infrastructure/transformers"
 	"net/http"
 )
 
 type MeResolver struct {
 	getAuthenticatedUserUseCase *getAuthenticatedUser.GetAuthenticatedUserUseCase
-	useCaseExecutor             *internals.AuthorizedUseCaseExecutor
+	useCaseExecutor             *internals.UseCaseExecutor
 	accessTokenFinder           *api.HTTPAccessTokenFinder
 	userToResponseTransformer   *transformers.UserToResponseTransformer
 }
@@ -40,7 +40,7 @@ func (resolver *MeResolver) Me(c context.Context) (*modelResolvers.UserResolver,
 	return modelResolvers.NewUserResolver(*userResponse), nil
 }
 
-func NewMeResolver(getAuthenticatedUserUseCase *getAuthenticatedUser.GetAuthenticatedUserUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, accessTokenFinder *api.HTTPAccessTokenFinder, userToResponseTransformer *transformers.UserToResponseTransformer) *MeResolver {
+func NewMeResolver(getAuthenticatedUserUseCase *getAuthenticatedUser.GetAuthenticatedUserUseCase, useCaseExecutor *internals.UseCaseExecutor, accessTokenFinder *api.HTTPAccessTokenFinder, userToResponseTransformer *transformers.UserToResponseTransformer) *MeResolver {
 	return &MeResolver{
 		getAuthenticatedUserUseCase: getAuthenticatedUserUseCase,
 		useCaseExecutor:             useCaseExecutor,

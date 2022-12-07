@@ -15,7 +15,7 @@ func NewAPMTracer() *apm.Tracer {
 		panic(fmt.Sprintf("Error initializing APM tracer transport: %s", err.Error()))
 	}
 	tracer, err := apm.NewTracerOptions(apm.TracerOptions{
-		ServiceName:    "uaa",
+		ServiceName:    "iam",
 		ServiceVersion: "1",
 		Transport:      tracerTransport,
 	})

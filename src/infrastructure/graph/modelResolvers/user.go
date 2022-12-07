@@ -1,7 +1,7 @@
 package modelResolvers
 
 import (
-	"go-uaa/src/infrastructure/dto"
+	"go-iam/src/infrastructure/dto"
 )
 
 type UserResolver struct {
@@ -14,14 +14,6 @@ func (resolver *UserResolver) Username() *string {
 
 func (resolver *UserResolver) Email() *string {
 	return &resolver.user.Email
-}
-
-func (resolver *UserResolver) Roles() *[]*RoleResolver {
-	roles := make([]*RoleResolver, 0)
-	for _, role := range resolver.user.Roles {
-		roles = append(roles, NewRoleResolver(role))
-	}
-	return &roles
 }
 
 func NewUserResolver(user dto.UserResponseDTO) *UserResolver {

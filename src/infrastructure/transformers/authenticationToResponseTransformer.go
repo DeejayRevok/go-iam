@@ -1,9 +1,9 @@
 package transformers
 
 import (
-	"go-uaa/src/domain/auth"
-	"go-uaa/src/infrastructure/dto"
-	"go-uaa/src/infrastructure/jwt"
+	"go-iam/src/domain/auth"
+	"go-iam/src/infrastructure/dto"
+	"go-iam/src/infrastructure/jwt"
 )
 
 type AuthenticationToResponseTransformer struct {

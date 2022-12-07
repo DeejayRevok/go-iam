@@ -1,19 +1,19 @@
 package controllers
 
 import (
-	"go-uaa/src/application/getAuthenticatedUser"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/domain/user"
-	"go-uaa/src/infrastructure/api"
-	"go-uaa/src/infrastructure/dto"
-	"go-uaa/src/infrastructure/transformers"
+	"go-iam/src/application/getAuthenticatedUser"
+	"go-iam/src/domain/internals"
+	"go-iam/src/domain/user"
+	"go-iam/src/infrastructure/api"
+	"go-iam/src/infrastructure/dto"
+	"go-iam/src/infrastructure/transformers"
 
 	"github.com/labstack/echo/v4"
 )
 
 type GetAuthenticatedUserController struct {
 	getAuthenticatedUserUseCase *getAuthenticatedUser.GetAuthenticatedUserUseCase
-	useCaseExecutor             *internals.AuthorizedUseCaseExecutor
+	useCaseExecutor             *internals.UseCaseExecutor
 	accessTokenFinder           *api.HTTPAccessTokenFinder
 	userToResponseTransformer   *transformers.UserToResponseTransformer
 	dtoSerializer               *dto.EchoDTOSerializer
@@ -43,7 +43,7 @@ func (controller *GetAuthenticatedUserController) Handle(c echo.Context) error {
 	return controller.dtoSerializer.Serialize(c, userResponse)
 }
 
-func NewGetAuthenticatedUserController(useCase *getAuthenticatedUser.GetAuthenticatedUserUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, accessTokenFinder *api.HTTPAccessTokenFinder, userTransformer *transformers.UserToResponseTransformer, dtoSerializer *dto.EchoDTOSerializer, errorTransformer *transformers.ErrorToEchoErrorTransformer) *GetAuthenticatedUserController {
+func NewGetAuthenticatedUserController(useCase *getAuthenticatedUser.GetAuthenticatedUserUseCase, useCaseExecutor *internals.UseCaseExecutor, accessTokenFinder *api.HTTPAccessTokenFinder, userTransformer *transformers.UserToResponseTransformer, dtoSerializer *dto.EchoDTOSerializer, errorTransformer *transformers.ErrorToEchoErrorTransformer) *GetAuthenticatedUserController {
 	controller := GetAuthenticatedUserController{
 		getAuthenticatedUserUseCase: useCase,
 		useCaseExecutor:             useCaseExecutor,

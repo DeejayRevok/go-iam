@@ -3,8 +3,8 @@ package authenticationStrategy
 import (
 	"context"
 	"errors"
-	"go-uaa/src/domain/hash"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/hash"
+	"go-iam/src/domain/user"
 )
 
 type PasswordAuthenticationStrategy struct {
@@ -13,13 +13,13 @@ type PasswordAuthenticationStrategy struct {
 }
 
 func (strategy *PasswordAuthenticationStrategy) Authenticate(ctx context.Context, request *AuthenticationStrategyRequest) (*user.User, error) {
-	user, err := strategy.userRepository.FindByUsername(ctx, request.Username)
+	user, err := strategy.userRepository.FindByEmail(ctx, request.Email)
 	if err != nil {
 		return nil, err
 	}
 	if user == nil {
 		return nil, StrategyAuthenticationError{
-			Username: request.Username,
+			Email:    request.Email,
 			Strategy: "password",
 			Message:  "User not found",
 		}
@@ -27,7 +27,7 @@ func (strategy *PasswordAuthenticationStrategy) Authenticate(ctx context.Context
 	err = strategy.passwordHashComparator.Compare(request.Password, user.Password)
 	if err != nil {
 		return nil, StrategyAuthenticationError{
-			Username: request.Username,
+			Email:    request.Email,
 			Strategy: "password",
 			Message:  err.Error(),
 		}
@@ -36,8 +36,8 @@ func (strategy *PasswordAuthenticationStrategy) Authenticate(ctx context.Context
 }
 
 func (strategy *PasswordAuthenticationStrategy) ValidateStrategyRequest(request *AuthenticationStrategyRequest) error {
-	if request.Username == "" {
-		return errors.New("missing username for password authentication")
+	if request.Email == "" {
+		return errors.New("missing email for password authentication")
 	}
 	if request.Password == "" {
 		return errors.New("missing password for password authentication")

@@ -2,7 +2,7 @@ package app
 
 import (
 	"context"
-	"go-uaa/src/infrastructure/graph/resolvers"
+	"go-iam/src/infrastructure/graph/resolvers"
 	"io/ioutil"
 	"path"
 	"path/filepath"

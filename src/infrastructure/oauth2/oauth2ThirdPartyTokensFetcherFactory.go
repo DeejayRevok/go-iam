@@ -2,7 +2,7 @@ package oauth2
 
 import (
 	"fmt"
-	"go-uaa/src/domain/auth/thirdParty"
+	"go-iam/src/domain/auth/thirdParty"
 )
 
 type Oauth2ThirdPartyTokensFetcherFactory struct {

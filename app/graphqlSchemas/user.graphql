@@ -9,12 +9,10 @@ extend type Mutation {
 type User {
   username: String
   email: String
-  roles: [Role]
 }
 
 input CreateUserInput {
 		username: String
 		email: String
     password: String
-    roles: [String]
-	}
+}

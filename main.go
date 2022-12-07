@@ -1,6 +1,6 @@
 package main
 
-import "go-uaa/app"
+import "go-iam/app"
 
 func main() {
 	app.Start()

@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install filebeat && apt-get install metricbeat=7.1
 COPY ./tools/filebeat.yml /etc/filebeat/filebeat.yml
 COPY ./tools/metricbeat.yml /etc/metricbeat/metricbeat.yml
 
-RUN mkdir /var/log/uaa
+RUN mkdir /var/log/iam
 RUN mkdir /app
 COPY . /app
 WORKDIR /app

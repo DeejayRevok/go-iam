@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"go-uaa/src/domain/auth/accessToken"
-	"go-uaa/src/domain/auth/refreshToken"
+	"go-iam/src/domain/auth/accessToken"
+	"go-iam/src/domain/auth/refreshToken"
 )
 
 const DefaultTokenType = "bearer"

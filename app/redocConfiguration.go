@@ -6,8 +6,8 @@ import (
 
 func NewRedocConfiguration() *redoc.Redoc {
 	doc := redoc.Redoc{
-		Title:       "UAA",
-		Description: "UAA OpenAPI spec",
+		Title:       "iam",
+		Description: "iam OpenAPI spec",
 		SpecFile:    "./app/openapiDefinitions/open_api_spec_0.1.0.yaml",
 		SpecPath:    "/openapi.yaml",
 		DocsPath:    "/docs",

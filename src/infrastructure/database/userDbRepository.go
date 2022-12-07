@@ -2,7 +2,7 @@ package database
 
 import (
 	"context"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/user"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -24,7 +24,7 @@ func (repo *UserDbRepository) Save(ctx context.Context, user user.User) error {
 func (repo *UserDbRepository) FindByID(ctx context.Context, userID uuid.UUID) (*user.User, error) {
 	var foundUser user.User
 	db := repo.db.WithContext(ctx)
-	result := db.Preload("Roles").Preload("Roles.Permissions").Where(user.User{ID: userID}).First(&foundUser)
+	result := db.Where(user.User{ID: userID}).First(&foundUser)
 	if result.RowsAffected == 0 {
 		return nil, nil
 	}
@@ -37,7 +37,7 @@ func (repo *UserDbRepository) FindByID(ctx context.Context, userID uuid.UUID) (*
 func (repo *UserDbRepository) FindByUsername(ctx context.Context, username string) (*user.User, error) {
 	var foundUser user.User
 	db := repo.db.WithContext(ctx)
-	result := db.Preload("Roles").Preload("Roles.Permissions").Where(user.User{Username: username}).First(&foundUser)
+	result := db.Where(user.User{Username: username}).First(&foundUser)
 	if result.RowsAffected == 0 {
 		return nil, nil
 	}
@@ -50,7 +50,7 @@ func (repo *UserDbRepository) FindByUsername(ctx context.Context, username strin
 func (repo *UserDbRepository) FindByEmail(ctx context.Context, email string) (*user.User, error) {
 	var foundUser user.User
 	db := repo.db.WithContext(ctx)
-	result := db.Preload("Roles").Preload("Roles.Permissions").Where(user.User{Email: email}).First(&foundUser)
+	result := db.Where(user.User{Email: email}).First(&foundUser)
 	if result.RowsAffected == 0 {
 		return nil, nil
 	}
