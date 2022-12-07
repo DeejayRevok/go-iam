@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"go-uaa/src/application/resetPassword"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/infrastructure/dto"
-	"go-uaa/src/infrastructure/transformers"
+	"go-iam/src/application/resetPassword"
+	"go-iam/src/domain/internals"
+	"go-iam/src/infrastructure/dto"
+	"go-iam/src/infrastructure/transformers"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -12,7 +12,7 @@ import (
 
 type ResetPasswordController struct {
 	resetPasswordUseCase *resetPassword.ResetPasswordUseCase
-	useCaseExecutor      *internals.AuthorizedUseCaseExecutor
+	useCaseExecutor      *internals.UseCaseExecutor
 	dtoDeserializer      *dto.EchoDTODeserializer
 	errorTransformer     *transformers.ErrorToEchoErrorTransformer
 }
@@ -35,7 +35,7 @@ func (controller *ResetPasswordController) Handle(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
-func NewResetPasswordController(useCase *resetPassword.ResetPasswordUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, dtoDeserializer *dto.EchoDTODeserializer, errorTransformer *transformers.ErrorToEchoErrorTransformer) *ResetPasswordController {
+func NewResetPasswordController(useCase *resetPassword.ResetPasswordUseCase, useCaseExecutor *internals.UseCaseExecutor, dtoDeserializer *dto.EchoDTODeserializer, errorTransformer *transformers.ErrorToEchoErrorTransformer) *ResetPasswordController {
 	return &ResetPasswordController{
 		resetPasswordUseCase: useCase,
 		useCaseExecutor:      useCaseExecutor,

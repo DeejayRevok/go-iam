@@ -2,8 +2,8 @@ package messaging
 
 import (
 	"fmt"
-	"go-uaa/src/domain/events"
-	"go-uaa/src/infrastructure/transformers"
+	"go-iam/src/domain/events"
+	"go-iam/src/infrastructure/transformers"
 
 	"github.com/streadway/amqp"
 	"go.uber.org/zap"
@@ -17,7 +17,7 @@ type AMQPQueueEventListenerFactory struct {
 }
 
 func (factory *AMQPQueueEventListenerFactory) CreateListener(eventName string) (events.EventListener, error) {
-	eventQueueName := fmt.Sprintf("UAA.%s", eventName)
+	eventQueueName := fmt.Sprintf("iam.%s", eventName)
 	exchange, err := factory.amqpExchangeManager.GetExchangeForEvent(eventName)
 	if err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func (factory *AMQPQueueEventListenerFactory) CreateListener(eventName string) (
 
 	err = factory.amqpChannel.QueueBind(
 		eventQueueName,
-		"UAA",
+		"iam",
 		*exchange,
 		false,
 		nil,

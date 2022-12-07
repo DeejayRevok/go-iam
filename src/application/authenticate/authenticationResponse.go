@@ -1,7 +1,7 @@
 package authenticate
 
 import (
-	"go-uaa/src/domain/auth"
+	"go-iam/src/domain/auth"
 )
 
 type AuthenticationResponse struct {

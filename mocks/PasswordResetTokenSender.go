@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	user "go-uaa/src/domain/user"
+	user "go-iam/src/domain/user"
 
 	mock "github.com/stretchr/testify/mock"
 )

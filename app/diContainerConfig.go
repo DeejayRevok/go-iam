@@ -2,43 +2,38 @@ package app
 
 import (
 	"fmt"
-	"go-uaa/app/cli/commands"
-	"go-uaa/src/application/authenticate"
-	"go-uaa/src/application/createPermission"
-	"go-uaa/src/application/createRole"
-	"go-uaa/src/application/createUser"
-	"go-uaa/src/application/getApplicationHealth"
-	"go-uaa/src/application/getAuthenticatedUser"
-	"go-uaa/src/application/getThirdPartyAuthenticationUrl"
-	"go-uaa/src/application/getUser"
-	"go-uaa/src/application/requestPasswordReset"
-	"go-uaa/src/application/resetPassword"
-	"go-uaa/src/application/sendPasswordResetToken"
-	"go-uaa/src/domain/auth"
-	"go-uaa/src/domain/auth/accessToken"
-	"go-uaa/src/domain/auth/authenticationStrategy"
-	"go-uaa/src/domain/auth/refreshToken"
-	"go-uaa/src/domain/auth/thirdParty"
-	"go-uaa/src/domain/events"
-	"go-uaa/src/domain/hash"
-	"go-uaa/src/domain/healthcheck"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/domain/permission"
-	"go-uaa/src/domain/role"
-	"go-uaa/src/domain/user"
-	"go-uaa/src/infrastructure/api"
-	"go-uaa/src/infrastructure/api/controllers"
-	"go-uaa/src/infrastructure/api/middlewares"
-	"go-uaa/src/infrastructure/database"
-	"go-uaa/src/infrastructure/dto"
-	"go-uaa/src/infrastructure/email"
-	"go-uaa/src/infrastructure/graph/resolvers"
-	"go-uaa/src/infrastructure/jwt"
-	"go-uaa/src/infrastructure/logging"
-	"go-uaa/src/infrastructure/messaging"
-	"go-uaa/src/infrastructure/oauth2"
-	"go-uaa/src/infrastructure/security"
-	"go-uaa/src/infrastructure/transformers"
+	"go-iam/app/cli/commands"
+	"go-iam/src/application/authenticate"
+	"go-iam/src/application/createUser"
+	"go-iam/src/application/getApplicationHealth"
+	"go-iam/src/application/getAuthenticatedUser"
+	"go-iam/src/application/getThirdPartyAuthenticationUrl"
+	"go-iam/src/application/requestPasswordReset"
+	"go-iam/src/application/resetPassword"
+	"go-iam/src/application/sendPasswordResetToken"
+	"go-iam/src/domain/auth"
+	"go-iam/src/domain/auth/accessToken"
+	"go-iam/src/domain/auth/authenticationStrategy"
+	"go-iam/src/domain/auth/refreshToken"
+	"go-iam/src/domain/auth/thirdParty"
+	"go-iam/src/domain/events"
+	"go-iam/src/domain/hash"
+	"go-iam/src/domain/healthcheck"
+	"go-iam/src/domain/internals"
+	"go-iam/src/domain/user"
+	"go-iam/src/infrastructure/api"
+	"go-iam/src/infrastructure/api/controllers"
+	"go-iam/src/infrastructure/api/middlewares"
+	"go-iam/src/infrastructure/database"
+	"go-iam/src/infrastructure/dto"
+	"go-iam/src/infrastructure/email"
+	"go-iam/src/infrastructure/graph/resolvers"
+	"go-iam/src/infrastructure/jwt"
+	"go-iam/src/infrastructure/logging"
+	"go-iam/src/infrastructure/messaging"
+	"go-iam/src/infrastructure/oauth2"
+	"go-iam/src/infrastructure/security"
+	"go-iam/src/infrastructure/transformers"
 
 	"github.com/streadway/amqp"
 	"go.uber.org/dig"
@@ -65,8 +60,6 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(BuildOauth2GoogleTokensFetcher), logger)
 		handleError(container.Provide(BuildThirdPartyAuthStateChecker), logger)
 
-		handleError(container.Provide(database.NewPermissionDbRepository, dig.As(new(permission.PermissionRepository))), logger)
-		handleError(container.Provide(database.NewRoleDbRepository, dig.As(new(role.RoleRepository))), logger)
 		handleError(container.Provide(database.NewUserDbRepository, dig.As(new(user.UserRepository))), logger)
 		handleError(container.Provide(database.NewUserPasswordResetDbRepository, dig.As(new(user.UserPasswordResetRepository))), logger)
 
@@ -83,9 +76,7 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(jwt.NewJWTKeySetBuilder), logger)
 		handleError(container.Provide(jwt.NewJWTThirdPartyTokensToEmailTransformer, dig.As(new(thirdParty.ThirdPartyTokensToEmailTransformer))), logger)
 
-		handleError(container.Provide(transformers.NewRoleToResponseTransformer), logger)
 		handleError(container.Provide(transformers.NewUserToResponseTransformer), logger)
-		handleError(container.Provide(transformers.NewPermissionToResponseTransformer), logger)
 		handleError(container.Provide(transformers.NewEventToAMQPMessageTransformer), logger)
 		handleError(container.Provide(transformers.NewAccessTokenToJWTClaimsTransformer), logger)
 		handleError(container.Provide(transformers.NewRefreshTokenToJWTClaimsTransformer), logger)
@@ -119,9 +110,6 @@ func BuildDIContainer() dig.Container {
 
 		handleError(container.Provide(internals.NewAuthorizedUseCaseExecutor), logger)
 		handleError(container.Provide(createUser.NewCreateUserUseCase), logger)
-		handleError(container.Provide(getUser.NewGetUserUseCase), logger)
-		handleError(container.Provide(createPermission.NewCreatePermissionUseCase), logger)
-		handleError(container.Provide(createRole.NewCreateRoleUseCase), logger)
 		handleError(container.Provide(authenticate.NewAuthenticationUseCase), logger)
 		handleError(container.Provide(getAuthenticatedUser.NewGetAuthenticatedUserUseCase), logger)
 		handleError(container.Provide(requestPasswordReset.NewRequestPasswordResetUseCase), logger)
@@ -142,9 +130,6 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(api.NewHTTPAccessTokenFinder), logger)
 		handleError(container.Provide(api.NewHTTPThirdPartyCallbackURLBuilder), logger)
 		handleError(container.Provide(controllers.NewCreateUserController), logger)
-		handleError(container.Provide(controllers.NewGetUserController), logger)
-		handleError(container.Provide(controllers.NewCreatePermissionController), logger)
-		handleError(container.Provide(controllers.NewCreateRoleController), logger)
 		handleError(container.Provide(controllers.NewAuthenticateController), logger)
 		handleError(container.Provide(controllers.NewGetAuthenticatedUserController), logger)
 		handleError(container.Provide(controllers.NewGetJWTKeySetController), logger)
@@ -157,7 +142,6 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(resolvers.NewCreateUserResolver), logger)
 		handleError(container.Provide(resolvers.NewRootResolver), logger)
 
-		handleError(container.Provide(commands.NewBoostrapPermissionsCLI), logger)
 		handleError(container.Provide(commands.NewCreateSuperuserCLI), logger)
 	}); err != nil {
 		panic(fmt.Sprintf("Error adding dependencies to the container: %s", err.Error()))

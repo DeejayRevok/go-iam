@@ -2,7 +2,7 @@ package jwt
 
 import (
 	"errors"
-	"go-uaa/src/domain/auth/thirdParty"
+	"go-iam/src/domain/auth/thirdParty"
 
 	"github.com/golang-jwt/jwt"
 )

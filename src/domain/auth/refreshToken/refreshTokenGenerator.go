@@ -13,7 +13,7 @@ func (*RefreshTokenGenerator) Generate(request *RefreshTokenRequest) RefreshToke
 	exp := iat.Add(time.Hour * time.Duration(RefreshTokenDefaultExpirationHours))
 	id := uuid.New()
 	return RefreshToken{
-		Sub: request.User.Username,
+		Sub: request.User.Email,
 		Exp: exp.Unix(),
 		Id:  id.String(),
 	}

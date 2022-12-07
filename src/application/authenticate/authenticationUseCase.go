@@ -2,14 +2,13 @@ package authenticate
 
 import (
 	"context"
-	"fmt"
-	"go-uaa/src/domain/auth"
-	"go-uaa/src/domain/auth/accessToken"
-	"go-uaa/src/domain/auth/authenticationStrategy"
-	"go-uaa/src/domain/auth/refreshToken"
-	"go-uaa/src/domain/auth/thirdParty"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/auth"
+	"go-iam/src/domain/auth/accessToken"
+	"go-iam/src/domain/auth/authenticationStrategy"
+	"go-iam/src/domain/auth/refreshToken"
+	"go-iam/src/domain/auth/thirdParty"
+	"go-iam/src/domain/internals"
+	"go-iam/src/domain/user"
 	"time"
 )
 
@@ -27,8 +26,8 @@ func (useCase *AuthenticationUseCase) Execute(ctx context.Context, request any) 
 		return *errResponse
 	}
 
-	useCase.logger.Info(ctx, fmt.Sprintf("Starting authentication for %s", validatedRequest.Username))
-	defer useCase.logger.Info(ctx, fmt.Sprintf("Finished authentication for %s", validatedRequest.Username))
+	useCase.logger.Info(ctx, "Starting authentication")
+	defer useCase.logger.Info(ctx, "Finished authentication")
 
 	user, err := useCase.authenticator.Authenticate(ctx, validatedRequest.GrantType, useCase.createAuthenticationStrategyRequest(validatedRequest))
 	if err != nil {
@@ -60,7 +59,7 @@ func (useCase *AuthenticationUseCase) Execute(ctx context.Context, request any) 
 
 func (useCase *AuthenticationUseCase) createAuthenticationStrategyRequest(request *AuthenticationRequest) *authenticationStrategy.AuthenticationStrategyRequest {
 	strategyRequest := authenticationStrategy.AuthenticationStrategyRequest{
-		Username:     request.Username,
+		Email:        request.Email,
 		Password:     request.Password,
 		RefreshToken: request.RefreshToken,
 		ThirdPartyAuthRequest: &thirdParty.ThirdPartyAuthRequest{
@@ -85,10 +84,6 @@ func (useCase *AuthenticationUseCase) createAuthentication(accessTokenInstance *
 func (useCase *AuthenticationUseCase) updateUserRefreshToken(ctx context.Context, user *user.User, refreshToken *refreshToken.RefreshToken) error {
 	user.RefreshToken = refreshToken.Id
 	return useCase.userRepository.Save(ctx, *user)
-}
-
-func (*AuthenticationUseCase) RequiredPermissions() []string {
-	return []string{}
 }
 
 func NewAuthenticationUseCase(authenticator *auth.Authenticator, accesTokenGenerator *accessToken.AccessTokenGenerator, refreshTokenGenerator *refreshToken.RefreshTokenGenerator, userRepository user.UserRepository, logger internals.Logger) *AuthenticationUseCase {

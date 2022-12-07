@@ -3,8 +3,8 @@ package sendPasswordResetToken
 import (
 	"context"
 	"fmt"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/internals"
+	"go-iam/src/domain/user"
 
 	"github.com/google/uuid"
 )
@@ -37,10 +37,6 @@ func (useCase *SendPasswordResetTokenUseCase) Execute(ctx context.Context, reque
 		return internals.ErrorUseCaseResponse(err)
 	}
 	return internals.EmptyUseCaseResponse()
-}
-
-func (*SendPasswordResetTokenUseCase) RequiredPermissions() []string {
-	return make([]string, 0)
 }
 
 func NewSendPasswordResetTokenUseCase(userRepo user.UserRepository, tokenSender user.PasswordResetTokenSender, logger internals.Logger) *SendPasswordResetTokenUseCase {

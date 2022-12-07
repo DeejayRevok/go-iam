@@ -1,6 +1,6 @@
 package jwt
 
-import "go-uaa/src/infrastructure/dto"
+import "go-iam/src/infrastructure/dto"
 
 type JWTKeySetBuilder struct {
 	jwtSettings       *JWTSettings

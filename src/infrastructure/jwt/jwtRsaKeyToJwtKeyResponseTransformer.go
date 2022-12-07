@@ -4,7 +4,7 @@ import (
 	"crypto/md5"
 	"crypto/rsa"
 	"encoding/hex"
-	"go-uaa/src/infrastructure/dto"
+	"go-iam/src/infrastructure/dto"
 	"strconv"
 
 	"github.com/golang-jwt/jwt"

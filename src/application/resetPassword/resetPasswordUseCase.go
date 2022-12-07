@@ -3,9 +3,9 @@ package resetPassword
 import (
 	"context"
 	"fmt"
-	"go-uaa/src/domain/hash"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/hash"
+	"go-iam/src/domain/internals"
+	"go-iam/src/domain/user"
 	"time"
 )
 
@@ -33,6 +33,9 @@ func (useCase *ResetPasswordUseCase) Execute(ctx context.Context, request any) i
 	passwordReset, err := useCase.userPasswordResetRepository.FindByUserID(ctx, user.ID)
 	if err != nil {
 		return internals.ErrorUseCaseResponse(err)
+	}
+	if passwordReset == nil {
+		return internals.ErrorUseCaseResponse(fmt.Errorf("password reset not found for %s", validatedRequest.UserEmail))
 	}
 
 	err = useCase.validateResetToken(validatedRequest.ResetToken, passwordReset)
@@ -68,10 +71,6 @@ func (useCase *ResetPasswordUseCase) storeNewPassword(ctx context.Context, newPa
 	}
 	user.Password = *newPasswordHash
 	return useCase.userRepository.Save(ctx, *user)
-}
-
-func (*ResetPasswordUseCase) RequiredPermissions() []string {
-	return make([]string, 0)
 }
 
 func NewResetPasswordUseCase(userRepository user.UserRepository, userPasswordResetRepository user.UserPasswordResetRepository, hashComparator hash.HashComparator, hasher hash.Hasher, logger internals.Logger) *ResetPasswordUseCase {

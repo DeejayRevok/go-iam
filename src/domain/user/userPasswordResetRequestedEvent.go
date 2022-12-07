@@ -5,9 +5,9 @@ type UserPasswordResetRequestedEvent struct {
 	UserID     string
 }
 
-func UserPasswordResetRequestedEventFromMap(eventMap map[string]string) *UserPasswordResetRequestedEvent {
+func UserPasswordResetRequestedEventFromMap(eventMap map[string]interface{}) *UserPasswordResetRequestedEvent {
 	return &UserPasswordResetRequestedEvent{
-		ResetToken: eventMap["ResetToken"],
-		UserID:     eventMap["UserID"],
+		ResetToken: eventMap["ResetToken"].(string),
+		UserID:     eventMap["UserID"].(string),
 	}
 }

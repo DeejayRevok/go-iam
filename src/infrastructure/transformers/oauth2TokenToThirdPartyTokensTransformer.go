@@ -1,7 +1,7 @@
 package transformers
 
 import (
-	"go-uaa/src/domain/auth/thirdParty"
+	"go-iam/src/domain/auth/thirdParty"
 
 	"golang.org/x/oauth2"
 )

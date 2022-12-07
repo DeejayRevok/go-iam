@@ -1,13 +1,10 @@
 package messaging
 
 import (
-	"fmt"
 	"reflect"
 
 	"github.com/streadway/amqp"
 )
-
-const exchangeNameFormat = "UAA.%s"
 
 type AMQPExchangeManager struct {
 	amqpChannel *amqp.Channel
@@ -21,13 +18,12 @@ func (manager *AMQPExchangeManager) GetExchangeForEvent(event interface{}) (*str
 		return &exchange, nil
 	}
 
-	exchange = fmt.Sprintf(exchangeNameFormat, eventType)
-	err := manager.createExchange(exchange)
+	err := manager.createExchange(eventType)
 	if err != nil {
 		return nil, err
 	}
-	manager.exchanges[eventType] = exchange
-	return &exchange, nil
+	manager.exchanges[eventType] = eventType
+	return &eventType, nil
 }
 
 func (manager *AMQPExchangeManager) getEventTypeName(event interface{}) string {

@@ -2,7 +2,7 @@ package jwt
 
 import (
 	"errors"
-	"go-uaa/src/domain/auth/accessToken"
+	"go-iam/src/domain/auth/accessToken"
 
 	"github.com/golang-jwt/jwt"
 )

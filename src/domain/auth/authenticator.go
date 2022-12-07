@@ -3,8 +3,8 @@ package auth
 import (
 	"context"
 	"fmt"
-	"go-uaa/src/domain/auth/authenticationStrategy"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/auth/authenticationStrategy"
+	"go-iam/src/domain/user"
 	"strings"
 )
 
@@ -28,7 +28,7 @@ func (authenticator *Authenticator) Authenticate(ctx context.Context, grantType 
 	}
 	if _, isinstance := err.(authenticationStrategy.StrategyAuthenticationError); isinstance {
 		return nil, AuthenticationError{
-			Username: request.Username,
+			Email: request.Email,
 		}
 	}
 	return nil, err

@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	thirdParty "go-uaa/src/domain/auth/thirdParty"
+	thirdParty "go-iam/src/domain/auth/thirdParty"
 
 	mock "github.com/stretchr/testify/mock"
 )

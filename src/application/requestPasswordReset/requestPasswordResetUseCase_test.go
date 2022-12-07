@@ -3,9 +3,9 @@ package requestPasswordReset
 import (
 	"context"
 	"errors"
-	"go-uaa/mocks"
-	"go-uaa/src/domain/user"
-	"go-uaa/src/infrastructure/logging"
+	"go-iam/mocks"
+	"go-iam/src/domain/user"
+	"go-iam/src/infrastructure/logging"
 	"testing"
 
 	"github.com/google/uuid"
@@ -124,6 +124,7 @@ func TestExecuteUserPasswordResetSaveError(t *testing.T) {
 	testCase.Hasher.On("Hash", mock.Anything).Return(&testResetTokenHash, nil)
 	testError := errors.New("Test hash error")
 	testCase.UserPasswordResetRepository.On("Save", mock.Anything, mock.Anything).Return(testError)
+	testCase.UserPasswordResetRepository.On("FindByUserID", mock.Anything, mock.Anything).Return(nil, nil)
 
 	response := testCase.UseCase.Execute(ctx, &request)
 
@@ -137,6 +138,7 @@ func TestExecuteUserPasswordResetSaveError(t *testing.T) {
 	testCase.UserPasswordResetRepository.AssertCalled(t, "Save", ctx, mock.MatchedBy(func(reset user.UserPasswordReset) bool {
 		return reset.Token == testResetTokenHash && reset.UserID == testUser.ID
 	}))
+	testCase.UserPasswordResetRepository.AssertCalled(t, "FindByUserID", ctx, testUser.ID)
 	testCase.Hasher.AssertCalled(t, "Hash", mock.Anything)
 	testCase.EventPublisher.AssertNotCalled(t, "Publish")
 }
@@ -159,6 +161,7 @@ func TestExecuteEventPublishError(t *testing.T) {
 	testCase.UserPasswordResetRepository.On("Save", mock.Anything, mock.Anything).Return(nil)
 	testError := errors.New("Test hash error")
 	testCase.EventPublisher.On("Publish", mock.Anything).Return(testError)
+	testCase.UserPasswordResetRepository.On("FindByUserID", mock.Anything, mock.Anything).Return(nil, nil)
 
 	response := testCase.UseCase.Execute(ctx, &request)
 
@@ -172,6 +175,7 @@ func TestExecuteEventPublishError(t *testing.T) {
 	testCase.UserPasswordResetRepository.AssertCalled(t, "Save", ctx, mock.MatchedBy(func(reset user.UserPasswordReset) bool {
 		return reset.Token == testResetTokenHash && reset.UserID == testUser.ID
 	}))
+	testCase.UserPasswordResetRepository.AssertCalled(t, "FindByUserID", ctx, testUser.ID)
 	testCase.Hasher.AssertCalled(t, "Hash", mock.Anything)
 	testCase.EventPublisher.AssertCalled(t, "Publish", mock.MatchedBy(func(event user.UserPasswordResetRequestedEvent) bool {
 		return event.UserID == testUser.ID.String()
@@ -195,6 +199,7 @@ func TestExecuteSuccess(t *testing.T) {
 	testCase.Hasher.On("Hash", mock.Anything).Return(&testResetTokenHash, nil)
 	testCase.UserPasswordResetRepository.On("Save", mock.Anything, mock.Anything).Return(nil)
 	testCase.EventPublisher.On("Publish", mock.Anything).Return(nil)
+	testCase.UserPasswordResetRepository.On("FindByUserID", mock.Anything, mock.Anything).Return(nil, nil)
 
 	response := testCase.UseCase.Execute(ctx, &request)
 
@@ -208,6 +213,7 @@ func TestExecuteSuccess(t *testing.T) {
 	testCase.UserPasswordResetRepository.AssertCalled(t, "Save", ctx, mock.MatchedBy(func(reset user.UserPasswordReset) bool {
 		return reset.Token == testResetTokenHash && reset.UserID == testUser.ID
 	}))
+	testCase.UserPasswordResetRepository.AssertCalled(t, "FindByUserID", ctx, testUser.ID)
 	testCase.Hasher.AssertCalled(t, "Hash", mock.Anything)
 	testCase.EventPublisher.AssertCalled(t, "Publish", mock.MatchedBy(func(event user.UserPasswordResetRequestedEvent) bool {
 		return event.UserID == testUser.ID.String()

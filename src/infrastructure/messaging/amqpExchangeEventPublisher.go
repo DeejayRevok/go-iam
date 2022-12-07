@@ -1,7 +1,7 @@
 package messaging
 
 import (
-	"go-uaa/src/infrastructure/transformers"
+	"go-iam/src/infrastructure/transformers"
 
 	"github.com/streadway/amqp"
 )

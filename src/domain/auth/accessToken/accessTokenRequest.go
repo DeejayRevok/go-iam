@@ -1,6 +1,6 @@
 package accessToken
 
-import "go-uaa/src/domain/user"
+import "go-iam/src/domain/user"
 
 type AccessTokenRequest struct {
 	User   *user.User

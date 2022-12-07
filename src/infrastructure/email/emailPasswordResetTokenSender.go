@@ -3,7 +3,7 @@ package email
 import (
 	"errors"
 	"fmt"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/user"
 
 	mail "github.com/xhit/go-simple-mail/v2"
 )
@@ -18,11 +18,11 @@ func (sender *EmailPasswordResetTokenSender) Send(resetToken string, receiver *u
 	}
 	email := mail.NewMSG()
 
-	email.SetFrom("Go UAA <system@go-uaa.com>")
+	email.SetFrom("Go iam <system@iam.com>")
 
 	emailBody := sender.getResetPasswordMessage(resetToken)
 	email.SetBody(mail.TextPlain, emailBody)
-	email.SetSubject("UAA reset password request")
+	email.SetSubject("iam reset password request")
 
 	email.AddTo(receiver.Email)
 

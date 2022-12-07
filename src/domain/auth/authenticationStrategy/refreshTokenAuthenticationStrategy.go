@@ -3,8 +3,8 @@ package authenticationStrategy
 import (
 	"context"
 	"errors"
-	"go-uaa/src/domain/auth/refreshToken"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/auth/refreshToken"
+	"go-iam/src/domain/user"
 )
 
 type RefreshTokenAuthenticationStrategy struct {
@@ -18,13 +18,13 @@ func (strategy *RefreshTokenAuthenticationStrategy) Authenticate(ctx context.Con
 		return nil, err
 	}
 
-	user, err := strategy.userRepository.FindByUsername(ctx, refreshToken.Sub)
+	user, err := strategy.userRepository.FindByEmail(ctx, refreshToken.Sub)
 	if err != nil {
 		return nil, err
 	}
 	if len(user.RefreshToken) == 0 {
 		return nil, StrategyAuthenticationError{
-			Username: request.Username,
+			Email:    request.Email,
 			Strategy: "refresh_token",
 			Message:  "Refresh token not found",
 		}
@@ -35,7 +35,7 @@ func (strategy *RefreshTokenAuthenticationStrategy) Authenticate(ctx context.Con
 			return nil, err
 		}
 		return nil, StrategyAuthenticationError{
-			Username: request.Username,
+			Email:    request.Email,
 			Strategy: "refresh_token",
 			Message:  "Refresh token is not valid",
 		}

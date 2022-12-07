@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	refreshToken "go-uaa/src/domain/auth/refreshToken"
+	refreshToken "go-iam/src/domain/auth/refreshToken"
 
 	mock "github.com/stretchr/testify/mock"
 )

@@ -3,10 +3,10 @@ package requestPasswordReset
 import (
 	"context"
 	"fmt"
-	"go-uaa/src/domain/events"
-	"go-uaa/src/domain/hash"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/events"
+	"go-iam/src/domain/hash"
+	"go-iam/src/domain/internals"
+	"go-iam/src/domain/user"
 	"time"
 
 	"github.com/google/uuid"
@@ -39,6 +39,10 @@ func (useCase *RequestPasswordResetUseCase) Execute(ctx context.Context, request
 		return internals.ErrorUseCaseResponse(err)
 	}
 
+	if err = useCase.deleteExistingResetToken(ctx, requestUser.ID); err != nil {
+		return internals.ErrorUseCaseResponse(err)
+	}
+
 	userPasswordReset := user.UserPasswordReset{
 		Token:      resetTokenHash,
 		Expiration: time.Now().Add(time.Minute * 15),
@@ -51,6 +55,17 @@ func (useCase *RequestPasswordResetUseCase) Execute(ctx context.Context, request
 		return internals.ErrorUseCaseResponse(err)
 	}
 	return internals.EmptyUseCaseResponse()
+}
+
+func (useCase *RequestPasswordResetUseCase) deleteExistingResetToken(ctx context.Context, userID uuid.UUID) error {
+	userPasswordReset, err := useCase.userPasswordResetRepository.FindByUserID(ctx, userID)
+	if err != nil {
+		return err
+	}
+	if userPasswordReset != nil {
+		err = useCase.userPasswordResetRepository.Delete(ctx, *userPasswordReset)
+	}
+	return err
 }
 
 func (useCase *RequestPasswordResetUseCase) getResetToken() (string, string, error) {
@@ -68,10 +83,6 @@ func (useCase *RequestPasswordResetUseCase) publishEvent(resetToken string, requ
 		UserID:     requester.ID.String(),
 	}
 	return useCase.eventPublisher.Publish(event)
-}
-
-func (*RequestPasswordResetUseCase) RequiredPermissions() []string {
-	return make([]string, 0)
 }
 
 func NewRequestPasswordResetUseCase(userRepository user.UserRepository, userPasswordResetRepository user.UserPasswordResetRepository, eventPublisher events.EventPublisher, hasher hash.Hasher, logger internals.Logger) *RequestPasswordResetUseCase {

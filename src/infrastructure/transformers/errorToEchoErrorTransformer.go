@@ -1,8 +1,7 @@
 package transformers
 
 import (
-	"go-uaa/src/domain/auth"
-	"go-uaa/src/domain/internals"
+	"go-iam/src/domain/auth"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -21,8 +20,6 @@ func (*ErrorToEchoErrorTransformer) getHTTPStatusCode(err error) int {
 	switch err.(type) {
 	case auth.AuthenticationError:
 		return http.StatusUnauthorized
-	case internals.UseCaseAuthorizationError:
-		return http.StatusForbidden
 	default:
 		return http.StatusInternalServerError
 	}

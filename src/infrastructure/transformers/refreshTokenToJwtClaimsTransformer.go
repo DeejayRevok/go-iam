@@ -1,7 +1,7 @@
 package transformers
 
 import (
-	"go-uaa/src/domain/auth/refreshToken"
+	"go-iam/src/domain/auth/refreshToken"
 
 	"github.com/golang-jwt/jwt"
 )

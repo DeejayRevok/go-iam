@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"go-uaa/src/application/getThirdPartyAuthenticationUrl"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/infrastructure/api"
-	"go-uaa/src/infrastructure/transformers"
+	"go-iam/src/application/getThirdPartyAuthenticationUrl"
+	"go-iam/src/domain/internals"
+	"go-iam/src/infrastructure/api"
+	"go-iam/src/infrastructure/transformers"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -13,7 +13,7 @@ import (
 type GetThirdPartyAuthenticationController struct {
 	callbackURLBuilder                    *api.HTTPThirdPartyCallbackURLBuilder
 	getThirdPartyAuthenticationUrlUseCase *getThirdPartyAuthenticationUrl.GetThirdPartyAuthenticationURLUseCase
-	useCaseExecutor                       *internals.AuthorizedUseCaseExecutor
+	useCaseExecutor                       *internals.UseCaseExecutor
 	errorTransformer                      *transformers.ErrorToEchoErrorTransformer
 }
 
@@ -37,7 +37,7 @@ func (controller *GetThirdPartyAuthenticationController) Handle(c echo.Context) 
 	return c.Redirect(http.StatusTemporaryRedirect, useCaseResponse.Content.(string))
 }
 
-func NewGetThirdPartyAuthenticationController(callbackURLBuilder *api.HTTPThirdPartyCallbackURLBuilder, getThirdPartyAuthenticationUrlUseCase *getThirdPartyAuthenticationUrl.GetThirdPartyAuthenticationURLUseCase, useCaseExecutor *internals.AuthorizedUseCaseExecutor, errorTransformer *transformers.ErrorToEchoErrorTransformer) *GetThirdPartyAuthenticationController {
+func NewGetThirdPartyAuthenticationController(callbackURLBuilder *api.HTTPThirdPartyCallbackURLBuilder, getThirdPartyAuthenticationUrlUseCase *getThirdPartyAuthenticationUrl.GetThirdPartyAuthenticationURLUseCase, useCaseExecutor *internals.UseCaseExecutor, errorTransformer *transformers.ErrorToEchoErrorTransformer) *GetThirdPartyAuthenticationController {
 	return &GetThirdPartyAuthenticationController{
 		callbackURLBuilder:                    callbackURLBuilder,
 		getThirdPartyAuthenticationUrlUseCase: getThirdPartyAuthenticationUrlUseCase,

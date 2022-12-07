@@ -2,8 +2,8 @@ package getApplicationHealth
 
 import (
 	"context"
-	"go-uaa/src/domain/healthcheck"
-	"go-uaa/src/domain/internals"
+	"go-iam/src/domain/healthcheck"
+	"go-iam/src/domain/internals"
 )
 
 type GetApplicationHealthUseCase struct {
@@ -17,10 +17,6 @@ func (useCase *GetApplicationHealthUseCase) Execute(ctx context.Context, _ any) 
 	return internals.UseCaseResponse{
 		Err: useCase.healthChecker.Check(),
 	}
-}
-
-func (*GetApplicationHealthUseCase) RequiredPermissions() []string {
-	return []string{}
 }
 
 func NewGetApplicationHealthUseCase(healthChecker *healthcheck.HealthChecker, logger internals.Logger) *GetApplicationHealthUseCase {

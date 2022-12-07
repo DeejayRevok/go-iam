@@ -3,11 +3,10 @@ package createUser
 import (
 	"context"
 	"fmt"
-	"go-uaa/src/domain/events"
-	"go-uaa/src/domain/hash"
-	"go-uaa/src/domain/internals"
-	"go-uaa/src/domain/role"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/events"
+	"go-iam/src/domain/hash"
+	"go-iam/src/domain/internals"
+	"go-iam/src/domain/user"
 
 	"github.com/google/uuid"
 )
@@ -15,7 +14,6 @@ import (
 type CreateUserUseCase struct {
 	userRepository user.UserRepository
 	passwordHasher hash.Hasher
-	roleRepository role.RoleRepository
 	eventPublisher events.EventPublisher
 	emailValidator user.EmailValidator
 	logger         internals.Logger
@@ -40,17 +38,11 @@ func (useCase *CreateUserUseCase) Execute(ctx context.Context, request any) inte
 		return internals.ErrorUseCaseResponse(err)
 	}
 
-	userRoles, err := useCase.findRoles(ctx, validatedRequest.Roles)
-	if err != nil {
-		return internals.ErrorUseCaseResponse(err)
-	}
-
 	user := user.User{
 		ID:        uuid.New(),
 		Username:  validatedRequest.Username,
 		Email:     validatedRequest.Email,
 		Password:  *passwordHash,
-		Roles:     userRoles,
 		Superuser: validatedRequest.Superuser,
 	}
 	if err = useCase.userRepository.Save(ctx, user); err != nil {
@@ -62,40 +54,20 @@ func (useCase *CreateUserUseCase) Execute(ctx context.Context, request any) inte
 	return internals.EmptyUseCaseResponse()
 }
 
-func (useCase *CreateUserUseCase) findRoles(ctx context.Context, roleIDs []string) ([]role.Role, error) {
-	var roleUUIDs []uuid.UUID
-	for _, roleID := range roleIDs {
-		roleUUID, err := uuid.Parse(roleID)
-		if err != nil {
-			return nil, err
-		}
-		roleUUIDs = append(roleUUIDs, roleUUID)
-	}
-	roles, err := useCase.roleRepository.FindByIDs(ctx, roleUUIDs)
-	if err != nil {
-		return nil, err
-	}
-	return roles, nil
-}
-
 func (useCase *CreateUserUseCase) publishEvent(userCreated *user.User) error {
 	event := user.UserCreatedEvent{
-		ID:       userCreated.ID.String(),
-		Username: userCreated.Username,
-		Email:    userCreated.Email,
+		ID:        userCreated.ID.String(),
+		Username:  userCreated.Username,
+		Email:     userCreated.Email,
+		Superuser: userCreated.Superuser,
 	}
 	return useCase.eventPublisher.Publish(event)
 }
 
-func (*CreateUserUseCase) RequiredPermissions() []string {
-	return []string{}
-}
-
-func NewCreateUserUseCase(userRepository user.UserRepository, passwordHasher hash.Hasher, roleRepository role.RoleRepository, eventPublisher events.EventPublisher, emailValidator user.EmailValidator, logger internals.Logger) *CreateUserUseCase {
+func NewCreateUserUseCase(userRepository user.UserRepository, passwordHasher hash.Hasher, eventPublisher events.EventPublisher, emailValidator user.EmailValidator, logger internals.Logger) *CreateUserUseCase {
 	useCase := CreateUserUseCase{
 		userRepository: userRepository,
 		passwordHasher: passwordHasher,
-		roleRepository: roleRepository,
 		eventPublisher: eventPublisher,
 		emailValidator: emailValidator,
 		logger:         logger,

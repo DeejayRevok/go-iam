@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go-uaa/app"
-	"go-uaa/app/cli/commands"
+	"go-iam/app"
+	"go-iam/app/cli/commands"
 	"os"
 
 	"github.com/urfave/cli/v2"
@@ -14,13 +14,6 @@ func main() {
 
 	container := app.BuildDIContainer()
 	if err := container.Invoke(func(logger *zap.Logger) {
-		handleError(container.Invoke(func(permissionsCli *commands.BoostrapPermissionsCLI) {
-			clis = append(clis, &cli.Command{
-				Name:   "BootstrapPermissions",
-				Usage:  "Bootstrap the application permissions",
-				Action: permissionsCli.Execute,
-			})
-		}), logger)
 		handleError(container.Invoke(func(createSuperuserCli *commands.CreateSuperuserCLI) {
 			clis = append(clis, &cli.Command{
 				Name:   "CreateSuperuser",

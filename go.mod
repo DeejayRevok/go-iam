@@ -1,4 +1,4 @@
-module go-uaa
+module go-iam
 
 go 1.18
 

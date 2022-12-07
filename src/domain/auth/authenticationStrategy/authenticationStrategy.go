@@ -2,7 +2,7 @@ package authenticationStrategy
 
 import (
 	"context"
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/user"
 )
 
 type AuthenticationStrategy interface {

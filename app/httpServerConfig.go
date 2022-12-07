@@ -1,10 +1,10 @@
 package app
 
 import (
-	"go-uaa/src/infrastructure/api/controllers"
-	"go-uaa/src/infrastructure/api/middlewares"
-	"go-uaa/src/infrastructure/dto"
-	"go-uaa/src/infrastructure/graph/resolvers"
+	"go-iam/src/infrastructure/api/controllers"
+	"go-iam/src/infrastructure/api/middlewares"
+	"go-iam/src/infrastructure/dto"
+	"go-iam/src/infrastructure/graph/resolvers"
 
 	"github.com/labstack/echo/v4"
 	"github.com/mvrilo/go-redoc"
@@ -31,17 +31,8 @@ func BuildHTTPServer(container *dig.Container) *echo.Echo {
 		handleError(container.Invoke(func(controller *controllers.CreateUserController) {
 			server.POST("/users", controller.Handle)
 		}), logger)
-		handleError(container.Invoke(func(controller *controllers.GetUserController) {
-			server.GET("/users/:id", controller.Handle)
-		}), logger)
 		handleError(container.Invoke(func(controller *controllers.GetAuthenticatedUserController) {
 			server.GET("/users/me", controller.Handle)
-		}), logger)
-		handleError(container.Invoke(func(controller *controllers.CreateRoleController) {
-			server.POST("/roles", controller.Handle)
-		}), logger)
-		handleError(container.Invoke(func(controller *controllers.CreatePermissionController) {
-			server.POST("/permissions", controller.Handle)
 		}), logger)
 		handleError(container.Invoke(func(controller *controllers.AuthenticateController) {
 			server.POST("/auth/token", controller.Handle)

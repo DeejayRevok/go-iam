@@ -1,7 +1,7 @@
 package security
 
 import (
-	"go-uaa/src/domain/user"
+	"go-iam/src/domain/user"
 
 	mail_checker "github.com/FGRibreau/mailchecker/v4/platform/go"
 )
