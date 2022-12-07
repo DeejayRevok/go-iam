@@ -1,2 +1,2 @@
 # go-iam
-Golang Universal Authentication and Authorization service
+Golang Identity and Authentication Management service
