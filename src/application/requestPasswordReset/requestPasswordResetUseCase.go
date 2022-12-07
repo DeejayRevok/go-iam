@@ -63,9 +63,9 @@ func (useCase *RequestPasswordResetUseCase) deleteExistingResetToken(ctx context
 		return err
 	}
 	if userPasswordReset != nil {
-		useCase.userPasswordResetRepository.Delete(ctx, *userPasswordReset)
+		err = useCase.userPasswordResetRepository.Delete(ctx, *userPasswordReset)
 	}
-	return nil
+	return err
 }
 
 func (useCase *RequestPasswordResetUseCase) getResetToken() (string, string, error) {
