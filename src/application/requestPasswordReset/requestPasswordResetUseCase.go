@@ -82,7 +82,7 @@ func (useCase *RequestPasswordResetUseCase) publishEvent(resetToken string, requ
 		ResetToken: resetToken,
 		UserID:     requester.ID.String(),
 	}
-	return useCase.eventPublisher.Publish(event)
+	return useCase.eventPublisher.Publish(&event)
 }
 
 func NewRequestPasswordResetUseCase(userRepository user.UserRepository, userPasswordResetRepository user.UserPasswordResetRepository, eventPublisher events.EventPublisher, hasher hash.Hasher, logger internals.Logger) *RequestPasswordResetUseCase {

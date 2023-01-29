@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"go-iam/src/domain/events"
 	"go-iam/src/domain/user"
-	"reflect"
 
 	"go.uber.org/zap"
 )
@@ -48,11 +47,15 @@ func (consumer *UserPasswordResetRequestedConsumer) handleEventMap(eventMap map[
 	return nil
 }
 
+func (*UserPasswordResetRequestedConsumer) ConsumerName() string {
+	return "event_consumer.iam.send_password_reset_token.user_password_reset_requested"
+}
+
 func NewUserPasswordResetRequestedConsumer(eventListenerFactory events.EventListenerFactory, useCase *SendPasswordResetTokenUseCase, logger *zap.Logger) *UserPasswordResetRequestedConsumer {
-	eventName := reflect.TypeOf(user.UserPasswordResetRequestedEvent{}).Name()
-	eventListener, err := eventListenerFactory.CreateListener(eventName)
+	eventToListen := &user.UserPasswordResetRequestedEvent{}
+	eventListener, err := eventListenerFactory.CreateListener(eventToListen, &UserPasswordResetRequestedConsumer{})
 	if err != nil {
-		logger.Fatal(fmt.Sprintf("Error creating listener %s: %s", eventName, err.Error()))
+		logger.Fatal(fmt.Sprintf("Error creating listener %s: %s", eventToListen.EventName(), err.Error()))
 	}
 	return &UserPasswordResetRequestedConsumer{
 		eventListener:         eventListener,

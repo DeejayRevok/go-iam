@@ -1,1 +1,1 @@
-go run github.com/pressly/goose/v3/cmd/goose@latest -dir /app/app/migrations postgres "host=${DATABASE_HOST} port=${DATABASE_PORT} user=${DATABASE_USER} password=${DATABASE_PASSWORD} dbname=${DATABASE_NAME} sslmode=disable" up
+go run github.com/pressly/goose/v3/cmd/goose@latest -dir /app/app/migrations postgres "host=${IAM_DATABASE_HOST} port=${IAM_DATABASE_PORT} user=${IAM_DATABASE_USER} password=${IAM_DATABASE_PASSWORD} dbname=${IAM_DATABASE_NAME} sslmode=disable" up

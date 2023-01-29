@@ -1,6 +1,7 @@
 package messaging
 
 import (
+	"go-iam/src/domain/events"
 	"go-iam/src/infrastructure/transformers"
 
 	"github.com/streadway/amqp"
@@ -12,7 +13,7 @@ type AMQPExchangeEventPublisher struct {
 	eventMessageTransformer *transformers.EventToAMQPMessageTransformer
 }
 
-func (publisher *AMQPExchangeEventPublisher) Publish(event interface{}) error {
+func (publisher *AMQPExchangeEventPublisher) Publish(event events.Event) error {
 	exchange, err := publisher.amqpExchangeManager.GetExchangeForEvent(event)
 	if err != nil {
 		return err

@@ -95,7 +95,7 @@ setup.kibana:
   # Scheme and port can be left out and will be set to the default (http and 5601)
   # In case you specify and additional path, the scheme is required: http://localhost:5601/path
   # IPv6 addresses should always be defined as: https://[2001:db8::1]:5601
-  host: "kibana:5601"
+  host: ${IAM_KIBANA_HOST}
 
   # Kibana Space ID
   # ID of the Kibana Space into which the dashboards should be loaded. By default,
@@ -135,7 +135,7 @@ setup.kibana:
 # ------------------------------ Logstash Output -------------------------------
 output.logstash:
   # The Logstash hosts
-  hosts: ["logstash:5044"]
+  hosts: ${IAM_LOGSTASH_HOSTS}
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications
@@ -191,23 +191,23 @@ processors:
 # ============================== Instrumentation ===============================
 
 # Instrumentation support for the filebeat.
-instrumentation:
+#instrumentation:
     # Set to true to enable instrumentation of filebeat.
-    enabled: true
+    #enabled: false
 
     # Environment in which filebeat is running on (eg: staging, production, etc.)
     #environment: ""
 
     # APM Server hosts to report instrumentation results to.
-    hosts:
-      - http://apm-server:8200
+    #hosts:
+    #  - http://apm-server:8200
 
     # API Key for the APM Server(s).
     # If api_key is set then secret_token will be ignored.
     #api_key:
 
     # Secret token for the APM Server(s).
-    secret_token: xxVpmQB2HMzCL9PgBHVrnxjNXXw5J7bd79DFm6sjBJR5HPXDhcF8MSb3vv4bpg44
+    #secret_token: xxVpmQB2HMzCL9PgBHVrnxjNXXw5J7bd79DFm6sjBJR5HPXDhcF8MSb3vv4bpg44
 
 
 setup.ilm.overwrite: true

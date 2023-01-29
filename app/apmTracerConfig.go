@@ -37,9 +37,9 @@ func getHTTPTransport() (*transport.HTTPTransport, error) {
 }
 
 func getHTTPTransportOptions() *transport.HTTPTransportOptions {
-	apmServerHost := os.Getenv("ELASTIC_APM_HOST")
-	apmServerPort := os.Getenv("ELASTIC_APM_PORT")
-	apmSecretToken := os.Getenv("ELASTIC_APM_SECRET_TOKEN")
+	apmServerHost := os.Getenv("IAM_ELASTIC_APM_HOST")
+	apmServerPort := os.Getenv("IAM_ELASTIC_APM_PORT")
+	apmSecretToken := os.Getenv("IAM_ELASTIC_APM_SECRET_TOKEN")
 
 	apmServerURL := url.URL{
 		Scheme: "http",

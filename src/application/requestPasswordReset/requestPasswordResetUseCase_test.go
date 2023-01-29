@@ -177,7 +177,7 @@ func TestExecuteEventPublishError(t *testing.T) {
 	}))
 	testCase.UserPasswordResetRepository.AssertCalled(t, "FindByUserID", ctx, testUser.ID)
 	testCase.Hasher.AssertCalled(t, "Hash", mock.Anything)
-	testCase.EventPublisher.AssertCalled(t, "Publish", mock.MatchedBy(func(event user.UserPasswordResetRequestedEvent) bool {
+	testCase.EventPublisher.AssertCalled(t, "Publish", mock.MatchedBy(func(event *user.UserPasswordResetRequestedEvent) bool {
 		return event.UserID == testUser.ID.String()
 	}))
 }
@@ -215,7 +215,7 @@ func TestExecuteSuccess(t *testing.T) {
 	}))
 	testCase.UserPasswordResetRepository.AssertCalled(t, "FindByUserID", ctx, testUser.ID)
 	testCase.Hasher.AssertCalled(t, "Hash", mock.Anything)
-	testCase.EventPublisher.AssertCalled(t, "Publish", mock.MatchedBy(func(event user.UserPasswordResetRequestedEvent) bool {
+	testCase.EventPublisher.AssertCalled(t, "Publish", mock.MatchedBy(func(event *user.UserPasswordResetRequestedEvent) bool {
 		return event.UserID == testUser.ID.String()
 	}))
 }

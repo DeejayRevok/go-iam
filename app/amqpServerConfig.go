@@ -8,11 +8,11 @@ import (
 )
 
 func ConnectToAMQPServer() *amqp.Connection {
-	amqpUser := os.Getenv("AMQP_USER")
-	amqpPassword := os.Getenv("AMQP_PASSWORD")
-	amqpHost := os.Getenv("AMQP_HOST")
-	amqpPort := os.Getenv("AMQP_PORT")
-	amqpVhost := os.Getenv("AMQP_VHOST")
+	amqpUser := os.Getenv("IAM_AMQP_USER")
+	amqpPassword := os.Getenv("IAM_AMQP_PASSWORD")
+	amqpHost := os.Getenv("IAM_AMQP_HOST")
+	amqpPort := os.Getenv("IAM_AMQP_PORT")
+	amqpVhost := os.Getenv("IAM_AMQP_VHOST")
 
 	amqpConnection, err := amqp.Dial(getServerConnectionURL(amqpUser, amqpPassword, amqpHost, amqpPort, amqpVhost))
 	if err != nil {
