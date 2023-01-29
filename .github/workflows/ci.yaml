@@ -15,4 +15,4 @@ jobs:
       - name: Run tests
         run: make test
       - name: Build docker image
-        run: docker build -t djrevok/go-iam:latest .
+        run: docker build -t go-iam:latest .
