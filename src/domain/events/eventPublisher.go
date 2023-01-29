@@ -1,5 +1,5 @@
 package events
 
 type EventPublisher interface {
-	Publish(event interface{}) error
+	Publish(event Event) error
 }

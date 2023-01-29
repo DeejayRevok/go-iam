@@ -30,7 +30,7 @@ func getAPMCore(tracer *apm.Tracer) zapcore.Core {
 }
 
 func getFileCore(encoderConfig zapcore.EncoderConfig) zapcore.Core {
-	logFilePath := os.Getenv("LOG_FILE_PATH")
+	logFilePath := os.Getenv("IAM_LOG_FILE_PATH")
 	fileWriteSyncer := zapcore.AddSync(&lumberjack.Logger{
 		Filename:   logFilePath,
 		MaxSize:    500,

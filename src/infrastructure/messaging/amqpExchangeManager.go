@@ -1,7 +1,7 @@
 package messaging
 
 import (
-	"reflect"
+	"go-iam/src/domain/events"
 
 	"github.com/streadway/amqp"
 )
@@ -11,8 +11,8 @@ type AMQPExchangeManager struct {
 	exchanges   map[string]string
 }
 
-func (manager *AMQPExchangeManager) GetExchangeForEvent(event interface{}) (*string, error) {
-	eventType := manager.getEventTypeName(event)
+func (manager *AMQPExchangeManager) GetExchangeForEvent(event events.Event) (*string, error) {
+	eventType := event.EventName()
 	exchange := manager.exchanges[eventType]
 	if exchange != "" {
 		return &exchange, nil
@@ -24,18 +24,6 @@ func (manager *AMQPExchangeManager) GetExchangeForEvent(event interface{}) (*str
 	}
 	manager.exchanges[eventType] = eventType
 	return &eventType, nil
-}
-
-func (manager *AMQPExchangeManager) getEventTypeName(event interface{}) string {
-	eventType := reflect.TypeOf(event)
-	if eventType.Kind() == reflect.Ptr {
-		eventType = eventType.Elem()
-	}
-	eventTypeName := eventType.Name()
-	if eventTypeName == "string" {
-		return event.(string)
-	}
-	return eventTypeName
 }
 
 func (manager *AMQPExchangeManager) createExchange(name string) error {

@@ -13,8 +13,8 @@ func Start() {
 	RunEventConsumers(&container)
 
 	err := container.Invoke(func(logger *zap.Logger) {
-		serverHost := os.Getenv("HTTP_SERVER_HOST")
-		serverPort := os.Getenv("HTTP_SERVER_PORT")
+		serverHost := os.Getenv("IAM_HTTP_SERVER_HOST")
+		serverPort := os.Getenv("IAM_HTTP_SERVER_PORT")
 		handleError(httpServer.Start(fmt.Sprintf("%s:%s", serverHost, serverPort)), logger)
 	})
 	if err != nil {

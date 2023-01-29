@@ -1,5 +1,5 @@
 package events
 
 type EventListenerFactory interface {
-	CreateListener(eventName string) (EventListener, error)
+	CreateListener(event Event, eventConsumer EventConsumer) (EventListener, error)
 }

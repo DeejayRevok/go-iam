@@ -61,7 +61,7 @@ func (useCase *CreateUserUseCase) publishEvent(userCreated *user.User) error {
 		Email:     userCreated.Email,
 		Superuser: userCreated.Superuser,
 	}
-	return useCase.eventPublisher.Publish(event)
+	return useCase.eventPublisher.Publish(&event)
 }
 
 func NewCreateUserUseCase(userRepository user.UserRepository, passwordHasher hash.Hasher, eventPublisher events.EventPublisher, emailValidator user.EmailValidator, logger internals.Logger) *CreateUserUseCase {

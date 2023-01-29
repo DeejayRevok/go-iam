@@ -172,7 +172,7 @@ func TestExecuteSuccess(t *testing.T) {
 	testCase.UserRepo.AssertCalled(t, "Save", ctx, mock.MatchedBy(func(user user.User) bool {
 		return user.Username == testUsername && user.Email == testEmail && user.Password == testPasswordHash && user.Superuser == testIsSuperuser
 	}))
-	testCase.EventPublisher.AssertCalled(t, "Publish", mock.MatchedBy(func(event user.UserCreatedEvent) bool {
+	testCase.EventPublisher.AssertCalled(t, "Publish", mock.MatchedBy(func(event *user.UserCreatedEvent) bool {
 		return event.Username == testUsername && event.Email == testEmail
 	}))
 }

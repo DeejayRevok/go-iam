@@ -6,3 +6,7 @@ type UserCreatedEvent struct {
 	Email     string
 	Superuser bool
 }
+
+func (*UserCreatedEvent) EventName() string {
+	return "event.user_created"
+}

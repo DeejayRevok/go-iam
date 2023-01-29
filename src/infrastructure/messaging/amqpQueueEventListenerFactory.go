@@ -1,7 +1,6 @@
 package messaging
 
 import (
-	"fmt"
 	"go-iam/src/domain/events"
 	"go-iam/src/infrastructure/transformers"
 
@@ -16,15 +15,15 @@ type AMQPQueueEventListenerFactory struct {
 	logger                       *zap.Logger
 }
 
-func (factory *AMQPQueueEventListenerFactory) CreateListener(eventName string) (events.EventListener, error) {
-	eventQueueName := fmt.Sprintf("iam.%s", eventName)
-	exchange, err := factory.amqpExchangeManager.GetExchangeForEvent(eventName)
+func (factory *AMQPQueueEventListenerFactory) CreateListener(event events.Event, eventConsumer events.EventConsumer) (events.EventListener, error) {
+	eventConsumerName := eventConsumer.ConsumerName()
+	exchange, err := factory.amqpExchangeManager.GetExchangeForEvent(event)
 	if err != nil {
 		return nil, err
 	}
 
 	_, err = factory.amqpChannel.QueueDeclare(
-		eventQueueName,
+		eventConsumerName,
 		true,
 		false,
 		false,
@@ -36,8 +35,8 @@ func (factory *AMQPQueueEventListenerFactory) CreateListener(eventName string) (
 	}
 
 	err = factory.amqpChannel.QueueBind(
-		eventQueueName,
-		"iam",
+		eventConsumerName,
+		eventConsumerName,
 		*exchange,
 		false,
 		nil,
@@ -48,7 +47,7 @@ func (factory *AMQPQueueEventListenerFactory) CreateListener(eventName string) (
 
 	return &AMQPQueueEventListener{
 		amqpChannel:                  factory.amqpChannel,
-		eventQueueName:               eventQueueName,
+		eventQueueName:               eventConsumerName,
 		amqpDeliveryToMapTransformer: factory.amqpDeliveryToMapTransformer,
 		logger:                       factory.logger,
 	}, nil
