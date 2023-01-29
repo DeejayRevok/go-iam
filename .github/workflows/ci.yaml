@@ -1,10 +1,10 @@
-name: ci
+name: IAM CI Workflow
 on:
   push:
 permissions:
   contents: read
 jobs:
-  ci:
+  iam-ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -14,3 +14,5 @@ jobs:
         run: make lint
       - name: Run tests
         run: make test
+      - name: Build docker image
+        run: docker build -t go-iam:latest .
