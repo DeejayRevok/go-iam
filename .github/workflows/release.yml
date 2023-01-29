@@ -1,0 +1,35 @@
+name: IAM Release Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  iam-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get version
+        id: get_version
+        run: |
+          VERSION=`cat VERSION`
+          echo "Version: $VERSION"
+          echo "::set-output name=version::$VERSION"
+      - name: Build the docker image
+        run: docker build -t djrevok/go-iam:${{ steps.get_version.outputs.version }} .
+      - name: Login to docker hub
+        uses: actions-hub/docker/login@master
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Publish docker image
+        uses: actions-hub/docker@master
+        with:
+            args: push djrevok/go-iam:${{ steps.get_version.outputs.version }}
+      - uses: avakar/tag-and-release@v1
+        with:
+          tag_name: ${{ steps.get_version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
