@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: iam-web-server
+  name: iam-web-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: iam-web-server
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: iam-web-server
+    spec:
+      initContainers:
+      - name: iam-migrations
+        image: 'djrevok/iam:{{ .Chart.AppVersion }}'
+        command:
+          - sh
+          - apply_migrations.sh
+        envFrom:
+          - configMapRef:
+              name: iam-configmap
+          - secretRef:
+              name: iam-secrets
+      containers:
+      - envFrom:
+          - configMapRef:
+              name: iam-configmap
+        image: 'djrevok/iam:{{ .Chart.AppVersion }}'
+        name: iam-web-server
+        ports:
+        - containerPort: 8888
+        resources: {}
+        command:
+          - sh
+          - run.sh
+      restartPolicy: Always
+      serviceAccountName: ""
+status: {}

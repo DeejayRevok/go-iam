@@ -1,0 +1,9 @@
+name: iam
+description: IAM helm chart
+version: latest
+appVersion: latest
+apiVersion: v1
+keywords:
+  - iam
+sources:
+home:

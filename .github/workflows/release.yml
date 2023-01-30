@@ -18,7 +18,7 @@ jobs:
           echo "Version: $VERSION"
           echo "::set-output name=version::$VERSION"
       - name: Build the docker image
-        run: docker build -t djrevok/go-iam:${{ steps.get_version.outputs.version }} .
+        run: docker build -t djrevok/go-iam:${{ steps.get_version.outputs.version }} --build-arg DEVELOPMENT="false" .
       - name: Login to docker hub
         uses: actions-hub/docker/login@master
         env:

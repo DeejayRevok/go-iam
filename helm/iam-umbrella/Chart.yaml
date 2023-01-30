@@ -1,0 +1,19 @@
+name: iam-umbrella
+description: IAM umbrella helm chart
+version: latest
+appVersion: latest
+apiVersion: v1
+keywords:
+  - iam
+sources:
+home:
+dependencies:
+  - name: iam
+    version: latest
+    repository: "file://../iam"
+  - name: rabbitmq
+    version: 11.4.0
+    repository: "https://charts.bitnami.com/bitnami"
+  - name: monitor
+    version: 1.0.2
+    repository: "https://deejayrevok.github.io/helm-repo"
