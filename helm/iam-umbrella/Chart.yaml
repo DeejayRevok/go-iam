@@ -1,6 +1,6 @@
 name: iam-umbrella
 description: IAM umbrella helm chart
-version: latest
+version: 0.0.0
 appVersion: latest
 apiVersion: v1
 keywords:
@@ -9,7 +9,7 @@ sources:
 home:
 dependencies:
   - name: iam
-    version: latest
+    version: 0.0.0
     repository: "file://../iam"
   - name: rabbitmq
     version: 11.4.0

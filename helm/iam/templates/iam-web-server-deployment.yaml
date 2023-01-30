@@ -18,7 +18,7 @@ spec:
     spec:
       initContainers:
       - name: iam-migrations
-        image: 'djrevok/iam:{{ .Chart.AppVersion }}'
+        image: 'djrevok/go-iam:{{ .Chart.AppVersion }}'
         command:
           - sh
           - apply_migrations.sh
@@ -31,7 +31,7 @@ spec:
       - envFrom:
           - configMapRef:
               name: iam-configmap
-        image: 'djrevok/iam:{{ .Chart.AppVersion }}'
+        image: 'djrevok/go-iam:{{ .Chart.AppVersion }}'
         name: iam-web-server
         ports:
         - containerPort: 8888

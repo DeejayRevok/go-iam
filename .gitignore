@@ -4,3 +4,6 @@ tmp
 *.out
 *.DS_Store
 *secrets.yaml
+**charts**
+*.tgz
+*.lock

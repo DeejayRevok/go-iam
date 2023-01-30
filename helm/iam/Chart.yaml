@@ -1,6 +1,6 @@
 name: iam
 description: IAM helm chart
-version: latest
+version: 0.0.0
 appVersion: latest
 apiVersion: v1
 keywords:
