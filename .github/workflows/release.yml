@@ -28,6 +28,25 @@ jobs:
         uses: actions-hub/docker@master
         with:
             args: push djrevok/go-iam:${{ steps.get_version.outputs.version }}
+      - name: Setup helm
+        uses: azure/setup-helm@v1
+      - name: Build helm chart
+        run: make build-chart
+      - name: Clone helm repo
+        run: |
+          git clone https://DeejayRevok:${{ secrets.HELM_REPO_ACCESS_TOKEN }}@github.com/DeejayRevok/helm-repo.git
+      - name: Copy chart to repo
+        run: cp ./search-engine-${{ steps.get_version.outputs.version }}.tgz ./helm-repo
+      - name: Index new chart
+        run: helm repo index --url https://deejayrevok.github.io/helm-repo ./helm-repo
+      - name: Push new chart
+        run: |
+          git config --local user.name "Github Action"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git add .
+          git commit -m "Github Actions Automatically Built IAM Release ${{ steps.get_version.outputs.version }}"
+          git push --force --quiet https://DeejayRevok:${{ secrets.HELM_REPO_ACCESS_TOKEN }}@github.com/DeejayRevok/helm-repo.git main:main
+        working-directory: ./helm-repo
       - uses: avakar/tag-and-release@v1
         with:
           tag_name: ${{ steps.get_version.outputs.version }}

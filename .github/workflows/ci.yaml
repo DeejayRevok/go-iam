@@ -15,4 +15,14 @@ jobs:
       - name: Run tests
         run: make test
       - name: Build docker image
-        run: docker build -t go-iam:latest .
+        run: docker build -t djrevok/go-iam:latest .
+      - name: Login to docker hub
+        uses: actions-hub/docker/login@master
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Publish docker image
+        if: github.ref == 'refs/heads/develop'
+        uses: actions-hub/docker@master
+        with:
+          args: push djrevok/go-iam:latest
