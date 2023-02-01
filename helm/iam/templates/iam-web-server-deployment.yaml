@@ -31,6 +31,8 @@ spec:
       - envFrom:
           - configMapRef:
               name: iam-configmap
+          - secretRef:
+              name: iam-secrets
         image: 'djrevok/go-iam:{{ .Chart.AppVersion }}'
         name: iam-web-server
         ports:
