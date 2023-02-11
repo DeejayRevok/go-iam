@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: iam-postgres
+  name: iam-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: iam-postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: iam-postgres
+    spec:
+      containers:
+      - envFrom:
+          - configMapRef:
+              name: iam-configmap
+        image: postgres:15.0
+        imagePullPolicy: ""
+        name: iam-postgres
+        ports:
+        - containerPort: 5434
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: iam-postgres-data
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: iam-postgres-data
+        persistentVolumeClaim:
+          claimName: iam-postgres-data
+status: {}

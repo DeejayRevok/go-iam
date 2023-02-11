@@ -2,3 +2,8 @@ tmp
 .env
 .vscode
 *.out
+*.DS_Store
+*secrets.yaml
+**charts**
+*.tgz
+*.lock

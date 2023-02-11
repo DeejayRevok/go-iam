@@ -2,6 +2,7 @@ package app
 
 import (
 	"go-iam/src/domain/auth/thirdParty"
+	"go-iam/src/infrastructure/api"
 	"go-iam/src/infrastructure/oauth2"
 	"go-iam/src/infrastructure/transformers"
 	"os"
@@ -26,4 +27,11 @@ func BuildThirdPartyAuthStateChecker() *thirdParty.ThirdPartyAuthStateChecker {
 	state := os.Getenv("IAM_OAUTH_STATE")
 
 	return thirdParty.NewThirdPartyAuthStateChecker(state)
+}
+
+func BuildHTTPThirdPartyCallbackUrlBuilder() *api.HTTPThirdPartyCallbackURLBuilder {
+	basePath := os.Getenv("IAM_HTTP_SERVER_BASE_PATH")
+	baseProtocol := os.Getenv("IAM_HTTP_SERVER_BASE_PROTOCOL")
+
+	return api.NewHTTPThirdPartyCallbackURLBuilder(baseProtocol, basePath)
 }

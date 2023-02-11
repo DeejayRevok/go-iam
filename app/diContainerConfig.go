@@ -59,6 +59,7 @@ func BuildDIContainer() dig.Container {
 		handleError(container.Provide(BuildOauth2GoogleAuthURLBuilder), logger)
 		handleError(container.Provide(BuildOauth2GoogleTokensFetcher), logger)
 		handleError(container.Provide(BuildThirdPartyAuthStateChecker), logger)
+		handleError(container.Provide(BuildHTTPThirdPartyCallbackUrlBuilder), logger)
 
 		handleError(container.Provide(database.NewUserDbRepository, dig.As(new(user.UserRepository))), logger)
 		handleError(container.Provide(database.NewUserPasswordResetDbRepository, dig.As(new(user.UserPasswordResetRepository))), logger)
@@ -128,7 +129,6 @@ func BuildDIContainer() dig.Container {
 		addHealthCheckDependencies(container, logger)
 
 		handleError(container.Provide(api.NewHTTPAccessTokenFinder), logger)
-		handleError(container.Provide(api.NewHTTPThirdPartyCallbackURLBuilder), logger)
 		handleError(container.Provide(controllers.NewCreateUserController), logger)
 		handleError(container.Provide(controllers.NewAuthenticateController), logger)
 		handleError(container.Provide(controllers.NewGetAuthenticatedUserController), logger)
